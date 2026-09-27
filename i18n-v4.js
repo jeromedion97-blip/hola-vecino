@@ -1,0 +1,36 @@
+// Textes ajoutés en v4 (tableau de bord, badges d'entraide, prochaine édition)
+(() => {
+const add = {
+fr: { dash_hello:"Bonjour", dash_since:"En Espagne depuis", dur_months:"mois", dur_years:"ans", dash_arriving:"Arrivée prévue dans", dash_planning:"Vous préparez votre départ.",
+  dash_events:"Bientôt près de chez vous", dash_no_events:"Aucun événement prévu dans votre ville pour l'instant. Lancez le premier !", dash_welcome:"Nouveaux voisins à accueillir", dash_welcome_help:"Ils arrivent ou viennent d'arriver dans votre ville. Un mot de bienvenue compte beaucoup.", dash_say_hello:"Dire bonjour",
+  dash_threads:"Discussions dans votre ville", dash_deals:"Nouveaux bons plans", dash_journey:"Votre parcours", dash_next_step:"Prochaine étape", dash_points:"points d'entraide", dash_helpers:"Les voisins les plus serviables", dash_helpers_help:"Sur les 3 derniers mois : réponses sur le forum et événements organisés.",
+  dash_no_city:"Indiquez votre ville dans votre profil pour voir ce qui se passe près de chez vous.", dash_see_all:"Tout voir", dash_all_done:"Toutes vos étapes sont passées. Votre expérience vaut de l'or pour les nouveaux arrivants.", dash_set_arrival:"Indiquez votre date d'arrivée pour suivre vos étapes.",
+  bd_newcomer:"Nouvel arrivant", bd_settled:"Installé de longue date", bd_helper:"Voisin serviable", bd_pillar:"Pilier de la communauté", bd_organizer:"Organisateur", bd_idea:"Idée réalisée",
+  rep_title:"Entraide", stat_replies:"réponses", stat_events_org:"événements organisés", stat_events_att:"événements suivis", ev_next_edition:"Organiser la prochaine édition" },
+en: { dash_hello:"Hello", dash_since:"In Spain for", dur_months:"months", dur_years:"years", dash_arriving:"Arriving in", dash_planning:"You are preparing your move.",
+  dash_events:"Coming up near you", dash_no_events:"No events planned in your city yet. Start the first one!", dash_welcome:"New neighbours to welcome", dash_welcome_help:"They are arriving or have just arrived in your city. A word of welcome means a lot.", dash_say_hello:"Say hello",
+  dash_threads:"Discussions in your city", dash_deals:"New good addresses", dash_journey:"Your journey", dash_next_step:"Next step", dash_points:"help points", dash_helpers:"The most helpful neighbours", dash_helpers_help:"Over the last 3 months: forum replies and events organised.",
+  dash_no_city:"Add your city to your profile to see what's happening near you.", dash_see_all:"See all", dash_all_done:"All your steps are behind you. Your experience is gold for newcomers.", dash_set_arrival:"Add your arrival date to follow your steps.",
+  bd_newcomer:"Newcomer", bd_settled:"Long-time resident", bd_helper:"Helpful neighbour", bd_pillar:"Community pillar", bd_organizer:"Organiser", bd_idea:"Idea made real",
+  rep_title:"Helping out", stat_replies:"replies", stat_events_org:"events organised", stat_events_att:"events attended", ev_next_edition:"Organise the next edition" },
+es: { dash_hello:"Hola", dash_since:"En España desde hace", dur_months:"meses", dur_years:"años", dash_arriving:"Llegada prevista en", dash_planning:"Estás preparando tu mudanza.",
+  dash_events:"Próximamente cerca de ti", dash_no_events:"Aún no hay eventos en tu ciudad. ¡Organiza el primero!", dash_welcome:"Nuevos vecinos a los que dar la bienvenida", dash_welcome_help:"Llegan o acaban de llegar a tu ciudad. Una palabra de bienvenida cuenta mucho.", dash_say_hello:"Saludar",
+  dash_threads:"Conversaciones en tu ciudad", dash_deals:"Nuevas buenas direcciones", dash_journey:"Tu recorrido", dash_next_step:"Próxima etapa", dash_points:"puntos de ayuda", dash_helpers:"Los vecinos más serviciales", dash_helpers_help:"En los últimos 3 meses: respuestas en el foro y eventos organizados.",
+  dash_no_city:"Indica tu ciudad en tu perfil para ver lo que pasa cerca de ti.", dash_see_all:"Ver todo", dash_all_done:"Ya has pasado todas tus etapas. Tu experiencia vale oro para los recién llegados.", dash_set_arrival:"Indica tu fecha de llegada para seguir tus etapas.",
+  bd_newcomer:"Recién llegado", bd_settled:"Residente veterano", bd_helper:"Vecino servicial", bd_pillar:"Pilar de la comunidad", bd_organizer:"Organizador", bd_idea:"Idea realizada",
+  rep_title:"Ayuda mutua", stat_replies:"respuestas", stat_events_org:"eventos organizados", stat_events_att:"eventos asistidos", ev_next_edition:"Organizar la próxima edición" },
+de: { dash_hello:"Hallo", dash_since:"In Spanien seit", dur_months:"Monaten", dur_years:"Jahren", dash_arriving:"Ankunft in", dash_planning:"Du bereitest deinen Umzug vor.",
+  dash_events:"Demnächst in deiner Nähe", dash_no_events:"In deiner Stadt ist noch nichts geplant. Starte die erste Veranstaltung!", dash_welcome:"Neue Nachbarn willkommen heißen", dash_welcome_help:"Sie kommen gerade in deiner Stadt an. Ein Willkommenswort bedeutet viel.", dash_say_hello:"Hallo sagen",
+  dash_threads:"Diskussionen in deiner Stadt", dash_deals:"Neue gute Adressen", dash_journey:"Dein Weg", dash_next_step:"Nächster Schritt", dash_points:"Hilfepunkte", dash_helpers:"Die hilfsbereitesten Nachbarn", dash_helpers_help:"In den letzten 3 Monaten: Forumsantworten und organisierte Veranstaltungen.",
+  dash_no_city:"Gib deine Stadt im Profil an, um zu sehen, was in deiner Nähe passiert.", dash_see_all:"Alle ansehen", dash_all_done:"Alle Schritte liegen hinter dir. Deine Erfahrung ist Gold wert für Neuankömmlinge.", dash_set_arrival:"Gib dein Ankunftsdatum an, um deine Schritte zu verfolgen.",
+  bd_newcomer:"Neu angekommen", bd_settled:"Alteingesessen", bd_helper:"Hilfsbereiter Nachbar", bd_pillar:"Säule der Community", bd_organizer:"Organisator", bd_idea:"Umgesetzte Idee",
+  rep_title:"Hilfe", stat_replies:"Antworten", stat_events_org:"organisierte Veranstaltungen", stat_events_att:"besuchte Veranstaltungen", ev_next_edition:"Nächste Ausgabe organisieren" },
+nl: { dash_hello:"Hallo", dash_since:"In Spanje sinds", dur_months:"maanden", dur_years:"jaar", dash_arriving:"Aankomst over", dash_planning:"Je bereidt je verhuizing voor.",
+  dash_events:"Binnenkort bij jou in de buurt", dash_no_events:"Nog geen evenementen in je stad. Organiseer het eerste!", dash_welcome:"Nieuwe buren om te verwelkomen", dash_welcome_help:"Ze komen net aan in je stad. Een welkomstwoord betekent veel.", dash_say_hello:"Hallo zeggen",
+  dash_threads:"Gesprekken in je stad", dash_deals:"Nieuwe goede adressen", dash_journey:"Jouw traject", dash_next_step:"Volgende stap", dash_points:"hulppunten", dash_helpers:"De behulpzaamste buren", dash_helpers_help:"De voorbije 3 maanden: antwoorden op het forum en georganiseerde evenementen.",
+  dash_no_city:"Vul je stad in je profiel in om te zien wat er bij jou in de buurt gebeurt.", dash_see_all:"Alles bekijken", dash_all_done:"Al je stappen liggen achter je. Je ervaring is goud waard voor nieuwkomers.", dash_set_arrival:"Vul je aankomstdatum in om je stappen te volgen.",
+  bd_newcomer:"Nieuwkomer", bd_settled:"Al lang gevestigd", bd_helper:"Behulpzame buur", bd_pillar:"Steunpilaar van de community", bd_organizer:"Organisator", bd_idea:"Gerealiseerd idee",
+  rep_title:"Onderlinge hulp", stat_replies:"antwoorden", stat_events_org:"georganiseerde evenementen", stat_events_att:"bijgewoonde evenementen", ev_next_edition:"De volgende editie organiseren" }
+};
+for (const l in add) Object.assign(window.I18N[l], add[l]);
+})();

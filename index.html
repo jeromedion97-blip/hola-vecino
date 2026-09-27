@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hola Vecino</title>
+  <meta name="description" content="Guide, estimation du coût de la vie et communauté pour les expatriés en Espagne.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='8' fill='%231E4E8C'/%3E%3Cpath d='M24 6 L30 18 L42 24 L30 30 L24 42 L18 30 L6 24 L18 18Z' fill='%23F7F9FC'/%3E%3Ccircle cx='24' cy='24' r='5' fill='%23F2B705'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1E4E8C">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+  <a class="skip" href="#view">↓</a>
+  <header class="top">
+    <div class="top-inner">
+      <a href="#/" class="brand"><span class="logo" aria-hidden="true"></span><span id="brand">Hola Vecino</span></a>
+      <nav id="nav" class="nav" aria-label="Menu"></nav>
+      <div class="right">
+        <div id="account" class="account"></div>
+        <div class="lang">
+          <button id="langbtn" aria-haspopup="true" aria-expanded="false"></button>
+          <ul id="langlist" hidden></ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main id="view" tabindex="-1"></main>
+  <footer id="footer" class="footer"></footer>
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <!-- Formulaire de contact : copie invisible pour que Netlify le détecte (ne pas supprimer) -->
+  <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input name="bot-field"><input name="name"><input name="email"><input name="subject"><textarea name="message"></textarea>
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/i18n-v2.js"></script>
+  <script src="js/i18n-v3.js"></script>
+  <script src="js/i18n-v4.js"></script>
+  <script src="js/guide.js"></script>
+  <script src="js/content-v2.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/market.js"></script>
+  <script src="js/engage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
