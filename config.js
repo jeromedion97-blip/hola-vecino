@@ -7,8 +7,7 @@ window.APP_CONFIG = {
 
   // Supabase > Project Settings > API (URL et clé publique « anon » / « publishable »)
   SUPABASE_URL: "https://boeautpnqbpynsdkgjuq.supabase.co",
-  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3dmhwaHJ4eGd4aXVibWhnd294Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NDE0NDYsImV4cCI6MjEwNjExNzQ0Nn0.7PrFZ2aBpjkTxUH_cg1zUaoMFdpkRVqYC2Ugba20vdo",
-
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvZWF1dHBucWJweW5zZGtnanVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1ODIxMzEsImV4cCI6MjEwNjE1ODEzMX0.AqYhb2Q9S38qdvlTMWycv0aEeUnzTIfNRgW6FlS3GSs",
   // Analyse IA du budget, réservée aux membres Premium.
   // Utilise votre clé API Anthropic (variable ANTHROPIC_API_KEY sur Netlify). Mettre false pour la couper.
   AI_ENABLED: true,
