@@ -6,9 +6,9 @@ window.APP_CONFIG_EXTRA = {
   // Vos réseaux sociaux : collez l'adresse complète de chaque compte.
   // Une icône s'affiche en bas du site et sur la page Contact dès qu'une adresse est remplie.
   SOCIAL: {
-    youtube: "",     // exemple : "https://www.youtube.com/@holavecino"
-    tiktok: "",      // exemple : "https://www.tiktok.com/@holavecino"
-    instagram: ""    // exemple : "https://www.instagram.com/holavecino"
+    youtube: "",     // exemple : "https://www.youtube.com/@…"
+    tiktok: "",      // exemple : "https://www.tiktok.com/@…"
+    instagram: ""    // exemple : "https://www.instagram.com/…"
   },
 
   // Identifiant de votre chaîne YouTube (commence par UC, 24 caractères).
