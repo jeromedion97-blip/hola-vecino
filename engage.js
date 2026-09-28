@@ -89,5 +89,6 @@ async function dashboard() {
       </nav>
     </aside></div>
   </section>`;
+  (window.HV_HOOKS && window.HV_HOOKS.dashboard || []).forEach(f => { try { f(); } catch (e) {} });
 }
 });

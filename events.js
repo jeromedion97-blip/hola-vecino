@@ -31,6 +31,7 @@ async function list() {
       ${field(t("filter_city"), `<input id="ecity" type="search" value="">`, "ecity")}
       ${field(t("ev_obj_type"), select("eobj", "objective", "", t("all")), "eobj")}
     </div>
+    ${H.searchBox("evq")}
     <div id="evlist"><p>${esc(t("loading"))}</p></div>
   </section>`;
   $$(".tabs button", view).forEach(b => b.onclick = () => { tab = b.dataset.t; list(); });
@@ -56,11 +57,11 @@ async function list() {
     (g || []).forEach(x => counts[x.event_id] = (counts[x.event_id] || 0) + 1);
   }
   const apply = () => {
-    const city = $("#ecity").value.trim().toLowerCase(), obj = $("#eobj").value;
-    const shown = rows.filter(e => (!city || e.city.toLowerCase().includes(city)) && (!obj || e.objective_type === obj));
+    const city = $("#ecity").value.trim().toLowerCase(), obj = $("#eobj").value, q = H.norm($("#evq").value);
+    const shown = rows.filter(e => (!city || e.city.toLowerCase().includes(city)) && (!obj || e.objective_type === obj) && (!q || H.norm(`${e.title} ${e.objective}`).includes(q)));
     $("#evlist").innerHTML = shown.length ? `<div class="events">${shown.map(e => card(e, counts[e.id] || 0)).join("")}</div>` : `<p class="empty">${esc(t("ev_none"))}</p>`;
   };
-  ["#ecity", "#eobj"].forEach(s => $(s).addEventListener("input", apply));
+  ["#ecity", "#eobj", "#evq"].forEach(s => $(s).addEventListener("input", apply));
   apply();
 }
 function card(e, n) {
@@ -69,7 +70,7 @@ function card(e, n) {
     <span class="cal" aria-hidden="true"><span>${s.toLocaleDateString(H.lang, { month:"short" })}</span><strong>${s.getDate()}</strong></span>
     <span class="event-body">
       <strong class="event-title">${esc(e.title)}</strong>
-      <span class="tags"><span class="tag obj">${esc(t("obj_" + e.objective_type))}</span>${e.visibility === "invite" ? `<span class="tag">${esc(t("vis_invite"))}</span>` : ""}${e.cancelled ? `<span class="tag danger">${esc(t("ev_cancelled"))}</span>` : ""}${full ? `<span class="tag">${esc(t("ev_full"))}</span>` : ""}</span>
+      <span class="tags"><span class="tag obj">${esc(t("obj_" + e.objective_type))}</span>${e.visibility !== "public" ? `<span class="tag">${esc(t("vis_" + e.visibility))}</span>` : ""}${e.cancelled ? `<span class="tag danger">${esc(t("ev_cancelled"))}</span>` : ""}${full ? `<span class="tag">${esc(t("ev_full"))}</span>` : ""}</span>
       <span class="muted small">${esc(s.toLocaleTimeString(H.lang, { hour:"2-digit", minute:"2-digit" }))} · ${esc(e.city)}${e.place_hint ? " · " + esc(e.place_hint) : ""}</span>
       <span class="small">${esc(e.objective.slice(0, 140))}${e.objective.length > 140 ? "…" : ""}</span>
       <span class="small muted">${n}${e.max_participants ? " / " + e.max_participants : ""} ${esc(t("ev_participants"))}</span>
@@ -98,7 +99,7 @@ function create() {
       </div>
       ${field(t("ev_address"), `<input id="eaddr" name="address" maxlength="300">`, "eaddr")}
       <span class="label">${esc(t("ev_visibility"))}</span>
-      <div class="segmented"><label><input type="radio" name="visibility" value="public" checked><span>${esc(t("vis_public"))}</span></label><label><input type="radio" name="visibility" value="invite"><span>${esc(t("vis_invite"))}</span></label></div>
+      <div class="segmented"><label><input type="radio" name="visibility" value="public" checked><span>${esc(t("vis_public"))}</span></label><label><input type="radio" name="visibility" value="invite"><span>${esc(t("vis_invite"))}</span></label><label><input type="radio" name="visibility" value="private"><span>${esc(t("vis_private"))}</span></label></div>
       </fieldset>
 
       <fieldset><legend>${esc(t("ev_s_objective"))}</legend>
@@ -237,7 +238,7 @@ async function detail(id) {
 
   view.innerHTML = `<section class="page event-page">
     <a class="back" href="#/evenements">${esc(t("back"))}</a>
-    <p class="tags"><span class="tag obj">${esc(t("obj_" + e.objective_type))}</span>${e.visibility === "invite" ? `<span class="tag">${esc(t("vis_invite"))}</span>` : ""}${e.cancelled ? `<span class="tag danger">${esc(t("ev_cancelled"))}</span>` : ""}</p>
+    <p class="tags"><span class="tag obj">${esc(t("obj_" + e.objective_type))}</span>${e.visibility !== "public" ? `<span class="tag">${esc(t("vis_" + e.visibility))}</span>` : ""}${e.cancelled ? `<span class="tag danger">${esc(t("ev_cancelled"))}</span>` : ""}</p>
     <h1>${esc(e.title)}</h1>
     <p class="event-when"><strong>${esc(timeRange(e))}</strong><br>${esc(e.city)}${e.place_hint ? " · " + esc(e.place_hint) : ""}</p>
     <p class="organizer">${avatar(org, "tiny")} ${esc(t("ev_organizer"))} <a href="#/profil/${e.creator_id}">${esc(org.display_name)}</a> ${badges(org)}</p>
@@ -249,7 +250,8 @@ async function detail(id) {
     <div class="avatars">${going.map(r => `<a href="#/profil/${r.user_id}" title="${esc((people[r.user_id] || {}).display_name)}">${avatar(people[r.user_id] || { display_name:"?" })}</a>`).join("")}</div>
     <p class="muted small">${esc(t("ev_safety"))}</p>
     ${actions}${qForm}
-    ${creator && !e.cancelled ? `
+    ${e.visibility === "public" && !e.cancelled ? `<p><button class="btn small" id="evshare">↗ ${esc(t("ev_share"))}</button></p>` : ""}
+    ${creator && !e.cancelled && e.visibility !== "private" ? `
       <section class="card"><h2>${esc(t("ev_invite_title"))}</h2>
         ${field(t("ev_invite_search"), `<input id="isearch" type="search" autocomplete="off">`, "isearch")}
         <ul id="iresults" class="iresults"></ul></section>` : ""}
@@ -289,6 +291,7 @@ async function detail(id) {
     H.refreshCounts(); detail(id);
   };
   const rep = $("#rep"); if (rep) rep.onclick = () => H.report("event", id);
+  const sh = $("#evshare"); if (sh) sh.onclick = () => H.share(e.title, location.href);
   const dup = $("#dupev");
   if (dup) dup.onclick = async () => {
     const { data: pv } = await sb.from("event_private").select("address").eq("event_id", id).maybeSingle();
@@ -336,7 +339,7 @@ async function notifications() {
   const { data } = await sb.from("notifications").select("*").eq("user_id", me.id).order("created_at", { ascending:false }).limit(100);
   const rows = (data || []).filter(n => !H.blocks.has(n.actor_id));
   const people = await H.profilesFor(rows.map(n => n.actor_id));
-  const href = n => n.type === "reply" ? "#/forum/" + n.ref : "#/evenements/" + n.ref;
+  const href = n => n.type === "reply" ? "#/forum/" + n.ref : n.type === "reminder_share" ? "#/agenda" : "#/evenements/" + n.ref;
   $("#nl").innerHTML = rows.length ? `<ul class="notifs">${rows.map(n => { const p = people[n.actor_id] || { display_name:"?" };
     return `<li class="${n.read ? "" : "unread"}"><a href="${href(n)}" data-id="${n.id}">${avatar(p, "tiny")}<span><strong>${esc(p.display_name)}</strong> ${esc(t("notif_" + n.type))}<br><span class="muted small">${esc(dateTime(n.created_at))}</span></span></a></li>`; }).join("")}</ul>`
     : `<p class="empty">${esc(t("notif_none"))}</p>`;

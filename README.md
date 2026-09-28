@@ -11,11 +11,12 @@ Comptez environ une heure pour tout installer la première fois. Suivez les éta
 ## 1. Base de données Supabase
 
 1. Créez un compte gratuit sur supabase.com, puis **New project**. Choisissez la région **Frankfurt (eu-central-1)** pour que les données restent en Europe.
-2. Menu **SQL Editor → New query**. Collez puis lancez (**Run**) ces quatre fichiers, **un par un et dans cet ordre** :
+2. Menu **SQL Editor → New query**. Collez puis lancez (**Run**) ces cinq fichiers, **un par un et dans cet ordre** :
    1. `supabase/schema.sql`
    2. `supabase/migration-v2.sql`
    3. `supabase/migration-v3.sql`
    4. `supabase/migration-v4.sql`
+   5. `supabase/migration-v5.sql`
    Chacun doit afficher « Success ».
 3. Menu **Project Settings → API**, notez :
    - la **Project URL** ;
@@ -163,3 +164,19 @@ supabase/*.sql        base de données (à lancer dans l'ordre)
 netlify/functions/    analyse IA (analyse.mjs) et paiements Gumroad (gumroad.mjs)
 netlify.toml          réglages Netlify
 ```
+
+
+## Mise à jour v5 : stockage des fichiers (Supabase > Storage)
+
+Deux espaces de stockage sont à créer à la main :
+
+1. **avatars** (photos de profil) : Storage → New bucket → nom `avatars` → cocher **Public bucket** → Create.
+   Puis Policies → New policy sur `avatars` → modèle « Give users access to only their own top level folder named as uid » → cocher SELECT, INSERT, UPDATE, DELETE → Save.
+2. **documents** (drive personnel) : Storage → New bucket → nom `documents` → **ne pas** cocher Public → Create.
+   Puis la même politique « own top level folder named as uid » avec SELECT, INSERT, UPDATE, DELETE.
+
+## Réglages supplémentaires (js/config-extra.js)
+
+- `SOCIAL` : adresses complètes de vos comptes YouTube, TikTok et Instagram.
+- `YOUTUBE_CHANNEL_ID` : identifiant de la chaîne (commence par UC), pour afficher les dernières vidéos.
+- Articles : Administration → Articles. L'IA prépare un brouillon, vous relisez, vous traduisez puis publiez.

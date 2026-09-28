@@ -41,7 +41,7 @@ async function premium() {
         <h2>${esc(t("premium_title"))}</h2>
         <p class="plan-price"><strong>${price(C.PRICES.premium_month)}</strong>${esc(t("per_month"))}</p>
         <p class="muted">${esc(t("buy_year"))} : <strong>${price(C.PRICES.premium_year)}</strong>${esc(t("per_year"))}</p>
-        <ul class="ticks">${["pf_ai","pf_compare","pf_checklist","pf_deadlines","pf_export","pf_events"].map(k => `<li>${esc(t(k))}</li>`).join("")}</ul>
+        <ul class="ticks">${["pf_ai","pf_compare","pf_checklist","pf_deadlines","pf_drive","pf_export","pf_events"].map(k => `<li>${esc(t(k))}</li>`).join("")}</ul>
         <div id="pstate"></div>
       </div>
       <div class="plan"><h2>${esc(t("free_title"))}</h2><p>${esc(t("free_text"))}</p></div>
@@ -99,6 +99,7 @@ async function deals(kind) {
       ${field(t("filter_city"), `<input id="dcity" type="search">`, "dcity")}
       ${field(t("filter_language"), `<select id="dlang"><option value="">${esc(t("all"))}</option>${H.LANGS.map(l => `<option value="${l}">${esc(H.LANG_NAMES[l])}</option>`).join("")}</select>`, "dlang")}
     </div>
+    ${H.searchBox("dsq")}
     <div id="dlist"><p>${esc(t("loading"))}</p></div>
   </section>`;
   if (!H.configured) { $("#dlist").innerHTML = `<p class="empty">${esc(t("no_listings"))}</p>`; return; }
@@ -107,12 +108,12 @@ async function deals(kind) {
   const { data } = await q;
   const rows = sortListings(data || []);
   const apply = () => {
-    const city = $("#dcity").value.trim().toLowerCase(), lg = $("#dlang").value;
-    const shown = rows.filter(l => (!city || (l.city || "").toLowerCase().includes(city)) && (!lg || (l.languages || []).includes(lg)));
+    const city = $("#dcity").value.trim().toLowerCase(), lg = $("#dlang").value, q = H.norm($("#dsq").value);
+    const shown = rows.filter(l => (!city || (l.city || "").toLowerCase().includes(city)) && (!lg || (l.languages || []).includes(lg)) && (!q || H.norm(`${l.title} ${l.description || ""}`).includes(q)));
     $("#dlist").innerHTML = shown.length ? `<div class="listings">${shown.map(listingCard).join("")}</div>` : `<p class="empty">${esc(t("no_listings"))}</p>`;
     bindReports();
   };
-  ["#dcity", "#dlang"].forEach(s => $(s).addEventListener("input", apply)); apply();
+  ["#dcity", "#dlang", "#dsq"].forEach(s => $(s).addEventListener("input", apply)); apply();
 }
 
 // ---------- Chaînes YouTube ----------
@@ -121,19 +122,22 @@ const isYouTube = u => /^https?:\/\/(www\.|m\.)?(youtube\.com|youtu\.be)\//i.tes
 async function youtube() {
   view.innerHTML = `<section class="page wide">
     <div class="titlebar"><h1>${esc(t("yt_title"))}</h1>${ctaPublish()}</div>
+    <div id="ychannel"></div>
     <p class="muted">${esc(t("yt_intro"))}</p>
     <div class="filters">
       ${field(t("filter_language"), `<select id="ylang"><option value="">${esc(t("all"))}</option>${H.LANGS.map(l => `<option value="${l}" ${l === H.lang ? "selected" : ""}>${esc(H.LANG_NAMES[l])}</option>`).join("")}</select>`, "ylang")}
       ${field(t("lst_topics"), `<select id="ytopic"><option value="">${esc(t("all"))}</option>${TOPICS.map(k => `<option value="${k}">${esc(t("cat_" + k))}</option>`).join("")}</select>`, "ytopic")}
     </div>
+    ${H.searchBox("ysq")}
     <div id="ylist"><p>${esc(t("loading"))}</p></div>
   </section>`;
+  (window.HV_HOOKS && window.HV_HOOKS.youtube || []).forEach(f => { try { f($("#ychannel")); } catch (e) {} });
   if (!H.configured) { $("#ylist").innerHTML = `<p class="empty">${esc(t("no_listings"))}</p>`; return; }
   const { data } = await H.sb.from("listings").select("*").eq("kind", "youtube").eq("status", "active").gt("active_until", new Date().toISOString()).limit(500);
   const rows = sortListings(data || []);
   const apply = () => {
-    const lg = $("#ylang").value, tp = $("#ytopic").value;
-    const shown = rows.filter(l => (!lg || (l.languages || []).includes(lg)) && (!tp || (l.topics || []).includes(tp)));
+    const lg = $("#ylang").value, tp = $("#ytopic").value, q = H.norm($("#ysq").value);
+    const shown = rows.filter(l => (!lg || (l.languages || []).includes(lg)) && (!tp || (l.topics || []).includes(tp)) && (!q || H.norm(`${l.title} ${l.description || ""}`).includes(q)));
     $("#ylist").innerHTML = shown.length ? `<div class="yt-grid">${shown.map(l => { const id = ytId(l.youtube_url), url = isYouTube(l.youtube_url) ? l.youtube_url : "";
       return `<article class="yt ${isFeatured(l) ? "is-featured" : ""}">
         <a class="yt-thumb" href="${esc(url)}" target="_blank" rel="noopener sponsored" aria-label="${esc(t("yt_watch"))} : ${esc(l.title)}">${id ? `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy">` : `<span class="yt-play" aria-hidden="true"></span>`}</a>
@@ -146,7 +150,7 @@ async function youtube() {
       : `<p class="empty">${esc(t("no_listings"))}</p>`;
     bindReports();
   };
-  ["#ylang", "#ytopic"].forEach(s => $(s).addEventListener("input", apply)); apply();
+  ["#ylang", "#ytopic", "#ysq"].forEach(s => $(s).addEventListener("input", apply)); apply();
 }
 
 // ---------- Mes annonces ----------

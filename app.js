@@ -68,6 +68,8 @@ const money = n => new Intl.NumberFormat(lang, { style:"currency", currency:"EUR
 const date = d => new Date(d).toLocaleDateString(lang, { day:"numeric", month:"short", year:"numeric" });
 const dateTime = d => new Date(d).toLocaleString(lang, { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" });
 const safeUrl = u => /^https?:\/\//i.test(u || "") ? u : (u ? "https://" + u : "");
+const N = s => String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const H0 = id => `<div class="searchbox"><label class="sr" for="${id}">${esc(t("search"))}</label><input id="${id}" type="search" placeholder="${esc(t("search"))}" autocomplete="off"></div>`;
 const initials = n => esc((n || "?").trim().slice(0,2).toUpperCase());
 const optLabel = (prefix, k) => k ? t(prefix + k) : "";
 const PREFIX = { status:"st_", gender:"g_", family:"fa_", work:"w_", looking:"l_", housing:"h_", spanish:"sp_", forum:"cat_", contact:"ct_" };
@@ -125,7 +127,8 @@ function icsDownload(name, items) {
     out.push(`SUMMARY:${e(it.title)}`);
     if (it.desc) out.push(`DESCRIPTION:${e(it.desc)}`);
     if (it.loc) out.push(`LOCATION:${e(it.loc)}`);
-    out.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${e(it.title)}`, `TRIGGER:-P${it.alarmDays || 3}D`, "END:VALARM", "END:VEVENT");
+    if (it.alarmMinutes !== null || it.alarmDays) out.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${e(it.title)}`, `TRIGGER:-${it.alarmMinutes != null ? "PT" + it.alarmMinutes + "M" : "P" + (it.alarmDays || 3) + "D"}`, "END:VALARM");
+    out.push("END:VEVENT");
   });
   out.push("END:VCALENDAR");
   const a = document.createElement("a");
@@ -138,8 +141,8 @@ const BELL = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"
 // ---------- En-tête ----------
 function renderHeader() {
   document.documentElement.lang = lang;
-  $("#brand").textContent = C.APP_NAME; document.title = C.APP_NAME;
-  const links = [["#/", "nav_home"], ["#/guide", "nav_guide"], ["#/finances", "nav_finances"], ["#/communaute", "nav_community"], ["#/evenements", "nav_events"], ["#/forum", "nav_forum"], ["#/bons-plans", "nav_deals"], ["#/youtube", "nav_youtube"], ["#/contacts", "nav_contacts"]];
+  const br = $("#brand"); if (br) br.textContent = C.APP_NAME; document.title = C.APP_NAME;
+  const links = [["#/", "nav_home"], ["#/guide", "nav_guide"], ["#/finances", "nav_finances"], ["#/communaute", "nav_community"], ["#/evenements", "nav_events"], ["#/forum", "nav_forum"], ["#/articles", "nav_articles"], ["#/bons-plans", "nav_deals"], ["#/youtube", "nav_youtube"], ["#/contacts", "nav_contacts"]];
   if (me) links.push(["#/messages", "nav_messages"]);
   if (isAdmin) links.push(["#/admin", "nav_admin"]);
   const cur = (location.hash || "#/").split("/").slice(0, 2).join("/");
@@ -148,13 +151,18 @@ function renderHeader() {
   $("#account").innerHTML = me
     ? `<a class="premium-link ${isPremium ? "on" : ""}" href="#/premium">★ ${esc(t("nav_premium"))}</a>
        <a class="bell" href="#/notifications" aria-label="${esc(t("nav_notifications"))}">${BELL}<span class="badge" id="notifcount" hidden></span></a>
-       <a class="me-link" href="#/mon-profil" aria-label="${esc(t("nav_profile"))}">${avatar(myProfile || { display_name: "?" }, "tiny")}</a>
-       <button class="linkbtn small" id="logout">${esc(t("nav_logout"))}</button>`
+       <div class="me-wrap"><button class="me-btn" id="mebtn" aria-haspopup="true" aria-expanded="false">${avatar(myProfile || { display_name: "?" }, "tiny")}<span class="me-name">${esc(((myProfile && myProfile.display_name) || t("nav_profile")).split(" ")[0])}</span><span aria-hidden="true">▾</span></button>
+       <ul class="me-menu" id="memenu" hidden>${[["#/mon-profil","nav_profile"],["#/agenda","nav_agenda"],["#/drive","nav_drive"],["#/messages","nav_messages"],["#/notifications","nav_notifications"],["#/mes-annonces","nav_my_listings"],["#/premium","nav_premium"]].concat(isAdmin ? [["#/admin","nav_admin"]] : []).map(([h, k]) => `<li><a href="${h}">${esc(t(k))}</a></li>`).join("")}<li><button class="linkbtn" id="logout">${esc(t("nav_logout"))}</button></li></ul></div>`
     : `<a class="premium-link" href="#/premium">★ ${esc(t("nav_premium"))}</a><a class="btn small primary" href="#/connexion">${esc(t("nav_login"))}</a>`;
-  if (me) $("#logout").onclick = async () => { await sb.auth.signOut(); location.hash = "#/"; };
+  if (me) {
+    $("#logout").onclick = async () => { await sb.auth.signOut(); location.hash = "#/"; };
+    const mb = $("#mebtn"), mm = $("#memenu");
+    mb.onclick = e => { e.stopPropagation(); mm.hidden = !mm.hidden; mb.setAttribute("aria-expanded", String(!mm.hidden)); };
+    mm.onclick = () => { mm.hidden = true; mb.setAttribute("aria-expanded", "false"); };
+  }
   $("#langbtn").innerHTML = `<span class="flag">${FLAGS[lang]}</span><span class="sr">${LANG_NAMES[lang]}</span>`;
   $("#langlist").innerHTML = LANGS.map(l => `<li><button data-lang="${l}" ${l === lang ? 'aria-current="true"' : ""}><span class="flag">${FLAGS[l]}</span>${LANG_NAMES[l]}</button></li>`).join("");
-  $("#footer").innerHTML = `<p class="footer-links"><a href="#/premium">${esc(t("nav_premium"))}</a> · <a href="${me ? "#/mes-annonces" : "#/bons-plans"}">${esc(t(me ? "nav_my_listings" : "publish_listing"))}</a> · <a href="#/suggestions">${esc(t("nav_suggestions"))}</a> · <a href="#/contact">${esc(t("nav_contact"))}</a></p><p>${esc(t("footer_disclaimer"))}</p><p><a href="#/charte">${esc(t("charter_title"))}</a> · <a href="#/confidentialite">${esc(t("privacy_title"))}</a> · ${esc(C.APP_NAME)}</p>${installPrompt ? `<p><button class="btn small" id="installbtn">${esc(t("install_app"))}</button></p>` : ""}`;
+  $("#footer").innerHTML = `<p class="footer-links"><a href="#/premium">${esc(t("nav_premium"))}</a> · <a href="${me ? "#/mes-annonces" : "#/bons-plans"}">${esc(t(me ? "nav_my_listings" : "publish_listing"))}</a> · <a href="#/suggestions">${esc(t("nav_suggestions"))}</a> · <a href="#/contact">${esc(t("nav_contact"))}</a></p>${window.HV_SOCIAL ? window.HV_SOCIAL(t("follow_us")) : ""}<p>${esc(t("footer_disclaimer"))}</p><p><a href="#/charte">${esc(t("charter_title"))}</a> · <a href="#/confidentialite">${esc(t("privacy_title"))}</a> · ${esc(C.APP_NAME)}</p>${installPrompt ? `<p><button class="btn small" id="installbtn">${esc(t("install_app"))}</button></p>` : ""}`;
   const ib = $("#installbtn"); if (ib) ib.onclick = async () => { installPrompt.prompt(); await installPrompt.userChoice; installPrompt = null; renderHeader(); };
   if (me) refreshCounts();
 }
@@ -170,14 +178,14 @@ $("#langlist").onclick = e => {
   lang = b.dataset.lang; try { localStorage.setItem("lang", lang); } catch (err) {}
   $("#langlist").hidden = true; $("#langbtn").setAttribute("aria-expanded", "false"); route();
 };
-document.addEventListener("click", e => { if (!e.target.closest(".lang")) $("#langlist").hidden = true; });
+document.addEventListener("click", e => { if (!e.target.closest(".lang")) $("#langlist").hidden = true; const mm = $("#memenu"); if (mm && !e.target.closest(".me-wrap")) mm.hidden = true; });
 
 // ---------- Routeur ----------
 const ROUTES = [
   [/^#\/?$/, () => home()],
   [/^#\/guide(?:\/(\w+))?$/, m => guide(m[1] || "steps")],
   [/^#\/finances$/, () => finances()],
-  [/^#\/contacts$/, () => contacts()],
+  [/^#\/contacts(?:\/(\w+))?$/, m => contacts(m[1] || "")],
   [/^#\/confidentialite$/, () => privacy()],
   [/^#\/charte$/, () => charter()],
   [/^#\/connexion(\?signup)?$/, m => login("", !!m[1])],
@@ -240,11 +248,12 @@ function home() {
         <a class="btn" href="#/guide">${esc(t("hero_guide"))}</a>
       </div>
     </div>
-    <div class="tilewall" aria-hidden="true"></div>
+    <div class="hero-logo"><img src="logo-600.png" alt="${esc(C.APP_NAME)}" width="600" height="600"></div>
   </section>
   <section class="doors">
     ${doors.map(([h, k], i) => `<a class="door d${i}" href="${h}"><span class="door-tile" aria-hidden="true"></span><span><strong>${esc(t("home_" + k + "_t"))}</strong><span>${esc(t("home_" + k + "_d"))}</span></span></a>`).join("")}
   </section>`;
+  (window.HV_HOOKS && window.HV_HOOKS.home || []).forEach(f => { try { f(); } catch (e) {} });
 }
 
 // ---------- Connexion ----------
@@ -406,6 +415,7 @@ function profileEdit() {
   if (del) del.onclick = async () => {
     if (!confirm(t("delete_confirm"))) return;
     try { await removeAvatars(null); } catch (e) {}
+    try { const { data: docs } = await sb.from("documents").select("path"); if (docs && docs.length) await sb.storage.from("documents").remove(docs.map(d => d.path)); } catch (e) {}
     const { error } = await sb.rpc("delete_my_account");
     if (error) { toast(errMsg(error)); return; }
     await sb.auth.signOut(); location.hash = "#/";
@@ -423,13 +433,14 @@ async function community() {
       ${field(t("filter_language"), `<select id="flang"><option value="">${esc(t("all"))}</option>${spoken.map(([c, n]) => `<option value="${c}">${esc(n)}</option>`).join("")}</select>`, "flang")}
       ${field(t("filter_looking"), select("flook", "looking", "", t("all")), "flook")}
     </div>
+    ${H0("fq")}
     <label class="check"><input type="checkbox" id="fguide"> ${esc(t("filter_guides"))}</label>
     <div id="map" class="map"></div>
     <p class="count muted"></p>
     <div id="list" class="members"><p>${esc(t("loading"))}</p></div>
   </section>`;
   const { data, error } = await sb.from("profiles")
-    .select("id,display_name,age,city,region,status,languages,looking_for,lat,lng,show_on_map,origin_country,spanish_level,avatar_url,verified,is_guide")
+    .select("id,display_name,age,city,region,status,languages,looking_for,lat,lng,show_on_map,origin_country,spanish_level,avatar_url,verified,is_guide,profession,interests")
     .order("updated_at", { ascending:false }).limit(1000);
   if (error) { $("#list").innerHTML = `<p class="notice">${esc(errMsg(error))}</p>`; return; }
   const people = data.filter(p => !myBlocks.has(p.id));
@@ -439,10 +450,11 @@ async function community() {
   cleanup.push(() => map.remove());
 
   const apply = () => {
-    const city = $("#fcity").value.trim().toLowerCase(), st = $("#fstatus").value, lg = $("#flang").value, lk = $("#flook").value, gd = $("#fguide").checked;
+    const city = $("#fcity").value.trim().toLowerCase(), st = $("#fstatus").value, lg = $("#flang").value, lk = $("#flook").value, gd = $("#fguide").checked, fq = N($("#fq").value);
     const rows = people.filter(p =>
       (!city || `${p.city || ""} ${p.region || ""}`.toLowerCase().includes(city)) &&
-      (!st || p.status === st) && (!lg || (p.languages || []).includes(lg)) && (!lk || (p.looking_for || []).includes(lk)) && (!gd || p.is_guide));
+      (!st || p.status === st) && (!lg || (p.languages || []).includes(lg)) && (!lk || (p.looking_for || []).includes(lk)) && (!gd || p.is_guide) &&
+      (!fq || N(`${p.display_name} ${p.profession || ""} ${p.interests || ""}`).includes(fq)));
     layer.clearLayers();
     rows.filter(p => p.show_on_map && p.lat != null).forEach(p => {
       L.circleMarker([p.lat, p.lng], { radius:8, color:"#1E4E8C", weight:2, fillColor: p.id === me.id ? "#5C7A3A" : p.is_guide ? "#B3261E" : "#F2B705", fillOpacity:.9 })
@@ -451,7 +463,7 @@ async function community() {
     $(".count").textContent = `${rows.length} ${t("members")}`;
     $("#list").innerHTML = rows.length ? rows.map(memberCard).join("") : `<p class="empty">${esc(t("no_results"))}</p>`;
   };
-  ["#fcity", "#fstatus", "#flang", "#flook", "#fguide"].forEach(s => $(s).addEventListener("input", apply));
+  ["#fcity", "#fstatus", "#flang", "#flook", "#fguide", "#fq"].forEach(s => $(s).addEventListener("input", apply));
   apply();
 }
 function memberCard(p) {
@@ -524,6 +536,7 @@ async function forum() {
       ${field(t("thread_body"), `<textarea id="tbody" name="body" rows="6" required maxlength="5000"></textarea>`, "tbody")}
       <div class="actions"><button class="btn primary">${esc(t("publish"))}</button><button type="button" class="linkbtn" id="ntcancel">${esc(t("cancel"))}</button></div>
     </form>
+    ${H0("thq")}
     <div id="threads"><p>${esc(t("loading"))}</p></div>
   </section>`;
   $("#newbtn").onclick = () => { $("#nt").hidden = false; $("#ttitle").focus(); };
@@ -543,10 +556,12 @@ async function forum() {
   if (error) { $("#threads").innerHTML = `<p class="notice">${esc(errMsg(error))}</p>`; return; }
   const rows = data.filter(th => !myBlocks.has(th.author_id));
   const names = await namesFor(rows.map(d => d.author_id));
-  $("#threads").innerHTML = rows.length ? `<ul class="threads">${rows.map(th => `<li>
+  const drawT = () => { const q = N($("#thq").value); const shown = rows.filter(th => !q || N(th.title).includes(q));
+  $("#threads").innerHTML = shown.length ? `<ul class="threads">${shown.map(th => `<li>
       <a href="#/forum/${th.id}"><strong>${esc(th.title)}</strong></a>
       <span class="muted small">${esc(t("cat_" + th.category))}${th.city ? ` · <span class="tag">${esc(th.city)}</span>` : ""} · ${esc(names[th.author_id] || "?")} · ${esc(date(th.last_activity))} · ${th.forum_replies?.[0]?.count || 0} ${esc(t("replies"))}</span>
-    </li>`).join("")}</ul>` : `<p class="empty">${esc(t("no_threads"))}</p>`;
+    </li>`).join("")}</ul>` : `<p class="empty">${esc(q ? t("no_match") : t("no_threads"))}</p>`; };
+  $("#thq").addEventListener("input", drawT); drawT();
 }
 async function thread(id) {
   view.innerHTML = `<p>${esc(t("loading"))}</p>`;
@@ -645,7 +660,7 @@ async function conversation(other) {
 }
 
 // ---------- Contacts utiles ----------
-async function contacts() {
+async function contacts(preCat) {
   view.innerHTML = `<section class="page">
     <h1>${esc(t("contacts_title"))}</h1><p class="muted">${esc(t("contacts_help"))}</p>
     <div class="filters">
@@ -653,15 +668,17 @@ async function contacts() {
       ${field(t("category"), select("ccat", "contact", "", t("all")), "ccat")}
       ${field(t("filter_city"), `<input id="ccity" type="search">`, "ccity")}
     </div>
+    ${H0("cq")}
     <div id="clist"><p>${esc(t("loading"))}</p></div>
     <h2>${esc(t("suggest_title"))}</h2><div id="suggest"></div>
   </section>`;
   if (!configured) { $("#clist").innerHTML = `<p class="empty">${esc(t("no_contacts"))}</p>`; $("#suggest").innerHTML = ""; return; }
   const { data } = await sb.from("contacts").select("*").eq("approved", true).order("name").limit(1000);
   const list = data || [];
+  if (preCat && OPT.contact.includes(preCat)) { $("#ccat").value = preCat; $("#clang").value = ""; }
   const apply = () => {
-    const l = $("#clang").value, c = $("#ccat").value, city = $("#ccity").value.trim().toLowerCase();
-    const rows = list.filter(x => (!l || (x.languages || []).includes(l)) && (!c || x.category === c) && (!city || (x.city || "").toLowerCase().includes(city)));
+    const l = $("#clang").value, c = $("#ccat").value, city = $("#ccity").value.trim().toLowerCase(), cq = N($("#cq").value);
+    const rows = list.filter(x => (!l || (x.languages || []).includes(l)) && (!c || x.category === c) && (!city || (x.city || "").toLowerCase().includes(city)) && (!cq || N(`${x.name} ${x.description || ""}`).includes(cq)));
     $("#clist").innerHTML = rows.length ? `<div class="contacts">${rows.map(x => `<article class="contact">
       <p class="muted small">${esc(t("ct_" + x.category))}${x.city ? " · " + esc(x.city) : ""}</p>
       <h3>${esc(x.name)}</h3>
@@ -675,7 +692,7 @@ async function contacts() {
       ${x.address ? `<p class="small muted">${esc(x.address)}</p>` : ""}
     </article>`).join("")}</div>` : `<p class="empty">${esc(t("no_contacts"))}</p>`;
   };
-  ["#clang", "#ccat", "#ccity"].forEach(s => $(s).addEventListener("input", apply)); apply();
+  ["#clang", "#ccat", "#ccity", "#cq"].forEach(s => $(s).addEventListener("input", apply)); apply();
 
   if (!me) { $("#suggest").innerHTML = `<p><a href="#/connexion">${esc(t("login_to_suggest"))}</a></p>`; return; }
   $("#suggest").innerHTML = `<form id="sf" class="stack card"><div class="grid">
@@ -720,7 +737,7 @@ function guide(tab) {
   });
   const head = `<h1>${esc(t("guide_title"))}</h1>
     <nav class="tabs">${tabs.map(k => `<a href="#/guide/${k}" class="tab" ${k === tab ? 'aria-current="page"' : ""}>${esc(t("gtab_" + k))}</a>`).join("")}</nav>`;
-  const foot = `<p class="muted small">${esc(t("footer_disclaimer"))}</p>`;
+  const foot = `${window.HV_LAWYER ? window.HV_LAWYER(t, esc) : ""}<p class="muted small">${esc(t("footer_disclaimer"))}</p>`;
 
   const draw = () => {
     let body = "";
@@ -742,7 +759,7 @@ function guide(tab) {
       body = `<p class="lead">${esc(t("checklist_intro"))}</p>
       ${!myProfile || !p.nationality || !p.work_situation ? `<p class="notice">${esc(t("checklist_hint"))} ${me ? `<a href="#/mon-profil">${esc(t("nav_profile"))}</a>` : `<a href="#/connexion?signup">${esc(t("hero_join"))}</a>`}</p>` : ""}
       ${bar(done, items.length)}
-      <ul class="checklist">${items.map(c => `<li class="${prog["c_" + c.id] ? "done" : ""}"><label class="check"><input type="checkbox" data-id="c_${c.id}" ${prog["c_" + c.id] ? "checked" : ""}> <span>${esc(L2(c.t))}</span></label></li>`).join("")}</ul>`;
+      <ul class="checklist">${items.map(c => `<li class="${prog["c_" + c.id] ? "done" : ""}"><label class="check"><input type="checkbox" data-id="c_${c.id}" ${prog["c_" + c.id] ? "checked" : ""}> <span>${esc(L2(c.t))}</span></label> <a class="doclink small" data-doc="${c.id}" href="#/drive/${c.id}">📎 <span>${esc(t("drive_upload"))}</span></a></li>`).join("")}</ul>`;
     }
     else if (tab === "country") {
       if (!guideCountry) guideCountry = (myProfile && COUNTRY_GUIDES.some(g => g.code === myProfile.origin_country)) ? myProfile.origin_country : COUNTRY_GUIDES[0].code;
@@ -773,8 +790,10 @@ function guide(tab) {
     if (tab === "lexicon") {
       body = `<p class="lead">${esc(t("lexicon_intro"))}</p><dl class="lexicon">${LEXICON.map(([term, d]) => `<div><dt>${esc(term)}</dt><dd>${esc(L2(d))}</dd></div>`).join("")}</dl>`;
     }
-    view.innerHTML = `<section class="page">${head}${body}${foot}</section>`;
+    view.innerHTML = `<section class="page">${head}${tab !== "deadlines" ? H0("gq") : ""}<div class="guide-body">${body}</div>${foot}</section>`;
     bindChecks(draw);
+    const gq = $("#gq"); if (gq) gq.addEventListener("input", () => { const q = N(gq.value); $$(".guide-body li, .guide-body .lexicon > div", view).forEach(el => { el.hidden = !!q && !N(el.textContent).includes(q); }); });
+    if (tab === "checklist") (window.HV_HOOKS && window.HV_HOOKS.checklist || []).forEach(f => { try { f(view); } catch (e) {} });
     $$("input[name=cg]", view).forEach(r => r.onchange = () => { guideCountry = r.value; draw(); });
   };
   draw();
@@ -824,6 +843,7 @@ function finances() {
         ${isPremium ? `<button class="btn" id="printbtn" type="button">${esc(t("print_budget"))}</button>` : ""}
         ${C.AI_ENABLED && isPremium ? `<div class="ai">${field(t("fin_question"), `<textarea id="aiq" rows="2" maxlength="500"></textarea>`, "aiq")}<button class="btn primary" id="aibtn">${esc(t("ai_btn"))}</button><div id="aiout"></div></div>` : ""}
         <p class="muted small">${esc(t("fin_disclaimer"))}</p>
+        ${window.HV_LAWYER ? window.HV_LAWYER(t, esc) : ""}
       </aside>
     </div>
     <section class="compare" id="cmp"></section>
