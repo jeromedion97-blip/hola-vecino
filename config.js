@@ -6,7 +6,7 @@ window.APP_CONFIG = {
   APP_NAME: "Hola Vecino",
 
   // Supabase > Project Settings > API (URL et clé publique « anon » / « publishable »)
-  SUPABASE_URL: "https://uwvhphrxxgxiubmhgwox.supabase.co",
+  SUPABASE_URL: "https://boeautpnqbpynsdkgjuq.supabase.co",
   SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3dmhwaHJ4eGd4aXVibWhnd294Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NDE0NDYsImV4cCI6MjEwNjExNzQ0Nn0.7PrFZ2aBpjkTxUH_cg1zUaoMFdpkRVqYC2Ugba20vdo",
 
   // Analyse IA du budget, réservée aux membres Premium.
