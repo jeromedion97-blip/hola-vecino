@@ -10,12 +10,13 @@ window.HV_LAWYER = (t, esc) => `<aside class="lawyer"><strong><span aria-hidden=
 const ICON = {
   youtube: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor"/><path d="M10 9v6l5-3z" fill="#fff"/></svg>',
   tiktok: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 3h3a4 4 0 0 0 4 4v3a7 7 0 0 1-4-1.3V15a6 6 0 1 1-6-6v3.2A2.8 2.8 0 1 0 14 15z"/></svg>',
-  instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></svg>'
+  instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></svg>',
+  facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M13.2 19v-6h2l.3-2.4h-2.3V9.2c0-.7.2-1.1 1.2-1.1h1.2V6a15 15 0 0 0-1.8-.1c-1.8 0-3 1.1-3 3.1v1.6H9V13h1.8v6z" fill="#fff"/></svg>'
 };
-const LABEL = { youtube:"YouTube", tiktok:"TikTok", instagram:"Instagram" };
+const LABEL = { instagram:"Instagram", facebook:"Facebook", tiktok:"TikTok", youtube:"YouTube" };
 window.HV_SOCIAL = (title) => {
   const s = (window.APP_CONFIG && window.APP_CONFIG.SOCIAL) || {};
-  const keys = Object.keys(ICON).filter(k => /^https:\/\//.test(s[k] || ""));
+  const keys = Object.keys(LABEL).filter(k => /^https:\/\//.test(s[k] || ""));
   if (!keys.length) return "";
   return `<div class="social">${title ? `<span class="social-title">${escA(title)}</span>` : ""}${keys.map(k => `<a href="${escA(s[k])}" target="_blank" rel="noopener" aria-label="${LABEL[k]}">${ICON[k]}<span>${LABEL[k]}</span></a>`).join("")}</div>`;
 };
@@ -90,6 +91,7 @@ push("home", async () => {
   const list = await latestArticles(3);
   if (list.length) wrap.insertAdjacentHTML("beforeend", `<section class="home-block"><div class="titlebar"><h2>${esc(t("art_latest"))}</h2><a class="small" href="#/articles">${esc(t("dash_see_all"))}</a></div><div class="articles">${list.map(articleCard).join("")}</div></section>`);
   const ch = document.createElement("div"); wrap.appendChild(ch); channelBlock(ch);
+  const so = window.HV_SOCIAL(t("follow_us")); if (so) wrap.insertAdjacentHTML("afterbegin", `<section class="home-block social-band">${so}</section>`);
 });
 
 // Tableau de bord : prochains rappels + article de la semaine
@@ -105,6 +107,8 @@ push("dashboard", async () => {
   html += `<section class="dash-block"><div class="titlebar"><h2>${esc(t("dash_reminders"))}</h2><a class="small" href="#/agenda">${esc(t("nav_agenda"))}</a></div>
     ${(rem || []).length ? `<ul class="threads">${rem.map(r => `<li><a href="#/agenda"><strong>${esc(r.title)}</strong></a><span class="muted small">${esc(r.all_day ? date(r.starts_at) : dateTime(r.starts_at))}</span></li>`).join("")}</ul>` : `<p class="empty small">${esc(t("ag_empty"))} <a href="#/agenda">${esc(t("rem_new"))}</a></p>`}</section>`;
   main.insertAdjacentHTML("afterbegin", html);
+  const so = window.HV_SOCIAL(t("follow_us")), side = $(".dash-side", view);
+  if (so && side) side.insertAdjacentHTML("beforeend", `<div class="side-social">${so}</div>`);
 });
 
 // Checklist : nombre de documents rangés pour chaque étape

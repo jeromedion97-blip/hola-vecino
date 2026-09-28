@@ -461,3 +461,8 @@ details.card{padding:14px 18px}
 .premium-link.on{animation:hv-sun 5s ease-in-out infinite}
 @media (max-width:900px){.hero::after{left:auto;right:6%;bottom:auto;top:-10px;width:60px;height:100px}}
 @media (max-width:520px){.footer::after{height:80px;background-size:44px auto,56px auto}}
+.social-band{padding:18px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-m)}
+.side-social{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.side-social .social{justify-content:flex-start}
+.social a{padding:8px 14px}
+.contact-social .social{justify-content:flex-start;margin-top:18px}

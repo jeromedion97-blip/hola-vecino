@@ -18,7 +18,11 @@ ROUTES.unshift(
 );
 
 const price = n => new Intl.NumberFormat(H.lang, { style:"currency", currency:"EUR", minimumFractionDigits: n % 1 ? 2 : 0 }).format(n);
-const buyUrl = kind => C.GUMROAD_STORE + C.GUMROAD_PRODUCTS[kind] + "?wanted=true";
+const buyUrl = kind => {
+  const exact = ((C.GUMROAD_LINKS || {})[kind] || "").trim();
+  const base = /^https:\/\//.test(exact) ? exact : C.GUMROAD_STORE + C.GUMROAD_PRODUCTS[kind];
+  return base + (base.includes("?") ? "&" : "?") + "wanted=true";
+};
 const buyBtn = (kind, label, primary) => `<a class="btn ${primary ? "primary" : ""}" href="${esc(buyUrl(kind))}" target="_blank" rel="noopener">${esc(label)}</a>`;
 const safeUrl = u => /^https?:\/\//i.test(u || "") ? u : (u ? "https://" + u : "");
 const mapErr = e => { const m = (e && e.message) || ""; if (m.includes("NO_CREDIT")) return t("no_credit"); if (m.includes("LICENCE_REQUIRED")) return t("licence_required"); return errMsg(e); };
@@ -295,6 +299,7 @@ function contact() {
     </form>
     <p>${esc(t("contact_direct"))}</p>
     <p class="contact-links"><a href="mailto:${esc(C.CONTACT_EMAIL)}">${esc(C.CONTACT_EMAIL)}</a>${tel ? `<a href="tel:${esc(tel)}">${esc(t("phone"))} : ${esc(C.CONTACT_PHONE)}</a>` : ""}</p>
+    ${window.HV_SOCIAL ? `<div class="contact-social">${window.HV_SOCIAL(t("follow_us"))}</div>` : ""}
   </section>`;
   $("#cf").onsubmit = async e => {
     e.preventDefault();
