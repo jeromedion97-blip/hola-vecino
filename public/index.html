@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Second Regard, le coach de tes rencontres en ligne</title>
+<meta name="description" content="Bio, premier message, conversation qui s'essouffle, premier rendez-vous, râteau : Second Regard t'aide à chaque étape des rencontres en ligne.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#2A1B3D">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Second Regard">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2EEF6; --surface:#FFFFFF; --ink:#2A1B3D; --muted:#6E5F84;
+  --line:#DCD3E6; --accent:#D93A63; --accent-ink:#FFFFFF; --soft:#F9E3EA; --wa:#1F9D55;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B1325; --surface:#261C33; --ink:#F2EAF8; --muted:#B3A4C6;
+    --line:#3C2F4C; --accent:#FF6B8E; --accent-ink:#1B1325; --soft:#3A2233; --wa:#3CCB7A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B1325; --surface:#261C33; --ink:#F2EAF8; --muted:#B3A4C6;
+  --line:#3C2F4C; --accent:#FF6B8E; --accent-ink:#1B1325; --soft:#3A2233; --wa:#3CCB7A;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","Noto Sans Arabic","Noto Sans Devanagari","Noto Sans SC",sans-serif;
+  font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:680px;margin:0 auto;padding:28px 20px 64px}
+header.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.05rem}
+.logo{flex:none}
+h1{font-size:clamp(2.3rem,9vw,3.6rem);line-height:1.02;letter-spacing:-.03em;font-weight:800;margin:36px 0 14px}
+.lede{color:var(--muted);font-size:1.1rem;max-width:34em;margin:0 0 28px}
+h2.sec{font-size:1.6rem;letter-spacing:-.02em;line-height:1.1;margin:48px 0 8px}
+.sec-lede{color:var(--muted);margin:0 0 18px}
+
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px}
+@media (min-width:560px){.tools{grid-template-columns:repeat(3,1fr)}}
+.tools button{text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;
+  border-radius:16px;padding:12px 14px;cursor:pointer;line-height:1.25}
+.tools button b{display:block;font-weight:800;font-size:.98rem;margin-bottom:3px}
+.tools button span{font-size:.84rem;color:var(--muted)}
+.tools button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tools button[aria-pressed="true"] span{color:var(--bg);opacity:.8}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px}
+.panel h3{margin:0 0 4px;font-size:1.25rem;letter-spacing:-.01em}
+.panel .intro{color:var(--muted);margin:0 0 18px;font-size:.96rem}
+label,.lbl{display:block;font-weight:700;font-size:.95rem;margin:0 0 6px}
+.hint{font-weight:400;color:var(--muted)}
+.field{margin-bottom:18px}
+input,select,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+textarea{min-height:84px;resize:vertical}
+textarea.big{min-height:180px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips input{position:absolute;opacity:0;width:1px;height:1px}
+.chips label{font-weight:500;margin:0;padding:8px 14px;border:1px solid var(--line);border-radius:999px;cursor:pointer;background:var(--bg)}
+.chips input:checked+label{background:var(--soft);border-color:var(--accent);color:var(--ink)}
+.chips input:focus-visible+label{outline:2px solid var(--accent);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;font:inherit;font-weight:800;padding:14px 20px;cursor:pointer;text-decoration:none}
+.btn-main{width:100%;background:var(--accent);color:var(--accent-ink);font-size:1.05rem}
+.btn-main:disabled{opacity:.55;cursor:wait}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:9px 14px;font-weight:700;font-size:.9rem}
+.btn-wa{background:var(--wa);color:#fff;padding:9px 14px;font-size:.9rem}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.note{font-size:.88rem;color:var(--muted);margin:14px 0 0}
+.status{margin-top:18px;color:var(--muted);font-weight:600}
+.results{margin-top:22px}
+.results h4{font-size:1.15rem;letter-spacing:-.01em;margin:24px 0 10px}
+.results .lead{font-size:1.02rem;margin:0 0 6px}
+.card{border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;background:var(--bg)}
+.card .style{font-weight:800;color:var(--accent);font-size:.95rem;margin-bottom:6px}
+.card p{margin:0 0 12px;white-space:pre-wrap}
+.card .count{font-size:.82rem;color:var(--muted);margin-bottom:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.results ul{margin:0;padding-inline-start:1.2em}
+.results li{margin-bottom:8px}
+.alerte{background:var(--soft);border-left:4px solid var(--accent);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+
+.chat{display:flex;flex-direction:column;gap:12px;min-height:160px;margin-bottom:16px}
+.msg{max-width:88%;padding:12px 15px;border-radius:18px;white-space:pre-wrap}
+.msg.me{align-self:flex-end;background:var(--ink);color:var(--bg);border-bottom-right-radius:6px}
+.msg.ai{align-self:flex-start;background:var(--bg);border:1px solid var(--line);border-bottom-left-radius:6px}
+.empty{color:var(--muted);margin:0}
+.suggest{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.ask{display:flex;gap:8px}
+.ask textarea{min-height:52px}
+.ask .btn{flex:none;width:auto}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+.guides details{border-top:1px solid var(--line);padding:4px 0}
+.guides details:last-child{border-bottom:1px solid var(--line)}
+.guides summary{cursor:pointer;font-weight:800;font-size:1.08rem;padding:14px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.guides summary::-webkit-details-marker{display:none}
+.guides summary::after{content:"+";color:var(--accent);font-weight:800}
+.guides details[open] summary::after{content:"−"}
+.guides .body{padding:0 0 16px;max-width:36em}
+.guides .body p{margin:0 0 12px}
+.guides .body ul{margin:0 0 12px;padding-inline-start:1.2em}
+
+/* Formules */
+.buyline{margin:8px 0 0;font-size:.92rem;color:var(--muted)}
+.linkbtn{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--accent);text-decoration:underline;cursor:pointer}
+.codeok{margin:8px 0 0;font-size:.92rem;font-weight:600}
+dialog.offres{border:0;border-radius:24px;padding:0;max-width:560px;width:calc(100% - 28px);background:var(--surface);color:var(--ink);box-shadow:0 30px 80px rgba(20,10,30,.45)}
+dialog.offres::backdrop{background:rgba(27,19,37,.62)}
+.offres .in{padding:26px 22px 22px;max-height:88vh;overflow:auto}
+.offres .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.offres h2{margin:0;font-size:1.7rem;letter-spacing:-.02em;line-height:1.1}
+.offres .sub{color:var(--muted);margin:8px 0 18px}
+.closex{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:1.4rem;line-height:1;cursor:pointer}
+.plans{display:grid;gap:10px}
+.plan{display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:14px 16px;background:var(--bg)}
+.plan.best{border:2px solid var(--accent);background:var(--soft)}
+.plan .nom{font-weight:800;font-size:1.05rem}
+.plan .tag{display:inline-block;margin-left:6px;font-size:.78rem;font-weight:800;color:var(--accent-ink);background:var(--accent);border-radius:999px;padding:2px 9px;vertical-align:2px}
+.plan .prix{font-weight:800;font-size:1.3rem;letter-spacing:-.02em;text-align:right}
+.plan .compare{grid-column:1/-1;color:var(--muted);font-size:.93rem}
+.plan .go{grid-column:1/-1;margin-top:6px;width:100%;padding:11px 16px;font-size:.98rem}
+.plan .go[aria-disabled="true"]{opacity:.5;pointer-events:none}
+.offres .fine{font-size:.84rem;color:var(--muted);margin:16px 0 0}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.langsel{width:auto;padding:8px 10px;font-size:.92rem;border-radius:10px}
+.topright{display:flex;align-items:center;gap:10px}
+.socials{display:flex;gap:4px}
+.socials a{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;color:var(--ink);text-decoration:none}
+.socials a:hover{background:var(--soft);color:var(--accent)}
+@media (max-width:480px){.socials.top{display:none}}
+.essai{margin-top:18px;padding:16px;border-radius:16px;background:var(--soft);border:1px solid var(--accent)}
+.essai p{margin:0 0 12px;font-weight:600}
+.essai .btn{width:100%}
+.badge{display:inline-block;margin:28px 0 0;padding:5px 12px;border-radius:999px;background:var(--soft);color:var(--accent);font-weight:800;font-size:.85rem}
+.badge+h1{margin-top:14px}
+.exemple{display:grid;gap:10px;margin:0 0 28px}
+@media (min-width:600px){.exemple{grid-template-columns:1fr 1fr}}
+.exemple .ex{border:1px solid var(--line);border-radius:16px;padding:14px 16px;background:var(--surface)}
+.exemple .ex.apres{border-color:var(--accent)}
+.exemple .ex b{display:block;font-size:.85rem;color:var(--muted);margin-bottom:6px}
+.exemple .ex.apres b{color:var(--accent)}
+.exemple .ex p{margin:0}
+.exnote{grid-column:1/-1;font-size:.82rem;color:var(--muted);margin:0}
+.phprev{display:block;max-width:220px;max-height:280px;border-radius:14px;margin:0 0 16px;object-fit:cover}
+.avis{display:grid;gap:10px}
+.avis figure{margin:0;border:1px solid var(--line);border-radius:16px;padding:14px 16px;background:var(--surface)}
+.avis blockquote{margin:0 0 8px}
+.avis figcaption{font-weight:700;font-size:.9rem;color:var(--muted)}
+.promo{margin-top:12px;font-size:.95rem}
+.promo code{font-weight:800;color:var(--accent);background:var(--bg);padding:2px 7px;border-radius:6px}
+.ecoute{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px}
+.ecoute .merci{font-weight:700;color:var(--accent)}
+.langpick{position:relative}
+.langbtn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:.92rem;border-radius:12px;padding:8px 10px;cursor:pointer;min-height:44px}
+.flag{display:inline-flex;border-radius:3px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.08);flex:none;line-height:0}
+.langlist{position:absolute;inset-inline-end:0;top:calc(100% + 6px);z-index:30;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:6px;box-shadow:0 18px 40px rgba(20,10,30,.18);max-height:70vh;overflow:auto;min-width:200px}
+.langlist button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;color:var(--ink);font:inherit;padding:10px 12px;border-radius:10px;cursor:pointer;text-align:start}
+.langlist button:hover,.langlist button[aria-current="true"]{background:var(--soft)}
+.search{margin:0 0 26px;position:relative}
+.search input{padding-inline-start:44px}
+.search svg.lens{position:absolute;inset-inline-start:14px;top:14px;color:var(--muted)}
+.sres{margin-top:8px;display:grid;gap:6px}
+.sres button{display:flex;gap:10px;align-items:baseline;text-align:start;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;border-radius:12px;padding:10px 14px;cursor:pointer}
+.sres button small{color:var(--accent);font-weight:800;flex:none}
+.sres p{margin:4px 0;color:var(--muted)}
+.videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.videos figure{margin:0}
+.videos video{width:100%;aspect-ratio:9/16;border-radius:18px;background:#000;display:block}
+.videos figcaption{font-weight:700;margin-top:8px;font-size:.95rem}
+.moyenne{font-weight:800;font-size:1.1rem;margin:0 0 12px}
+.etoiles{color:#E8A33D;letter-spacing:2px}
+.stars{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}
+.stars input{position:absolute;opacity:0;width:1px;height:1px}
+.stars label{font-size:2.2rem;line-height:1;color:var(--line);cursor:pointer;margin:0}
+.stars input:checked ~ label,.stars label:hover,.stars label:hover ~ label{color:#E8A33D}
+.stars input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.avisform{margin-top:18px}
+.avisform h3{margin:0 0 12px}
+.sharefab{position:fixed;inset-inline-end:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 18px;background:var(--ink);color:var(--bg);font:inherit;font-weight:800;box-shadow:0 10px 30px rgba(20,10,30,.3);cursor:pointer}
+dialog.share{border:0;border-radius:22px;padding:22px;max-width:420px;width:calc(100% - 28px);background:var(--surface);color:var(--ink)}
+dialog.share::backdrop{background:rgba(27,19,37,.62)}
+.sharegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.sharegrid a,.sharegrid button{display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;font-weight:700;color:var(--ink);background:var(--bg);text-decoration:none;cursor:pointer}
+[dir="rtl"] .alerte{border-left:0;border-right:4px solid var(--accent)}
+footer{margin-top:44px;font-size:.85rem;color:var(--muted)}
+footer p{margin:0 0 8px}
+@media (max-width:420px){.row{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:no-preference){.results>*{animation:in .35s ease both}@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><header class="brand"><svg class="logo" width="38" height="32" viewBox="0 0 40 34" aria-hidden="true"><rect x="2" y="2" width="36" height="24" rx="9" fill="var(--accent)"></rect><path d="M10 24 L8 33 L19 24 Z" fill="var(--accent)"></path><circle cx="14" cy="14" r="5.2" fill="#F2EEF6"></circle><circle cx="26" cy="14" r="5.2" fill="#F2EEF6"></circle><ellipse cx="16.2" cy="12.8" rx="2.2" ry="3" fill="#2A1B3D"></ellipse><ellipse cx="28.2" cy="12.8" rx="2.2" ry="3" fill="#2A1B3D"></ellipse></svg>Second Regard</header><div class="topright"><nav class="socials top" aria-label="Réseaux sociaux"><a href="https://www.instagram.com/secondregard97" target="_blank" rel="noopener" aria-label="Second Regard sur Instagram"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"></circle><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"></circle></svg></a><a href="https://www.tiktok.com/@secondregard97" target="_blank" rel="noopener" aria-label="Second Regard sur TikTok"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M14 3v11.2a3.6 3.6 0 1 1-3.6-3.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path d="M14 3c.4 2.8 2.3 4.6 5 4.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></a><a href="https://www.youtube.com/@SecondRegard97" target="_blank" rel="noopener" aria-label="Second Regard sur YouTube"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4" fill="none" stroke="currentColor" stroke-width="2"></rect><path d="M10 9.3v5.4l4.7-2.7z" fill="currentColor"></path></svg></a></nav><div class="langpick" id="langPick"><button type="button" id="langBtn" class="langbtn" aria-haspopup="true" aria-expanded="false" aria-label="Langue"><span class="flag" id="langFlag"></span><span id="langName">Français</span><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg></button><div class="langlist" id="langList" hidden><button type="button" data-lang="fr" lang="fr"><span class="flag"></span><span>Français</span></button><button type="button" data-lang="en" lang="en"><span class="flag"></span><span>English</span></button><button type="button" data-lang="es" lang="es"><span class="flag"></span><span>Español</span></button><button type="button" data-lang="de" lang="de"><span class="flag"></span><span>Deutsch</span></button><button type="button" data-lang="it" lang="it"><span class="flag"></span><span>Italiano</span></button><button type="button" data-lang="pt" lang="pt"><span class="flag"></span><span>Português</span></button><button type="button" data-lang="nl" lang="nl"><span class="flag"></span><span>Nederlands</span></button><button type="button" data-lang="pl" lang="pl"><span class="flag"></span><span>Polski</span></button><button type="button" data-lang="ro" lang="ro"><span class="flag"></span><span>Română</span></button><button type="button" data-lang="ar" lang="ar"><span class="flag"></span><span>العربية</span></button><button type="button" data-lang="zh" lang="zh"><span class="flag"></span><span>中文</span></button><button type="button" data-lang="hi" lang="hi"><span class="flag"></span><span>हिन्दी</span></button><button type="button" data-lang="ru" lang="ru"><span class="flag"></span><span>Русский</span></button><button type="button" data-lang="tr" lang="tr"><span class="flag"></span><span>Türkçe</span></button></div></div></div></div>
+
+  <p class="badge">Nouveau : lancement 2026</p>
+  <h1>Tes rencontres méritent un second regard.</h1>
+  <p class="lede">Un profil que personne ne remarque, des conversations qui s'éteignent, un rendez-vous qui stresse, un silence qui fait mal : Second Regard t'aide à chaque étape. Tu gardes la main sur tes comptes, du début à la fin.</p>
+
+  <div class="exemple">
+    <div class="ex"><b>Avant</b><p>J'aime les voyages, les restos et rire. Pas de prise de tête.</p></div>
+    <div class="ex apres"><b>Après</b><p>Rando le dimanche, brunch bien mérité ensuite. Mon talent caché : trouver le meilleur resto italien du quartier. Et toi, c'est quoi ton plat réconfort ?</p></div>
+    <p class="exnote">Exemple fictif, pour illustrer le type de bio que Second Regard peut t'aider à écrire.</p>
+  </div>
+
+  <div class="search" role="search">
+    <label class="sr" for="qsearch">Rechercher</label>
+    <svg class="lens" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input type="search" id="qsearch" autocomplete="off" placeholder="Rechercher un conseil, un outil, une vidéo…">
+    <div class="sres" id="sres" aria-live="polite"></div>
+  </div>
+
+  <div class="field" id="codeBox">
+    <label for="code">Code d'accès <span class="hint">(reçu après ton achat)</span></label>
+    <input id="code" autocomplete="off" placeholder="Colle ici le code reçu par e-mail">
+    <p class="codeok" id="codeState" role="status" aria-live="polite"></p>
+    <p class="buyline">Pas encore de code ? <button type="button" class="linkbtn" data-offres>Voir les formules</button></p>
+  </div>
+
+  <div class="tools" role="group" aria-label="Choisis un outil">
+    <button type="button" data-tool="bio" data-kw="profil description tinder hinge bumble" aria-pressed="true"><b>Ma bio</b><span>Un profil qui donne envie d'écrire</span></button>
+    <button type="button" data-tool="photo" data-kw="selfie photos image" aria-pressed="false"><b>Mes photos</b><span>Rendre ta photo plus attirante</span></button>
+    <button type="button" data-tool="opener" data-kw="accroche icebreaker brise-glace premier" aria-pressed="false"><b>Premier message</b><span>Engager avec un match précis</span></button>
+    <button type="button" data-tool="convo" data-kw="relancer répondre réponse discussion" aria-pressed="false"><b>Ma conversation</b><span>Comprendre et savoir quoi répondre</span></button>
+    <button type="button" data-tool="date" data-kw="rendez-vous rdv date sortie" aria-pressed="false"><b>Premier rendez-vous</b><span>Le préparer sans stress</span></button>
+    <button type="button" data-tool="rebond" data-kw="ghosting ghosté silence refus râteau rupture rejet" aria-pressed="false"><b>Rebondir</b><span>Après un silence ou un refus</span></button>
+    <button type="button" data-tool="chat" data-kw="conseil aide question" aria-pressed="false"><b>Une question</b><span>Demander conseil librement</span></button>
+  </div>
+
+  <!-- BIO -->
+  <section class="panel" id="p-bio">
+    <h3>Ma bio</h3>
+    <p class="intro">Réponds à quelques questions : tu reçois 3 bios, des conseils photos et des idées de premiers messages.</p>
+    <form data-mode="bio">
+      <div class="row">
+        <div class="field"><label for="b-pseudo">Pseudo <span class="hint">(facultatif)</span></label><input id="b-pseudo" name="pseudo" autocomplete="off" placeholder="ex. Max"></div>
+        <div class="field"><label for="b-age">Âge</label><input id="b-age" name="age" type="number" min="18" max="99" inputmode="numeric" placeholder="18 ans minimum" required></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="b-genre">Tu es</label><select id="b-genre" name="genre"><option value="un homme">un homme</option><option value="une femme">une femme</option><option value="une personne non binaire">une personne non binaire</option></select></div>
+        <div class="field"><label for="b-cherche">Tu cherches</label><select id="b-cherche" name="cherche"><option value="des femmes">des femmes</option><option value="des hommes">des hommes</option><option value="tout le monde">tout le monde</option></select></div>
+      </div>
+      <div class="field"><label for="b-app">Appli utilisée</label>
+        <select id="b-app" name="app"><option value="Tinder">Tinder</option><option value="Hinge">Hinge</option><option value="Bumble">Bumble</option><option value="Happn">Happn</option><option value="Fruitz">Fruitz</option><option value="Meetic">Meetic</option><option value="Grindr">Grindr</option><option value="Romeo">Romeo</option><option value="Autre">Autre</option></select></div>
+      <div class="field"><span class="lbl" id="b-lk">Ce que tu recherches</span>
+        <div class="chips" role="radiogroup" aria-labelledby="b-lk">
+          <input type="radio" name="recherche" id="b-l1" value="une relation sérieuse" checked><label for="b-l1">Relation sérieuse</label>
+          <input type="radio" name="recherche" id="b-l2" value="des rencontres, sans prise de tête"><label for="b-l2">Rencontres</label>
+          <input type="radio" name="recherche" id="b-l3" value="des amis et des discussions"><label for="b-l3">Amitié</label>
+          <input type="radio" name="recherche" id="b-l4" value="ne sait pas encore, reste ouvert"><label for="b-l4">Je verrai bien</label>
+        </div></div>
+      <div class="field"><label for="b-passions">Tes passions et ton quotidien</label><textarea id="b-passions" name="passions" placeholder="ex. randonnée, cuisine italienne, séries policières, voyages…"></textarea></div>
+      <div class="field"><label for="b-amis">Comment tes amis te décrivent <span class="hint">(facultatif)</span></label><input id="b-amis" name="amis" placeholder="ex. drôle, fidèle, un peu timide au début"></div>
+      <div class="field"><span class="lbl" id="b-tn">Le ton que tu veux</span>
+        <div class="chips" role="radiogroup" aria-labelledby="b-tn">
+          <input type="radio" name="ton" id="b-n1" value="drôle et léger" checked><label for="b-n1">Drôle</label>
+          <input type="radio" name="ton" id="b-n2" value="sincère et chaleureux"><label for="b-n2">Sincère</label>
+          <input type="radio" name="ton" id="b-n3" value="direct et assumé"><label for="b-n3">Direct</label>
+          <input type="radio" name="ton" id="b-n4" value="mystérieux et intrigant"><label for="b-n4">Mystérieux</label>
+        </div></div>
+      <div class="field"><label for="b-actuelle">Ta bio actuelle <span class="hint">(facultatif)</span></label><textarea id="b-actuelle" name="bio_actuelle" placeholder="Colle-la ici si tu veux qu'on parte de là"></textarea></div>
+      <button class="btn btn-main" type="submit">Écrire mes bios</button>
+      <p class="note">Rien n'est enregistré : tes réponses servent uniquement à écrire ta bio.</p>
+      <p class="note" id="essaiNote"><strong>Pas de code ? Ta première bio est offerte.</strong></p>
+    </form>
+    <div class="status" role="status" aria-live="polite"></div>
+    <div class="results"></div>
+  </section>
+
+  <!-- PHOTOS -->
+  <section class="panel" id="p-photo" hidden>
+    <h3>Mes photos</h3>
+    <p class="intro">Envoie une photo de ton profil : tu reçois une analyse honnête et des conseils concrets pour la rendre plus attirante.</p>
+    <form data-mode="photo">
+      <div class="field"><label for="ph-file">Ta photo</label><input type="file" id="ph-file" accept="image/jpeg,image/png,image/webp" required></div>
+      <img id="ph-preview" class="phprev" alt="Aperçu de ta photo" hidden>
+      <div class="field"><span class="lbl" id="ph-pos">Sa place dans ton profil</span>
+        <div class="chips" role="radiogroup" aria-labelledby="ph-pos">
+          <input type="radio" name="position" id="ph-p1" value="photo principale" checked><label for="ph-p1">Photo principale</label>
+          <input type="radio" name="position" id="ph-p2" value="photo secondaire"><label for="ph-p2">Photo secondaire</label>
+        </div></div>
+      <div class="field"><label for="ph-app">Appli</label>
+        <select id="ph-app" name="app"><option value="Tinder">Tinder</option><option value="Hinge">Hinge</option><option value="Bumble">Bumble</option><option value="Happn">Happn</option><option value="Fruitz">Fruitz</option><option value="Meetic">Meetic</option><option value="Grindr">Grindr</option><option value="Romeo">Romeo</option><option value="Autre">Autre</option></select></div>
+      <button class="btn btn-main" type="submit">Analyser ma photo</button>
+      <p class="note">Envoie uniquement tes propres photos. Rien n'est enregistré : la photo sert seulement à l'analyse.</p>
+    </form>
+    <div class="status" role="status" aria-live="polite"></div>
+    <div class="results"></div>
+  </section>
+
+  <!-- PREMIER MESSAGE -->
+  <section class="panel" id="p-opener" hidden>
+    <h3>Premier message</h3>
+    <p class="intro">Décris le profil de ton match : tu reçois des messages qui partent de ce qu'il ou elle a vraiment écrit.</p>
+    <form data-mode="opener">
+      <div class="field"><label for="o-app">Appli</label>
+        <select id="o-app" name="app"><option value="Tinder">Tinder</option><option value="Hinge">Hinge</option><option value="Bumble">Bumble</option><option value="Happn">Happn</option><option value="Fruitz">Fruitz</option><option value="Meetic">Meetic</option><option value="Grindr">Grindr</option><option value="Romeo">Romeo</option><option value="Autre">Autre</option></select></div>
+      <div class="field"><label for="o-profil">Ce que dit son profil</label><textarea id="o-profil" name="profil" required placeholder="Sa bio, ses réponses, ce qu'on voit sur ses photos (un chien, un concert, la montagne…)"></textarea></div>
+      <div class="field"><label for="o-commun">Vos points communs <span class="hint">(facultatif)</span></label><input id="o-commun" name="commun" placeholder="ex. on aime tous les deux l'escalade"></div>
+      <div class="field"><span class="lbl" id="o-tn">Le ton</span>
+        <div class="chips" role="radiogroup" aria-labelledby="o-tn">
+          <input type="radio" name="ton" id="o-n1" value="drôle et léger" checked><label for="o-n1">Drôle</label>
+          <input type="radio" name="ton" id="o-n2" value="curieux et sincère"><label for="o-n2">Curieux</label>
+          <input type="radio" name="ton" id="o-n3" value="direct"><label for="o-n3">Direct</label>
+        </div></div>
+      <button class="btn btn-main" type="submit">Trouver mon premier message</button>
+      <p class="note">Évite de coller son nom complet ou des infos qui permettraient de l'identifier.</p>
+    </form>
+    <div class="status" role="status" aria-live="polite"></div>
+    <div class="results"></div>
+  </section>
+
+  <!-- CONVERSATION -->
+  <section class="panel" id="p-convo" hidden>
+    <h3>Ma conversation</h3>
+    <p class="intro">Colle votre échange : tu reçois une lecture honnête de ce qui se passe et des réponses possibles.</p>
+    <form data-mode="convo">
+      <div class="field"><label for="c-conv">La conversation</label><textarea class="big" id="c-conv" name="conversation" required placeholder="Moi : …&#10;Lui/Elle : …&#10;Moi : …"></textarea></div>
+      <div class="field"><span class="lbl" id="c-obj">Ce que tu veux</span>
+        <div class="chips" role="radiogroup" aria-labelledby="c-obj">
+          <input type="radio" name="objectif" id="c-o1" value="relancer une conversation qui s'essouffle" checked><label for="c-o1">Relancer</label>
+          <input type="radio" name="objectif" id="c-o2" value="proposer un rendez-vous"><label for="c-o2">Proposer un rendez-vous</label>
+          <input type="radio" name="objectif" id="c-o3" value="comprendre si l'autre est intéressé"><label for="c-o3">Comprendre où on en est</label>
+          <input type="radio" name="objectif" id="c-o4" value="clore poliment"><label for="c-o4">Clore poliment</label>
+        </div></div>
+      <button class="btn btn-main" type="submit">Analyser la conversation</button>
+      <p class="note">Retire les noms, numéros et adresses avant de coller. Rien n'est enregistré.</p>
+    </form>
+    <div class="status" role="status" aria-live="polite"></div>
+    <div class="results"></div>
+  </section>
+
+  <!-- RENDEZ-VOUS -->
+  <section class="panel" id="p-date" hidden>
+    <h3>Premier rendez-vous</h3>
+    <p class="intro">Des idées concrètes, des sujets de conversation et de quoi garder ton calme.</p>
+    <form data-mode="date">
+      <div class="field"><span class="lbl" id="d-ty">Le genre de rendez-vous</span>
+        <div class="chips" role="radiogroup" aria-labelledby="d-ty">
+          <input type="radio" name="type" id="d-t1" value="un café" checked><label for="d-t1">Un café</label>
+          <input type="radio" name="type" id="d-t2" value="un verre en soirée"><label for="d-t2">Un verre</label>
+          <input type="radio" name="type" id="d-t3" value="une balade"><label for="d-t3">Une balade</label>
+          <input type="radio" name="type" id="d-t4" value="une activité"><label for="d-t4">Une activité</label>
+          <input type="radio" name="type" id="d-t5" value="pas encore décidé"><label for="d-t5">Je ne sais pas</label>
+        </div></div>
+      <div class="field"><label for="d-infos">Ce que tu sais de ton match</label><textarea id="d-infos" name="infos" placeholder="ex. travaille dans la musique, adore les chats, vient de déménager"></textarea></div>
+      <div class="field"><label for="d-stress">Ce qui te stresse <span class="hint">(facultatif)</span></label><input id="d-stress" name="stress" placeholder="ex. les blancs dans la conversation"></div>
+      <button class="btn btn-main" type="submit">Préparer mon rendez-vous</button>
+    </form>
+    <div class="status" role="status" aria-live="polite"></div>
+    <div class="results"></div>
+  </section>
+
+  <!-- REBONDIR -->
+  <section class="panel" id="p-rebond" hidden>
+    <h3>Rebondir</h3>
+    <p class="intro">Un silence, un refus, peu de matchs : ça touche. Prenons un moment pour y voir plus clair.</p>
+    <form data-mode="rebond">
+      <div class="field"><span class="lbl" id="r-si">Ce qui t'arrive</span>
+        <div class="chips" role="radiogroup" aria-labelledby="r-si">
+          <input type="radio" name="situation" id="r-s1" value="l'autre ne répond plus (ghosting)" checked><label for="r-s1">Plus de réponse</label>
+          <input type="radio" name="situation" id="r-s2" value="un refus clair"><label for="r-s2">Un refus</label>
+          <input type="radio" name="situation" id="r-s3" value="un rendez-vous sans suite"><label for="r-s3">Un rendez-vous sans suite</label>
+          <input type="radio" name="situation" id="r-s4" value="très peu de matchs, sentiment d'être invisible"><label for="r-s4">Je me sens invisible</label>
+          <input type="radio" name="situation" id="r-s5" value="une séparation récente"><label for="r-s5">Une séparation</label>
+        </div></div>
+      <div class="field"><label for="r-recit">Raconte si tu veux <span class="hint">(facultatif)</span></label><textarea id="r-recit" name="recit" placeholder="Ce qui s'est passé, ce que tu ressens"></textarea></div>
+      <div class="field"><span class="lbl" id="r-me">Un message à envoyer ?</span>
+        <div class="chips" role="radiogroup" aria-labelledby="r-me">
+          <input type="radio" name="message" id="r-m1" value="non" checked><label for="r-m1">Non, juste y voir clair</label>
+          <input type="radio" name="message" id="r-m2" value="oui"><label for="r-m2">Oui, un message digne</label>
+        </div></div>
+      <button class="btn btn-main" type="submit">Y voir plus clair</button>
+    </form>
+    <div class="status" role="status" aria-live="polite"></div>
+    <div class="results"></div>
+  </section>
+
+  <!-- QUESTION -->
+  <section class="panel" id="p-chat" hidden>
+    <h3>Une question</h3>
+    <p class="intro">Profil, photos, messages, confiance en soi : demande ce que tu veux.</p>
+    <div class="suggest" id="suggest">
+      <button class="btn btn-ghost" type="button">Pourquoi je n'ai presque aucun match ?</button>
+      <button class="btn btn-ghost" type="button">Comment savoir si je dois relancer ?</button>
+      <button class="btn btn-ghost" type="button">Comment reprendre confiance après un râteau ?</button>
+    </div>
+    <div class="chat" id="chat" aria-live="polite"><p class="empty">Ta conversation avec le coach apparaîtra ici.</p></div>
+    <div class="ask">
+      <label for="q" class="sr">Ta question</label>
+      <textarea id="q" placeholder="Écris ta question…"></textarea>
+      <button class="btn btn-main" id="askBtn" type="button">Envoyer</button>
+    </div>
+  </section>
+
+  <!-- VIDÉOS -->
+  <section id="videosSec" aria-labelledby="vid-t">
+    <h2 class="sec" id="vid-t">Nos vidéos</h2>
+    <p class="sec-lede">La série « On rembobine » : des situations de rencontre, analysées en moins d'une minute.</p>
+    <div class="videos" id="videoList"></div>
+    <p class="note">Plus de vidéos sur TikTok, Instagram et YouTube : @secondregard97</p>
+  </section>
+
+  <!-- GUIDES -->
+  <section class="guides" aria-labelledby="g-title">
+    <h2 class="sec" id="g-title">Les guides</h2>
+    <p class="sec-lede">L'essentiel à savoir, en quelques minutes de lecture.</p>
+
+    <details>
+      <summary>Peu de matchs : ce qui compte vraiment</summary>
+      <div class="body">
+        <p>Sur les applis, on décide en quelques secondes, surtout à partir de la première photo. Peu de matchs ne dit presque rien de ta valeur : ça dit surtout que ton profil ne montre pas encore qui tu es.</p>
+        <ul><li>Une première photo nette, seul, visage visible et souriant.</li><li>Des photos qui racontent ta vie : une passion, un voyage, des amis.</li><li>Une bio précise plutôt que générale : « fan de randos du dimanche » accroche plus que « j'aime la nature ».</li></ul>
+        <p>Change une chose à la fois et laisse passer quelques jours pour voir l'effet.</p>
+        <button class="btn btn-ghost" type="button" data-go="bio">Retravailler ma bio</button>
+      </div>
+    </details>
+
+    <details>
+      <summary>Les photos qui changent tout</summary>
+      <div class="body">
+        <p>Tes photos font le premier tri, bien avant ta bio. Vise 4 à 6 photos variées et récentes.</p>
+        <ul><li>Lumière naturelle, de jour, sans filtre lourd.</li><li>Évite les lunettes de soleil sur toutes les photos et les photos de groupe en premier.</li><li>Montre-toi en train de faire quelque chose : cuisiner, marcher, jouer d'un instrument.</li><li>Demande à un ami de choisir : on se juge souvent mal soi-même.</li></ul>
+        <button class="btn btn-ghost" type="button" data-go="chat">Demander conseil sur mes photos</button>
+      </div>
+    </details>
+
+    <details>
+      <summary>Réussir son premier message</summary>
+      <div class="body">
+        <p>« Salut, ça va ? » reçoit rarement de réponse, parce qu'il ne donne rien à quoi répondre. Un bon premier message montre que tu as lu le profil.</p>
+        <ul><li>Pars d'un détail précis de sa bio ou de ses photos.</li><li>Pose une question ouverte, facile et agréable à répondre.</li><li>Reste court : deux phrases suffisent.</li></ul>
+        <button class="btn btn-ghost" type="button" data-go="opener">Écrire mon premier message</button>
+      </div>
+    </details>
+
+    <details>
+      <summary>Quand la conversation s'essouffle</summary>
+      <div class="body">
+        <p>Beaucoup de conversations meurent faute d'élan, pas faute d'intérêt. Les questions en rafale fatiguent : partage aussi un peu de toi.</p>
+        <ul><li>Rebondis sur ce que l'autre a dit plutôt que de changer de sujet.</li><li>Après quelques jours d'échanges agréables, propose de vous voir : c'est souvent ce qui relance.</li><li>Si tu relances une fois sans réponse, n'insiste pas : ce n'est pas un échec, juste un signal.</li></ul>
+        <button class="btn btn-ghost" type="button" data-go="convo">Analyser ma conversation</button>
+      </div>
+    </details>
+
+    <details>
+      <summary>Un premier rendez-vous serein</summary>
+      <div class="body">
+        <p>Un premier rendez-vous réussi est simple et court : un café ou une balade d'une heure, dans un lieu que tu connais.</p>
+        <ul><li>Choisis un lieu public, préviens un proche et rentre par tes propres moyens.</li><li>Prépare deux ou trois sujets tirés de vos échanges.</li><li>Le but n'est pas d'impressionner, mais de savoir si vous avez envie de vous revoir.</li></ul>
+        <button class="btn btn-ghost" type="button" data-go="date">Préparer mon rendez-vous</button>
+      </div>
+    </details>
+
+    <details>
+      <summary>Silence, refus : ne pas le prendre pour soi</summary>
+      <div class="body">
+        <p>Être ignoré ou refusé fait mal, et c'est normal de le ressentir. Mais sur les applis, les gens disparaissent souvent pour des raisons qui n'ont rien à voir avec toi : fatigue, autre rencontre, timing.</p>
+        <ul><li>Accorde-toi une pause si tu en as besoin : les applis seront toujours là.</li><li>Garde une vie riche en dehors : amis, activités, projets.</li><li>Si ce sentiment de rejet pèse sur ton moral au quotidien, en parler à un proche ou à un professionnel peut vraiment aider.</li></ul>
+        <button class="btn btn-ghost" type="button" data-go="rebond">Y voir plus clair</button>
+      </div>
+    </details>
+  </section>
+
+  <!-- AVIS -->
+  <section id="avisSec" aria-labelledby="avis-t">
+    <h2 class="sec" id="avis-t">Ils ont testé</h2>
+    <p class="sec-lede">Les avis de nos utilisateurs.</p>
+    <p class="moyenne" id="moyenne" hidden></p>
+    <div class="avis" id="avisList"></div>
+    <form class="ecoute avisform" name="avis-clients" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="avisForm">
+      <input type="hidden" name="form-name" value="avis-clients">
+      <p class="sr"><label>Ne pas remplir <input name="bot-field"></label></p>
+      <h3>Donne ton avis</h3>
+      <div class="field"><span class="lbl" id="st-l">Ta note</span>
+        <div class="stars" role="radiogroup" aria-labelledby="st-l">
+          <input type="radio" name="note" id="st5" value="5" required><label for="st5">★<span class="sr">5 étoiles</span></label>
+          <input type="radio" name="note" id="st4" value="4"><label for="st4">★<span class="sr">4 étoiles</span></label>
+          <input type="radio" name="note" id="st3" value="3"><label for="st3">★<span class="sr">3 étoiles</span></label>
+          <input type="radio" name="note" id="st2" value="2"><label for="st2">★<span class="sr">2 étoiles</span></label>
+          <input type="radio" name="note" id="st1" value="1"><label for="st1">★<span class="sr">1 étoile</span></label>
+        </div></div>
+      <div class="field"><label for="av-nom">Prénom ou pseudo</label><input id="av-nom" name="prenom" required autocomplete="nickname"></div>
+      <div class="field"><label for="av-txt">Ton avis</label><textarea id="av-txt" name="avis" required placeholder="Ce que Second Regard a changé pour toi…"></textarea></div>
+      <label class="check" style="display:flex;gap:10px;align-items:flex-start;font-weight:400;margin-bottom:16px"><input type="checkbox" name="publication" value="oui" style="width:auto;margin-top:5px"> J'accepte que mon avis soit publié sur le site, avec mon prénom ou pseudo uniquement.</label>
+      <button class="btn btn-main" type="submit">Envoyer mon avis</button>
+      <p class="note">Chaque avis est lu avant publication, pour écarter le spam et les propos injurieux.</p>
+      <p class="merci" role="status" aria-live="polite" id="avisMerci"></p>
+    </form>
+  </section>
+
+  <!-- SUGGESTIONS -->
+  <section aria-labelledby="ecoute-t">
+    <h2 class="sec" id="ecoute-t">Second Regard à ton écoute</h2>
+    <p class="sec-lede">Une idée, une remarque, un outil qui te manque ? Dis-le-nous : chaque message est lu.</p>
+    <form class="ecoute" name="suggestions" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="ecouteForm">
+      <input type="hidden" name="form-name" value="suggestions">
+      <p class="sr"><label>Ne pas remplir <input name="bot-field"></label></p>
+      <div class="field"><label for="sg-msg">Ta suggestion</label><textarea id="sg-msg" name="message" required placeholder="Ce qui te plaît, ce que tu aimerais voir…"></textarea></div>
+      <div class="field"><label for="sg-mail">Ton e-mail <span class="hint">(facultatif, si tu veux une réponse)</span></label><input type="email" id="sg-mail" name="email" autocomplete="email"></div>
+      <button class="btn btn-main" type="submit">Envoyer ma suggestion</button>
+      <p class="note">Ton message sert uniquement à améliorer Second Regard.</p>
+      <p class="merci" role="status" aria-live="polite" id="ecouteMerci"></p>
+    </form>
+  </section>
+
+  <button type="button" class="sharefab" id="shareFab" data-share><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3" fill="currentColor"/><circle cx="6" cy="12" r="3" fill="currentColor"/><circle cx="18" cy="19" r="3" fill="currentColor"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4" stroke="currentColor" stroke-width="2"/></svg><span>Partager</span></button>
+  <dialog class="share" id="shareDlg" aria-labelledby="share-t">
+    <h2 id="share-t" style="margin:0;font-size:1.4rem">Partager Second Regard</h2>
+    <p class="note" style="margin-top:6px">Un ami célibataire qui en a besoin ? Envoie-lui le site.</p>
+    <div class="sharegrid" id="shareGrid"></div>
+    <button type="button" class="btn btn-ghost" style="width:100%;margin-top:12px" id="shareClose">Fermer</button>
+  </dialog>
+
+  <footer>
+    <p>Second Regard est un service de coaching, pas un accompagnement psychologique. Si tu traverses un moment difficile, tu peux appeler le 0800 32 123 en Belgique, le 3114 en France, ou le 112 en cas d'urgence.</p>
+    <p style="margin-top:14px;font-weight:700;color:var(--ink)">Suis-nous</p><nav class="socials bottom" aria-label="Réseaux sociaux"><a href="https://www.instagram.com/secondregard97" target="_blank" rel="noopener" aria-label="Second Regard sur Instagram"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"></circle><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"></circle></svg></a><a href="https://www.tiktok.com/@secondregard97" target="_blank" rel="noopener" aria-label="Second Regard sur TikTok"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M14 3v11.2a3.6 3.6 0 1 1-3.6-3.6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path d="M14 3c.4 2.8 2.3 4.6 5 4.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg></a><a href="https://www.youtube.com/@SecondRegard97" target="_blank" rel="noopener" aria-label="Second Regard sur YouTube"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4" fill="none" stroke="currentColor" stroke-width="2"></rect><path d="M10 9.3v5.4l4.7-2.7z" fill="currentColor"></path></svg></a></nav>
+    <p><button type="button" class="linkbtn" data-share>Partager Second Regard</button></p>
+    <p><a href="/mentions-legales.html" style="color:inherit">Mentions légales</a></p>
+  </footer>
+</div>
+
+  <dialog class="offres" id="offres" aria-labelledby="offres-t">
+    <div class="in">
+      <div class="top">
+        <h2 id="offres-t">Choisis ta formule</h2>
+        <button type="button" class="closex" id="offresClose" aria-label="Fermer">×</button>
+      </div>
+      <p class="sub">Tous les outils, sans limite. Ton code personnel arrive par e-mail juste après le paiement.</p>
+      <div class="plans">
+        <div class="plan">
+          <div class="nom">1 semaine</div><div class="prix">3,99 €</div>
+          <div class="compare">Le prix d'un café et d'un croissant, pour un profil refait à neuf.</div>
+          <a class="btn btn-main go" data-link="pass" target="_blank" rel="noopener">Prendre le pass 7 jours</a>
+        </div>
+        <div class="plan">
+          <div class="nom">1 mois</div><div class="prix">9,90 €</div>
+          <div class="compare">Moins cher que deux bières en terrasse. Environ 33 centimes par jour.</div>
+          <a class="btn btn-main go" data-link="abo" target="_blank" rel="noopener">Choisir le mois</a>
+        </div>
+        <div class="plan">
+          <div class="nom">3 mois</div><div class="prix">24,90 €</div>
+          <div class="compare">Environ 8,30 € par mois, moins qu'une pizza livrée.</div>
+          <a class="btn btn-main go" data-link="abo" target="_blank" rel="noopener">Choisir 3 mois</a>
+        </div>
+        <div class="plan best">
+          <div class="nom">1 an <span class="tag">Le plus avantageux</span></div><div class="prix">69 €</div>
+          <div class="compare">Environ 5,75 € par mois, moins de 20 centimes par jour.</div>
+          <a class="btn btn-main go" data-link="abo" target="_blank" rel="noopener">Choisir l'année</a>
+        </div>
+      </div>
+      <p class="fine">Prix TTC. Les abonnements se renouvellent automatiquement et se résilient en un clic depuis ton reçu, sans justification. Le pass 7 jours ne se renouvelle pas. Paiement sécurisé par Gumroad.</p>
+    </div>
+  </dialog>
+
+<script>
+// ====== À COMPLÉTER : liens de tes produits Gumroad ======
+// Laisse vide tant que ce n'est pas prêt : les boutons afficheront « Bientôt disponible ».
+const LIENS = {
+  abo:  "https://regardful6.gumroad.com/l/accesabonnement",
+  pass: "https://regardful6.gumroad.com/l/acceshebdomadaire"
+};
+// ==========================================================
+
+// Code promo Gumroad (désactivé). Pour le réactiver un jour, mets un code entre les guillemets.
+const PROMO = "";
+
+// ====== À COMPLÉTER : VRAIS avis de testeurs, avec leur accord ======
+// Exemple : { nom: "Julie, 29 ans", texte: "Ma nouvelle bio m'a donné 3 fois plus de réponses." },
+// La section reste cachée tant que la liste est vide.
+const AVIS = [
+];
+// Chaque avis peut avoir une note de 1 à 5 : { nom: "Julie", texte: "…", note: 5 },
+
+// ====== Vidéos affichées sur le site (fichiers dans public/videos) ======
+const VIDEOS = [
+  { src: "/videos/ep1.mp4", poster: "/videos/ep1.jpg", titre: "Épisode 1 : le premier message" },
+];
+// ==========================================================
+
+
+// ====== Langues ======
+const LANG_LIST = ["fr","en","es","de","nl","pt","pl","ro","it","ar","zh","hi","ru","tr"];
+const LOCALES = { fr:"fr-BE", en:"en-GB", es:"es-ES", de:"de-DE", nl:"nl-BE", pt:"pt-PT", pl:"pl-PL", ro:"ro-RO", it:"it-IT", ar:"ar", zh:"zh-CN", hi:"hi-IN", ru:"ru-RU", tr:"tr-TR" };
+const FLAGS = {"fr": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#fff\"/><rect width=\"10\" height=\"20\" fill=\"#0055A4\"/><rect x=\"20\" width=\"10\" height=\"20\" fill=\"#EF4135\"/></svg>", "en": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#012169\"/><path d=\"M0 0L30 20M30 0L0 20\" stroke=\"#fff\" stroke-width=\"4\"/><path d=\"M0 0L30 20M30 0L0 20\" stroke=\"#C8102E\" stroke-width=\"1.6\"/><path d=\"M15 0V20M0 10H30\" stroke=\"#fff\" stroke-width=\"6\"/><path d=\"M15 0V20M0 10H30\" stroke=\"#C8102E\" stroke-width=\"3.4\"/></svg>", "es": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#AA151B\"/><rect y=\"5\" width=\"30\" height=\"10\" fill=\"#F1BF00\"/></svg>", "de": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#DD0000\"/><rect width=\"30\" height=\"6.67\" fill=\"#000\"/><rect y=\"13.33\" width=\"30\" height=\"6.67\" fill=\"#FFCE00\"/></svg>", "it": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#fff\"/><rect width=\"10\" height=\"20\" fill=\"#009246\"/><rect x=\"20\" width=\"10\" height=\"20\" fill=\"#CE2B37\"/></svg>", "pt": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#FF0000\"/><rect width=\"12\" height=\"20\" fill=\"#006600\"/><circle cx=\"12\" cy=\"10\" r=\"4\" fill=\"#FFCC00\"/><circle cx=\"12\" cy=\"10\" r=\"2.3\" fill=\"#fff\" stroke=\"#FF0000\" stroke-width=\"0.8\"/></svg>", "nl": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#fff\"/><rect width=\"30\" height=\"6.67\" fill=\"#AE1C28\"/><rect y=\"13.33\" width=\"30\" height=\"6.67\" fill=\"#21468B\"/></svg>", "pl": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#DC143C\"/><rect width=\"30\" height=\"10\" fill=\"#fff\"/></svg>", "ro": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#FCD116\"/><rect width=\"10\" height=\"20\" fill=\"#002B7F\"/><rect x=\"20\" width=\"10\" height=\"20\" fill=\"#CE1126\"/></svg>", "ar": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#fff\"/><rect width=\"30\" height=\"6.67\" fill=\"#CE1126\"/><rect y=\"13.33\" width=\"30\" height=\"6.67\" fill=\"#000\"/><circle cx=\"15\" cy=\"10\" r=\"2.2\" fill=\"#C09300\"/></svg>", "zh": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#DE2910\"/><polygon points=\"5.00,2.00 5.67,4.07 7.85,4.07 6.09,5.35 6.76,7.43 5.00,6.15 3.24,7.43 3.91,5.35 2.15,4.07 4.33,4.07\" fill=\"#FFDE00\"/><polygon points=\"10.00,1.00 10.22,1.69 10.95,1.69 10.36,2.12 10.59,2.81 10.00,2.38 9.41,2.81 9.64,2.12 9.05,1.69 9.78,1.69\" fill=\"#FFDE00\"/><polygon points=\"12.00,3.00 12.22,3.69 12.95,3.69 12.36,4.12 12.59,4.81 12.00,4.38 11.41,4.81 11.64,4.12 11.05,3.69 11.78,3.69\" fill=\"#FFDE00\"/><polygon points=\"12.00,6.00 12.22,6.69 12.95,6.69 12.36,7.12 12.59,7.81 12.00,7.38 11.41,7.81 11.64,7.12 11.05,6.69 11.78,6.69\" fill=\"#FFDE00\"/><polygon points=\"10.00,8.00 10.22,8.69 10.95,8.69 10.36,9.12 10.59,9.81 10.00,9.38 9.41,9.81 9.64,9.12 9.05,8.69 9.78,8.69\" fill=\"#FFDE00\"/></svg>", "hi": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#fff\"/><rect width=\"30\" height=\"6.67\" fill=\"#FF9933\"/><rect y=\"13.33\" width=\"30\" height=\"6.67\" fill=\"#138808\"/><circle cx=\"15\" cy=\"10\" r=\"2.6\" fill=\"none\" stroke=\"#000080\" stroke-width=\"0.7\"/><circle cx=\"15\" cy=\"10\" r=\"0.6\" fill=\"#000080\"/></svg>", "ru": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#0039A6\"/><rect width=\"30\" height=\"6.67\" fill=\"#fff\"/><rect y=\"13.33\" width=\"30\" height=\"6.67\" fill=\"#D52B1E\"/></svg>", "tr": "<svg viewBox=\"0 0 30 20\" width=\"24\" height=\"16\" aria-hidden=\"true\"><rect width=\"30\" height=\"20\" fill=\"#E30A17\"/><circle cx=\"11\" cy=\"10\" r=\"5\" fill=\"#fff\"/><circle cx=\"12.3\" cy=\"10\" r=\"4\" fill=\"#E30A17\"/><polygon points=\"15.70,10.00 17.29,9.48 17.29,7.81 18.27,9.16 19.86,8.65 18.88,10.00 19.86,11.35 18.27,10.84 17.29,12.19 17.29,10.52\" fill=\"#fff\"/></svg>"};
+const LANG_NAMES = {"fr": "Français", "en": "English", "es": "Español", "de": "Deutsch", "it": "Italiano", "pt": "Português", "nl": "Nederlands", "pl": "Polski", "ro": "Română", "ar": "العربية", "zh": "中文", "hi": "हिन्दी", "ru": "Русский", "tr": "Türkçe"};
+
+let LANG = "fr", DICT = {};
+const norm = s => s.replace(/\s+/g, " ").trim();
+const t = s => DICT[s] || s;
+const I18N_NODES = [], I18N_ATTRS = [];
+(function capture(){
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: n =>
+    n.parentElement && !n.parentElement.closest("script,style,#langList,#langName") && norm(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  let n; while ((n = w.nextNode())) I18N_NODES.push({ n, orig: n.nodeValue });
+  document.querySelectorAll("[placeholder],[aria-label],img[alt]").forEach(el => ["placeholder","aria-label","alt"].forEach(a => {
+    if (el.hasAttribute(a)) I18N_ATTRS.push({ el, a, orig: el.getAttribute(a) });
+  }));
+})();
+const ORIG_TITLE = document.title;
+const META_DESC = document.querySelector('meta[name="description"]'), ORIG_DESC = META_DESC ? META_DESC.content : "";
+function applyLang(){
+  I18N_NODES.forEach(({ n, orig }) => {
+    const k = norm(orig), tr = DICT[k];
+    n.nodeValue = tr ? orig.match(/^\s*/)[0] + tr + orig.match(/\s*$/)[0] : orig;
+  });
+  I18N_ATTRS.forEach(({ el, a, orig }) => el.setAttribute(a, DICT[orig] || DICT[norm(orig)] || orig));
+  document.title = t(ORIG_TITLE);
+  if (META_DESC) META_DESC.content = t(ORIG_DESC);
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG === "ar" ? "rtl" : "ltr";
+}
+async function setLang(l){
+  LANG = LANG_LIST.includes(l) ? l : "fr";
+  DICT = {};
+  if (LANG !== "fr") { try { const r = await fetch("/i18n/" + LANG + ".json"); if (r.ok) DICT = await r.json(); } catch(e){} }
+  try { localStorage.setItem("sr_lang", LANG); } catch(e){}
+  document.getElementById("langFlag").innerHTML = FLAGS[LANG];
+  document.getElementById("langName").textContent = LANG_NAMES[LANG];
+  document.querySelectorAll("#langList [data-lang]").forEach(b => b.setAttribute("aria-current", b.dataset.lang === LANG));
+  if (window.__srReady) renderDynamic();
+  applyLang();
+}
+(function initLang(){
+  let l = null; try { l = localStorage.getItem("sr_lang"); } catch(e){}
+  if (!l) l = (navigator.languages || [navigator.language || "fr"]).map(x => String(x).slice(0,2).toLowerCase()).find(x => LANG_LIST.includes(x));
+  const btn = document.getElementById("langBtn"), list = document.getElementById("langList");
+  list.querySelectorAll("[data-lang]").forEach(b => {
+    b.querySelector(".flag").innerHTML = FLAGS[b.dataset.lang];
+    b.addEventListener("click", () => { list.hidden = true; btn.setAttribute("aria-expanded", "false"); setLang(b.dataset.lang); btn.focus(); });
+  });
+  btn.addEventListener("click", () => { list.hidden = !list.hidden; btn.setAttribute("aria-expanded", String(!list.hidden)); if (!list.hidden) (list.querySelector('[aria-current="true"]') || list.querySelector("button")).focus(); });
+  document.addEventListener("click", e => { if (!e.target.closest("#langPick")) { list.hidden = true; btn.setAttribute("aria-expanded", "false"); } });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !list.hidden) { list.hidden = true; btn.setAttribute("aria-expanded", "false"); btn.focus(); } });
+  setLang(l || "fr");
+})();
+// =====================
+
+const $ = id => document.getElementById(id);
+try { const c = localStorage.getItem("sr_code"); if (c) $("code").value = c; } catch(e){}
+$("code").addEventListener("change", () => { try { localStorage.setItem("sr_code", $("code").value.trim()); } catch(e){} });
+
+async function api(payload){
+  const r = await fetch("/api/claude", { method:"POST", headers:{"content-type":"application/json"},
+    body: JSON.stringify({ ...payload, lang: LANG, code: $("code").value.trim() }) });
+  let data = {}; try { data = await r.json(); } catch(e){}
+  if (!r.ok) throw { code: data.error || "server" };
+  return data;
+}
+function errText(e){
+  switch(e && e.code){
+    case "code_required": openOffres(); return t("Code d'accès manquant ou incorrect. Vérifie celui reçu par e-mail, ou choisis une formule.");
+    case "code_expired": openOffres(); return t("Ton abonnement ou ton pass est terminé. Choisis une formule pour continuer.");
+    case "age": return t("Le service est réservé aux 18 ans et plus.");
+    case "essai_utilise": openOffres(); return t("Tu as déjà utilisé ta bio offerte. Choisis une formule pour continuer.");
+    case "quota": return t("Tu as atteint la limite de demandes pour aujourd'hui. Reviens demain !");
+    default: return t("La génération a échoué. Réessaie dans un instant.");
+  }
+}
+
+// Fenêtre des formules
+const dlg = $("offres");
+document.querySelectorAll("#offres [data-link]").forEach(a => {
+  const url = LIENS[a.dataset.link];
+  if (url) a.href = url;
+  else { a.setAttribute("aria-disabled", "true"); a.textContent = t("Bientôt disponible"); }
+});
+let offresVues = false;
+function openOffres(){
+  if (!dlg || dlg.open || offresVues) return;
+  offresVues = true;
+  try { dlg.showModal(); } catch(e){}
+}
+document.querySelectorAll("[data-offres]").forEach(b => b.addEventListener("click", () => { offresVues = false; openOffres(); }));
+$("offresClose").addEventListener("click", () => dlg.close());
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+
+function showReste(n){
+  if (typeof n !== "number") return;
+  const st = $("codeState");
+  const base = st.dataset.base || "";
+  st.textContent = (base ? base + " " : "") + t("Demandes restantes aujourd'hui : {n}").replace("{n}", n);
+}
+// Vérification du code dès qu'il est saisi
+async function checkCode(){
+  const c = $("code").value.trim(); const st = $("codeState");
+  if (!c) { st.textContent = ""; return; }
+  st.textContent = t("Vérification du code…");
+  try {
+    const r = await api({ mode: "check" });
+    const fin = r.fin ? new Date(r.fin).toLocaleDateString(LOCALES[LANG], { day: "numeric", month: "long", year: "numeric" }) : "";
+    st.dataset.base = r.plan === "pass" ? t("Pass actif jusqu'au {fin}.").replace("{fin}", fin)
+      : r.plan === "abonnement" ? (fin ? t("Abonnement actif jusqu'au {fin}.").replace("{fin}", fin) : t("Abonnement actif."))
+      : t("Code valide.");
+    st.textContent = st.dataset.base;
+    showReste(r.reste);
+  } catch(e){ st.dataset.base = ""; st.textContent = e && e.code === "code_expired" ? t("Ce code n'est plus actif.") : (e && e.code === "code_required" ? t("Code non reconnu.") : ""); }
+}
+$("code").addEventListener("change", checkCode);
+function toggleEssai(){ const n = $("essaiNote"); if (n) n.hidden = !!$("code").value.trim(); }
+$("code").addEventListener("input", toggleEssai); toggleEssai();
+if ($("code").value) checkCode();
+
+// Photo : aperçu et réduction avant envoi (1024 px max, JPEG)
+function toJpeg(file){
+  return new Promise((ok, ko) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, 1024 / Math.max(img.width, img.height));
+      const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      ok(c.toDataURL("image/jpeg", 0.85).split(",")[1]);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); ko(new Error("img")); };
+    img.src = url;
+  });
+}
+$("ph-file").addEventListener("change", () => {
+  const f = $("ph-file").files[0], p = $("ph-preview");
+  if (f) { p.src = URL.createObjectURL(f); p.hidden = false; } else p.hidden = true;
+});
+
+// Avis, vidéos : rendus selon la langue
+function renderDynamic(){
+  const list = $("avisList"); if (!list) return;
+  list.innerHTML = "";
+  AVIS.forEach(a => {
+    const fig = el("figure");
+    if (a.note) fig.append(el("div", "etoiles", "★".repeat(a.note) + "☆".repeat(5 - a.note)));
+    fig.append(el("blockquote", null, "« " + a.texte + " »"), el("figcaption", null, a.nom));
+    list.append(fig);
+  });
+  const notes = AVIS.filter(a => a.note).map(a => a.note);
+  const m = $("moyenne");
+  if (notes.length) {
+    const avg = (notes.reduce((x, y) => x + y, 0) / notes.length).toLocaleString(LOCALES[LANG] || "fr-BE", { maximumFractionDigits: 1 });
+    m.textContent = t("Note moyenne : {n}/5 ({c} avis)").replace("{n}", avg).replace("{c}", notes.length); m.hidden = false;
+  } else m.hidden = true;
+  const vl = $("videoList"); vl.innerHTML = "";
+  VIDEOS.forEach(v => {
+    const fig = el("figure"), vid = document.createElement("video");
+    vid.src = v.src; if (v.poster) vid.poster = v.poster; vid.controls = true; vid.preload = "none"; vid.setAttribute("playsinline", "");
+    vid.setAttribute("aria-label", t(v.titre));
+    fig.append(vid, el("figcaption", null, t(v.titre))); vl.append(fig);
+  });
+  $("videosSec").hidden = !VIDEOS.length;
+}
+
+// Formulaires Netlify (suggestions, avis)
+function netlifyForm(formId, merciId, okMsg){
+  $(formId).addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const f = ev.target, btn = f.querySelector("button[type=submit]"); btn.disabled = true;
+    try {
+      const r = await fetch("/", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(new FormData(f)).toString() });
+      if (!r.ok) throw new Error();
+      f.reset(); $(merciId).textContent = t(okMsg);
+    } catch(e){ $(merciId).textContent = t("L'envoi a échoué. Réessaie dans un instant."); }
+    finally { btn.disabled = false; }
+  });
+}
+netlifyForm("ecouteForm", "ecouteMerci", "Merci ! Ton message est bien arrivé, Second Regard est à ton écoute.");
+netlifyForm("avisForm", "avisMerci", "Merci pour ton avis ! Il sera publié après relecture.");
+
+// Recherche
+const fold = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+$("qsearch").addEventListener("input", () => {
+  const q = fold($("qsearch").value.trim()), box = $("sres"); box.innerHTML = "";
+  if (q.length < 2) return;
+  const res = [];
+  document.querySelectorAll(".tools [data-tool]").forEach(b => { if (fold(b.textContent + " " + (b.dataset.kw || "")).includes(q)) res.push({ type: t("Outil"), label: b.querySelector("b").textContent, go: () => show(b.dataset.tool, true) }); });
+  document.querySelectorAll(".guides details").forEach(d => { if (fold(d.textContent).includes(q)) res.push({ type: t("Guide"), label: d.querySelector("summary").textContent, go: () => { d.open = true; d.scrollIntoView({ behavior: "smooth", block: "start" }); } }); });
+  document.querySelectorAll("#videoList figcaption").forEach(c => { if (fold(c.textContent).includes(q)) res.push({ type: t("Vidéo"), label: c.textContent, go: () => c.parentElement.scrollIntoView({ behavior: "smooth", block: "center" }) }); });
+  if (!res.length) { box.append(el("p", null, t("Aucun résultat pour cette recherche."))); return; }
+  res.slice(0, 8).forEach(r => { const b = el("button"); b.type = "button"; b.append(el("small", null, r.type), el("span", null, r.label)); b.onclick = r.go; box.append(b); });
+});
+
+// Partage
+const SITE = "https://second-regard.netlify.app";
+function shareText(){ return t("Second Regard : le coach qui t'aide à réussir tes rencontres en ligne. Ta première bio est offerte !"); }
+document.querySelectorAll("[data-share]").forEach(b => b.addEventListener("click", async () => {
+  if (navigator.share) { try { await navigator.share({ title: "Second Regard", text: shareText(), url: SITE }); return; } catch(e){ if (e && e.name === "AbortError") return; } }
+  const g = $("shareGrid"); g.innerHTML = ""; const txt = encodeURIComponent(shareText()), u = encodeURIComponent(SITE);
+  [["WhatsApp", "https://wa.me/?text=" + txt + "%20" + u], ["Telegram", "https://t.me/share/url?url=" + u + "&text=" + txt],
+   ["Facebook", "https://www.facebook.com/sharer/sharer.php?u=" + u], ["X", "https://twitter.com/intent/tweet?text=" + txt + "&url=" + u],
+   [t("E-mail"), "mailto:?subject=Second%20Regard&body=" + txt + "%20" + u]].forEach(([n, href]) => { const a = el("a", null, n); a.href = href; a.target = "_blank"; a.rel = "noopener"; g.append(a); });
+  const c = el("button", null, t("Copier le lien")); c.type = "button";
+  c.onclick = async () => { try { await navigator.clipboard.writeText(SITE); c.textContent = t("Lien copié !"); } catch(e){ c.textContent = SITE; } };
+  g.append(c); $("shareDlg").showModal();
+}));
+$("shareClose").addEventListener("click", () => $("shareDlg").close());
+$("shareDlg").addEventListener("click", e => { if (e.target === $("shareDlg")) $("shareDlg").close(); });
+
+// Choix de l'outil
+const TOOLS = ["bio","photo","opener","convo","date","rebond","chat"];
+function show(tool, scroll){
+  if(!TOOLS.includes(tool)) return;
+  document.querySelectorAll("[data-tool]").forEach(b => b.setAttribute("aria-pressed", b.dataset.tool === tool));
+  TOOLS.forEach(t => $("p-"+t).hidden = t !== tool);
+  if(scroll) document.querySelector(".tools").scrollIntoView({behavior:"smooth", block:"start"});
+  history.replaceState(null, "", "#"+tool);
+}
+document.querySelectorAll("[data-tool]").forEach(b => b.addEventListener("click", () => show(b.dataset.tool)));
+document.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => show(b.dataset.go, true)));
+if(location.hash) show(location.hash.slice(1));
+
+// Boutons Copier / WhatsApp
+function actionRow(text){
+  const row = document.createElement("div"); row.className = "actions";
+  const copy = document.createElement("button"); copy.type="button"; copy.className="btn btn-ghost"; copy.textContent=t("Copier");
+  copy.onclick = async () => {
+    try { await navigator.clipboard.writeText(text); copy.textContent = t("Copié"); }
+    catch(e){ copy.textContent = t("Copie impossible"); }
+    setTimeout(()=>copy.textContent=t("Copier"),1800);
+  };
+  const wa = document.createElement("a"); wa.className="btn btn-wa"; wa.textContent=t("Envoyer sur WhatsApp");
+  wa.href = "https://wa.me/?text=" + encodeURIComponent(text); wa.target="_blank"; wa.rel="noopener";
+  row.append(copy, wa); return row;
+}
+const el = (tag, cls, text) => { const e = document.createElement(tag); if(cls) e.className = cls; if(text != null) e.textContent = text; return e; };
+function list(r, title, items){
+  if(!items || !items.length) return [];
+  r.append(el("h4", null, title));
+  const ul = el("ul"); items.forEach(t => ul.append(el("li", null, t))); r.append(ul);
+  return [title + " :", ...items.map(t => "• " + t), ""];
+}
+function card(r, label, text, limit){
+  const c = el("div", "card");
+  c.append(el("div", "style", label || ""), el("p", null, text || ""));
+  if(limit) c.append(el("div", "count", `${(text||"").length} / ${limit} ${t("caractères")}`));
+  c.append(actionRow(text || "")); r.append(c);
+}
+function allRow(r, lines){
+  const w = el("div"); w.style.marginTop = "20px";
+  w.append(el("p", "note", t("Tout recevoir d'un coup :")), actionRow(lines.join("\n").trim())); r.append(w);
+}
+
+function renderBio(r, out, limit){
+  r.append(el("h4", null, t("Tes bios")));
+  (out.bios||[]).forEach(b => card(r, b.style || t("Bio"), b.texte, limit));
+  const lines = [t("Mes bios Second Regard :"), ...(out.bios||[]).map(b => `• ${b.style} : ${b.texte}`), ""];
+  lines.push(...list(r, t("Conseils photos"), out.photos));
+  lines.push(...list(r, t("Idées de premiers messages"), out.messages));
+  allRow(r, lines);
+}
+function renderGeneric(r, out){
+  if(out.alerte){ const a = el("div", "alerte", out.intro || ""); r.append(a); }
+  else if(out.intro) r.append(el("p", "lead", out.intro));
+  const lines = out.intro ? [out.intro, ""] : [];
+  (out.sections||[]).forEach(s => lines.push(...list(r, s.titre, s.points)));
+  if((out.messages||[]).length){
+    r.append(el("h4", null, t("Messages prêts à envoyer")));
+    out.messages.forEach(m => { card(r, m.label, m.texte); lines.push(`• ${m.label} : ${m.texte}`); });
+  }
+  if(lines.length > 2) allRow(r, lines);
+}
+
+document.querySelectorAll("form[data-mode]").forEach(form => {
+  const panel = form.closest(".panel");
+  const status = panel.querySelector(".status"), results = panel.querySelector(".results");
+  const btn = form.querySelector("button[type=submit]");
+  form.addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const data = Object.fromEntries(new FormData(form));
+    for (const k in data) data[k] = String(data[k]).trim();
+    if(form.dataset.mode === "photo"){
+      const f = $("ph-file").files[0];
+      if(!f){ status.textContent = t("Choisis une photo."); return; }
+      try { data.image = await toJpeg(f); data.media = "image/jpeg"; }
+      catch(e){ status.textContent = t("Impossible de lire cette photo. Essaie une image JPG ou PNG."); return; }
+    }
+    if(form.dataset.mode === "bio"){
+      const age = parseInt(data.age, 10);
+      if(!age || age < 18){ status.textContent = t("Indique ton âge : le service est réservé aux 18 ans et plus."); return; }
+    }
+    btn.disabled = true; results.innerHTML = ""; status.textContent = t("Ton coach réfléchit…");
+    try {
+      const out = await api({ mode: form.dataset.mode, data });
+      status.textContent = "";
+      if(form.dataset.mode === "bio") renderBio(results, out.result, out.limit);
+      else renderGeneric(results, out.result);
+      showReste(out.reste);
+      if(out.essai){
+        const box = el("div", "essai");
+        box.append(el("p", null, t("C'était ta bio offerte. Pour continuer avec tous les outils, choisis une formule.")));
+        const b = el("button", "btn btn-main", t("Voir les formules")); b.type = "button";
+        b.onclick = () => { offresVues = false; openOffres(); };
+        box.append(b);
+        if (PROMO && LIENS.abo) {
+          const pr = el("p", "promo");
+          pr.append(document.createTextNode(t("Tu as aimé ? -10 % sur ton abonnement avec le code") + " "), el("code", null, PROMO));
+          const a = el("a", "btn btn-ghost", t("Profiter de -10 %")); a.href = LIENS.abo.replace(/\/$/, "") + "/" + encodeURIComponent(PROMO);
+          a.target = "_blank"; a.rel = "noopener"; a.style.marginTop = "10px";
+          box.append(pr, a);
+        }
+        results.append(box);
+      }
+      results.scrollIntoView({behavior:"smooth", block:"start"});
+    } catch(e){ status.textContent = errText(e); }
+    finally { btn.disabled = false; }
+  });
+});
+
+// Chat libre
+const turns = [];
+function bubble(cls, text){
+  const e = $("chat").querySelector(".empty"); if(e) e.remove();
+  const d = el("div", "msg " + cls, text); $("chat").append(d); return d;
+}
+async function ask(q){
+  if(!q.trim()) return;
+  $("askBtn").disabled = true; $("q").value = "";
+  bubble("me", q); turns.push({role:"user", content:q});
+  const out = bubble("ai", t("Réflexion…"));
+  try {
+    const res = await api({ mode:"chat", messages: turns.slice(-10) }); const text = res.text; showReste(res.reste);
+    out.textContent = text; turns.push({role:"assistant", content:text});
+    const row = actionRow(text); row.style.marginTop="10px"; out.append(row);
+  } catch(e){ out.textContent = errText(e); turns.pop(); }
+  finally { $("askBtn").disabled = false; }
+}
+$("askBtn").onclick = () => ask($("q").value);
+$("q").addEventListener("keydown", e => { if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); ask($("q").value); } });
+document.querySelectorAll("#suggest button").forEach(b => b.onclick = () => ask(b.textContent));
+
+window.__srReady = true; renderDynamic();
+if("serviceWorker" in navigator){ navigator.serviceWorker.register("/sw.js").catch(()=>{}); }
+</script>
+</body>
+</html>
