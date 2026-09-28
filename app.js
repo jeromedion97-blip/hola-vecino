@@ -21,7 +21,7 @@ const OPT = {
   housing:["renting","owner","searching","hosted"],
   spanish:["none","basic","mid","fluent","native"],
   forum:["admin","housing","work","health","family","taxes","social","market","general"],
-  contact:["lawyer","gestoria","bank","doctor","realestate","insurance","translator","school","other"]
+  contact:["embassy","emergency","lawyer","gestoria","bank","doctor","realestate","insurance","translator","school","other"]
 };
 const SPOKEN = "fr en es de nl it pt ca eu gl pl ro ru uk ar zh sv da no fi cs hu el tr".split(" ");
 const COUNTRIES = "AD AE AF AL AM AO AR AT AU AZ BA BD BE BG BO BR BY CA CH CL CN CO CR CU CY CZ DE DK DO DZ EC EE EG ES ET FI FR GB GE GH GR GT HN HR HU ID IE IL IN IQ IR IS IT JM JO JP KE KR KW KZ LB LT LU LV LY MA MC MD ME MK MX NG NI NL NO NZ PA PE PH PK PL PT PY QA RO RS RU SA SE SG SI SK SN SV SY TN TR UA US UY VE VN ZA".split(" ");

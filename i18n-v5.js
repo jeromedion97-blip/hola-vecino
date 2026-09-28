@@ -2,7 +2,7 @@
 (() => {
 const add = {
 fr: {
-  nav_articles:"Articles", nav_agenda:"Mon agenda", nav_drive:"Mon drive", search:"Rechercher…", no_match:"Aucun résultat pour cette recherche.", follow_us:"Suivez-nous",
+  ct_embassy:"Ambassade, consulat", ct_emergency:"Urgences", nav_articles:"Articles", nav_agenda:"Mon agenda", nav_drive:"Mon drive", search:"Rechercher…", no_match:"Aucun résultat pour cette recherche.", follow_us:"Suivez-nous",
   install_title:"Installer Hola Vecino sur votre téléphone", install_text:"Ouvrez le site en un geste depuis l'écran d'accueil, comme une application.", install_btn:"Installer", install_later:"Plus tard", install_ios:"Touchez l'icône Partager ⬆️ en bas de l'écran, puis « Sur l'écran d'accueil ».",
   agenda_title:"Mon agenda", agenda_intro:"Vos rappels, vos événements et vos échéances au même endroit. Ajoutez-les à l'agenda de votre téléphone pour recevoir une alerte.",
   rem_new:"Nouveau rappel", rem_title:"Titre", rem_date:"Date", rem_time:"Heure (facultatif)", rem_note:"Note (facultatif)", rem_before:"Me le rappeler",
@@ -23,7 +23,7 @@ fr: {
   art_admin:"Articles", art_new:"Nouvel article", art_topic:"Sujet de l'article", art_generate:"Générer un brouillon avec l'IA", art_generating:"Rédaction en cours…", art_translate:"Traduire dans les autres langues", art_translating:"Traduction en cours :", art_save:"Enregistrer", art_publish:"Publier", art_unpublish:"Repasser en brouillon", art_status_draft:"Brouillon", art_status_published:"Publié", art_last:"Dernier article publié le", art_late:"Plus de 7 jours sans article : pensez à publier celui de la semaine.", art_ai_error:"L'IA n'a pas pu répondre. Vérifiez la clé API et réessayez.", art_review:"Relisez toujours le texte avant de publier : l'IA peut se tromper.", art_title_field:"Titre", art_body_field:"Texte (## pour un sous-titre, - pour une liste, **gras**)", art_saved:"Article enregistré.", art_ideas:"Idées de sujets"
 },
 en: {
-  nav_articles:"Articles", nav_agenda:"My calendar", nav_drive:"My drive", search:"Search…", no_match:"No results for this search.", follow_us:"Follow us",
+  ct_embassy:"Embassy, consulate", ct_emergency:"Emergencies", nav_articles:"Articles", nav_agenda:"My calendar", nav_drive:"My drive", search:"Search…", no_match:"No results for this search.", follow_us:"Follow us",
   install_title:"Install Hola Vecino on your phone", install_text:"Open the site in one tap from your home screen, like an app.", install_btn:"Install", install_later:"Later", install_ios:"Tap the Share icon ⬆️ at the bottom of the screen, then “Add to Home Screen”.",
   agenda_title:"My calendar", agenda_intro:"Your reminders, events and deadlines in one place. Add them to your phone's calendar to get an alert.",
   rem_new:"New reminder", rem_title:"Title", rem_date:"Date", rem_time:"Time (optional)", rem_note:"Note (optional)", rem_before:"Remind me",
@@ -44,7 +44,7 @@ en: {
   art_admin:"Articles", art_new:"New article", art_topic:"Article topic", art_generate:"Generate a draft with AI", art_generating:"Writing…", art_translate:"Translate into the other languages", art_translating:"Translating:", art_save:"Save", art_publish:"Publish", art_unpublish:"Back to draft", art_status_draft:"Draft", art_status_published:"Published", art_last:"Last article published on", art_late:"More than 7 days without an article: remember to publish this week's.", art_ai_error:"The AI did not respond. Check the API key and try again.", art_review:"Always proofread before publishing: AI can make mistakes.", art_title_field:"Title", art_body_field:"Text (## for a subheading, - for a list, **bold**)", art_saved:"Article saved.", art_ideas:"Topic ideas"
 },
 es: {
-  nav_articles:"Artículos", nav_agenda:"Mi agenda", nav_drive:"Mi drive", search:"Buscar…", no_match:"No hay resultados para esta búsqueda.", follow_us:"Síguenos",
+  ct_embassy:"Embajada, consulado", ct_emergency:"Emergencias", nav_articles:"Artículos", nav_agenda:"Mi agenda", nav_drive:"Mi drive", search:"Buscar…", no_match:"No hay resultados para esta búsqueda.", follow_us:"Síguenos",
   install_title:"Instala Hola Vecino en tu móvil", install_text:"Abre el sitio con un toque desde la pantalla de inicio, como una aplicación.", install_btn:"Instalar", install_later:"Más tarde", install_ios:"Toca el icono Compartir ⬆️ abajo y luego «Añadir a pantalla de inicio».",
   agenda_title:"Mi agenda", agenda_intro:"Tus recordatorios, eventos y plazos en un solo lugar. Añádelos al calendario del móvil para recibir un aviso.",
   rem_new:"Nuevo recordatorio", rem_title:"Título", rem_date:"Fecha", rem_time:"Hora (opcional)", rem_note:"Nota (opcional)", rem_before:"Avisarme",
@@ -64,7 +64,7 @@ es: {
   vis_private:"Privado (solo lo veo yo)", ev_share:"Compartir", link_copied:"Enlace copiado."
 },
 de: {
-  nav_articles:"Artikel", nav_agenda:"Mein Kalender", nav_drive:"Mein Drive", search:"Suchen…", no_match:"Keine Ergebnisse für diese Suche.", follow_us:"Folge uns",
+  ct_embassy:"Botschaft, Konsulat", ct_emergency:"Notfälle", nav_articles:"Artikel", nav_agenda:"Mein Kalender", nav_drive:"Mein Drive", search:"Suchen…", no_match:"Keine Ergebnisse für diese Suche.", follow_us:"Folge uns",
   install_title:"Hola Vecino auf dem Handy installieren", install_text:"Öffne die Seite mit einem Tipp vom Startbildschirm, wie eine App.", install_btn:"Installieren", install_later:"Später", install_ios:"Tippe unten auf das Teilen-Symbol ⬆️ und dann auf „Zum Home-Bildschirm“.",
   agenda_title:"Mein Kalender", agenda_intro:"Deine Erinnerungen, Veranstaltungen und Fristen an einem Ort. Füge sie deinem Handykalender hinzu, um benachrichtigt zu werden.",
   rem_new:"Neue Erinnerung", rem_title:"Titel", rem_date:"Datum", rem_time:"Uhrzeit (optional)", rem_note:"Notiz (optional)", rem_before:"Erinnere mich",
@@ -84,7 +84,7 @@ de: {
   vis_private:"Privat (nur für mich sichtbar)", ev_share:"Teilen", link_copied:"Link kopiert."
 },
 nl: {
-  nav_articles:"Artikels", nav_agenda:"Mijn agenda", nav_drive:"Mijn drive", search:"Zoeken…", no_match:"Geen resultaten voor deze zoekopdracht.", follow_us:"Volg ons",
+  ct_embassy:"Ambassade, consulaat", ct_emergency:"Noodgevallen", nav_articles:"Artikels", nav_agenda:"Mijn agenda", nav_drive:"Mijn drive", search:"Zoeken…", no_match:"Geen resultaten voor deze zoekopdracht.", follow_us:"Volg ons",
   install_title:"Installeer Hola Vecino op je gsm", install_text:"Open de site met één tik vanaf je startscherm, zoals een app.", install_btn:"Installeren", install_later:"Later", install_ios:"Tik onderaan op het deelicoon ⬆️ en daarna op ‘Zet op beginscherm’.",
   agenda_title:"Mijn agenda", agenda_intro:"Je herinneringen, evenementen en deadlines op één plek. Voeg ze toe aan de agenda van je gsm om een melding te krijgen.",
   rem_new:"Nieuwe herinnering", rem_title:"Titel", rem_date:"Datum", rem_time:"Uur (optioneel)", rem_note:"Notitie (optioneel)", rem_before:"Herinner me",

@@ -351,7 +351,7 @@ table.cmp select{min-width:150px}
 /* ===== v5 ===== */
 .brand-img{display:block;height:50px;width:auto}
 .hero-logo{display:grid;place-items:center;border-radius:var(--r-m);background:var(--tile) 0 0/64px 64px;box-shadow:inset 0 0 0 6px var(--cobalt);padding:28px;position:relative}
-.hero-logo::before{content:"";position:absolute;inset:18px;border-radius:50%;background:radial-gradient(circle,#fff 62%,rgba(255,255,255,.85) 70%,rgba(255,255,255,0) 72%)}
+.hero-logo::before{content:"";position:absolute;inset:30px;border-radius:50%;background:#fff;box-shadow:0 0 0 10px rgba(255,255,255,.6)}
 .hero-logo img{position:relative;width:100%;max-width:380px;height:auto}
 /* Menu personnel */
 .me-wrap{position:relative}
@@ -429,3 +429,35 @@ details.card{padding:14px 18px}
   .ag-item{grid-template-columns:1fr;gap:2px}
   .doclink{margin-left:0;display:inline-block;margin-top:4px}
 }
+
+/* ===== v6 : un peu de vie ===== */
+@keyframes hv-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes hv-sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes hv-sun{0%,100%{box-shadow:0 0 0 8px rgba(242,183,5,.25),0 0 30px rgba(242,183,5,.5)}50%{box-shadow:0 0 0 14px rgba(242,183,5,.15),0 0 50px rgba(242,183,5,.6)}}
+@keyframes hv-waves{from{background-position-x:0}to{background-position-x:720px}}
+@keyframes hv-wave-hand{0%,60%,100%{transform:rotate(0)}10%,30%{transform:rotate(16deg)}20%,40%{transform:rotate(-8deg)}}
+/* Apparition douce des pages */
+#view > *{animation:hv-rise .45s ease both}
+#view > *:nth-child(2){animation-delay:.06s}
+#view > *:nth-child(3){animation-delay:.12s}
+/* Accueil : soleil et palmier qui se balance */
+.hero-logo{overflow:visible}
+.hero-logo::after{content:"";position:absolute;top:-20px;right:-16px;width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#FFE27A,#F2B705 70%);animation:hv-sun 5s ease-in-out infinite;z-index:1}
+.hero{position:relative}
+.hero::after{content:"";position:absolute;left:calc((100% - 40px) * .55 + 40px - 58px);bottom:-18px;width:96px;height:156px;background:url("palm.svg") bottom/contain no-repeat;transform-origin:50% 100%;animation:hv-sway 6s ease-in-out infinite;pointer-events:none}
+/* Pied de page : vagues et palmiers */
+.footer{position:relative;padding-top:64px;overflow:hidden;background:linear-gradient(#fff 0,#fff 60%,#FFF6DA 100%)}
+.footer::before{content:"";position:absolute;top:0;left:0;right:0;height:40px;background:url("waves.svg") repeat-x;background-size:720px 40px;animation:hv-waves 24s linear infinite}
+.footer::after{content:"";position:absolute;bottom:0;left:0;right:0;height:120px;background:url("palm.svg") left 3% bottom/64px auto no-repeat,url("palm.svg") right 4% bottom/84px auto no-repeat;pointer-events:none;opacity:.9}
+.footer > *{position:relative;z-index:1}
+/* Petites attentions */
+.wave-hand{display:inline-block;transform-origin:70% 80%;animation:hv-wave-hand 2.4s ease-in-out 1s 2}
+.btn,.door,.event-card,.member,.listing,.article-card,.contact,.yt{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+.btn:hover{transform:translateY(-1px)}
+.door:hover,.event-card:hover,.member:hover,.listing:hover,.article-card:hover,.contact:hover,.yt:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(20,33,61,.10)}
+.door-tile{transition:transform .5s ease}
+.door:hover .door-tile{transform:rotate(90deg)}
+.empty::before{content:"";display:block;width:44px;height:62px;margin:0 auto 10px;background:url("palm.svg") center/contain no-repeat;opacity:.85}
+.premium-link.on{animation:hv-sun 5s ease-in-out infinite}
+@media (max-width:900px){.hero::after{left:auto;right:6%;bottom:auto;top:-10px;width:60px;height:100px}}
+@media (max-width:520px){.footer::after{height:80px;background-size:44px auto,56px auto}}

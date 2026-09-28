@@ -64,7 +64,7 @@ async function dashboard() {
   const cal = d => { const x = new Date(d); return `<span class="cal" aria-hidden="true"><span>${esc(x.toLocaleDateString(H.lang, { month:"short" }))}</span><strong>${x.getDate()}</strong></span>`; };
 
   view.innerHTML = `<section class="page wide dash">
-    <header class="dash-head">${avatar(p, "big")}<div><h1>${esc(t("dash_hello"))} ${esc(p.display_name)}</h1>
+    <header class="dash-head">${avatar(p, "big")}<div><h1>${esc(t("dash_hello"))} ${esc(p.display_name)} <span class="wave-hand" aria-hidden="true">👋</span></h1>
       <p class="muted">${[city, since].filter(Boolean).map(esc).join(" · ")}</p>
       <p class="bds">${badgeList(earned(p, s))}${p.verified || p.is_guide ? badges(p) : ""}</p></div></header>
     ${!city ? `<p class="notice">${esc(t("dash_no_city"))} <a href="#/mon-profil">${esc(t("nav_profile"))}</a></p>` : ""}
