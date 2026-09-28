@@ -5,12 +5,13 @@ H.date = H.date || (d => new Date(d).toLocaleDateString());
 const view = H.view;
 ROUTES.unshift([/^#\/admin$/, () => admin(), true]);
 
-const TABLE = { profile:"profiles", forum_thread:"forum_threads", forum_reply:"forum_replies", event:"events", listing:"listings" };
+const TABLE = { profile:"profiles", forum_thread:"forum_threads", forum_reply:"forum_replies", event:"events", listing:"listings", post:"posts" };
 async function linkFor(r) {
   if (r.target_type === "profile") return "#/profil/" + r.target_id;
   if (r.target_type === "forum_thread") return "#/forum/" + r.target_id;
   if (r.target_type === "event") return "#/evenements/" + r.target_id;
   if (r.target_type === "listing") return "#/bons-plans";
+  if (r.target_type === "post") return "#/voisins/" + r.target_id;
   if (r.target_type === "forum_reply") { const { data } = await H.sb.from("forum_replies").select("thread_id").eq("id", r.target_id).maybeSingle(); return data ? "#/forum/" + data.thread_id : ""; }
   return "";
 }

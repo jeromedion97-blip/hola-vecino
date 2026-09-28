@@ -142,7 +142,7 @@ const BELL = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"
 function renderHeader() {
   document.documentElement.lang = lang;
   const br = $("#brand"); if (br) br.textContent = C.APP_NAME; document.title = C.APP_NAME;
-  const links = [["#/", "nav_home"], ["#/guide", "nav_guide"], ["#/finances", "nav_finances"], ["#/communaute", "nav_community"], ["#/evenements", "nav_events"], ["#/forum", "nav_forum"], ["#/articles", "nav_articles"], ["#/bons-plans", "nav_deals"], ["#/youtube", "nav_youtube"], ["#/contacts", "nav_contacts"]];
+  const links = [["#/", "nav_home"], ["#/guide", "nav_guide"], ["#/finances", "nav_finances"], ["#/communaute", "nav_community"], ["#/voisins", "nav_wall"], ["#/evenements", "nav_events"], ["#/forum", "nav_forum"], ["#/articles", "nav_articles"], ["#/bons-plans", "nav_deals"], ["#/youtube", "nav_youtube"], ["#/contacts", "nav_contacts"]];
   if (me) links.push(["#/messages", "nav_messages"]);
   if (isAdmin) links.push(["#/admin", "nav_admin"]);
   const cur = (location.hash || "#/").split("/").slice(0, 2).join("/");
