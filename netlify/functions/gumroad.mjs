@@ -24,7 +24,12 @@ export default async (req) => {
   if (f.get("test") === "true" && process.env.GUMROAD_ALLOW_TEST !== "true") return new Response("test ignored");
 
   const permalink = (f.get("permalink") || f.get("short_product_id") || "").toLowerCase();
-  const p = PRODUCTS[permalink];
+  // Si le lien personnalisé n'a pas été réglé, on reconnaît le produit par son nom
+  const name = (f.get("product_name") || "").toLowerCase();
+  const byName = name.includes("premium") ? "hv-premium" : name.includes("vedette") ? "hv-vedette"
+    : name.includes("youtube") ? "hv-youtube" : name.includes("location") ? "hv-location"
+    : name.includes("professionnel") ? "hv-pro" : "";
+  const p = PRODUCTS[permalink] || PRODUCTS[byName];
   const email = (f.get("email") || "").trim().toLowerCase();
   if (!p || !email) return new Response("unknown product", { status: 200 });
 
