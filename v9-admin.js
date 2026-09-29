@@ -34,7 +34,7 @@ async function stats() {
     <h2>⚖️ ${esc(t("as_pro_queue"))} <span class="badge" ${s.pro_pending ? "" : "hidden"}>${s.pro_pending}</span></h2><div id="aspro"></div>
     <h2>⭐ ${esc(t("as_last_reviews"))}</h2><div id="asrev"></div>
     <h2>✉️ ${esc(t("nl_title"))}</h2><p><button class="btn small" id="ascsv">⬇ ${esc(t("as_export"))}</button></p>
-    <p class="actions"><a class="btn small" href="#/admin">${esc(t("adm_title"))}</a><a class="btn small" href="#/videos">🎬 ${esc(t("nav_videos"))}</a><a class="btn small" href="#/admin/articles">✎ ${esc(t("art_admin"))}</a></p>`;
+    <p class="actions"><a class="btn small primary" href="#/admin/pilotage">🧭 ${esc(t("ap_title"))}</a><a class="btn small" href="#/admin">${esc(t("adm_title"))}</a><a class="btn small" href="#/videos">🎬 ${esc(t("nav_videos"))}</a><a class="btn small" href="#/admin/articles">✎ ${esc(t("art_admin"))}</a></p>`;
 
   // Récompenses du mois précédent
   $("#asreward").onclick = async () => {

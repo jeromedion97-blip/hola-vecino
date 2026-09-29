@@ -793,3 +793,14 @@ button.yt-thumb{border:0;padding:0;cursor:pointer;width:100%}
 .hv-avatar{width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--line);padding:4px;object-fit:contain}
 .react-box{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin:20px 0;padding:14px 16px;border-radius:var(--r-m);background:linear-gradient(135deg,#FFF6DA,#fff);border:2px solid var(--sun);text-decoration:none;color:var(--ink)}
 .cover-edit{margin:12px 0}
+/* v14 : pilotage */
+.tabs .tabbtn{display:inline-block;padding:7px 14px;border:1.5px solid var(--line);border-radius:20px;text-decoration:none;color:var(--ink);font-weight:700;font-size:.92rem;background:var(--white)}
+.tabs .tabbtn[aria-current="page"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.member-admin li{align-items:flex-start}
+.mu-main{display:flex;gap:10px;align-items:flex-start}
+.mu-main p{margin:2px 0}
+.ideas-summary{border-left:6px solid var(--cobalt);font-size:1.05rem}
+.warn-card{border-left:6px solid var(--red)}
+.variants{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:10px 0}
+.variant{padding:14px;border:1px solid var(--line);border-radius:var(--r-m);background:var(--paper)}
+.variant p.small{white-space:normal}
