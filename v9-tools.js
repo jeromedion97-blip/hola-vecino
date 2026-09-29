@@ -42,7 +42,7 @@ async function aiCall(payload) {
   const r = await fetch("/.netlify/functions/ai", { method:"POST", headers:{ "Content-Type":"application/json", Authorization:"Bearer " + (session ? session.access_token : "") }, body: JSON.stringify({ ...payload, lang: H.lang }) });
   const d = await r.json().catch(() => ({}));
   if (r.status === 429) throw Object.assign(new Error("quota"), { quota: true });
-  if (!r.ok || !d.text) throw new Error(d.error || "error");
+  if (!r.ok || !d.text) throw new Error(d.error || ("HTTP " + r.status + (r.status === 404 ? " : fonction ai introuvable" : "")));
   return d;
 }
 async function quotaLine(el) {
@@ -78,7 +78,7 @@ function assistant() {
     hist.push({ role:"user", content:q }); draw(); save();
     box.insertAdjacentHTML("beforeend", `<div class="bubble typing" id="typing"><p>…</p></div>`); box.scrollTop = box.scrollHeight;
     try { const d = await aiCall({ mode:"assistant", history: hist.slice(-8) }); hist.push({ role:"assistant", content:d.text }); save(); draw(); }
-    catch (e) { const ty = $("#typing"); if (ty) ty.remove(); hist.pop(); save(); draw(); box.insertAdjacentHTML("beforeend", e.quota ? quotaMsg() : `<p class="notice small">${esc(t("ai_error"))}</p>`); }
+    catch (e) { const ty = $("#typing"); if (ty) ty.remove(); hist.pop(); save(); draw(); box.insertAdjacentHTML("beforeend", e.quota ? quotaMsg() : `<p class="notice small">${esc(t("ai_error"))}${H.isAdmin ? `<br><code>${esc(e.message)}</code>` : ""}</p>`); }
     quotaLine($("#aiq"));
   };
   $("#aif").onsubmit = e => { e.preventDefault(); const v = $("#aiin").value; $("#aiin").value = ""; ask(v); };
@@ -117,7 +117,7 @@ function translator() {
     if ($("#trfrom").value === $("#trto").value) { $("#trout").value = text; return; }
     $("#trmsg").textContent = t("loading");
     try { const d = await aiCall({ mode:"translate", from: $("#trfrom").value, to: $("#trto").value, text }); $("#trout").value = d.text; $("#trmsg").textContent = ""; }
-    catch (e) { $("#trmsg").innerHTML = e.quota ? quotaMsg() : esc(t("ai_error")); }
+    catch (e) { $("#trmsg").innerHTML = e.quota ? quotaMsg() : esc(t("ai_error")) + (H.isAdmin ? `<br><code>${esc(e.message)}</code>` : ""); }
     quotaLine($("#trq"));
   };
   quotaLine($("#trq"));
