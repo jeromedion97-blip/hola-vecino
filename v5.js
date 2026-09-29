@@ -380,7 +380,7 @@ async function callArticleAI(payload) {
   const { data: { session } } = await H.sb.auth.getSession();
   const r = await fetch("/.netlify/functions/article", { method:"POST", headers:{ "Content-Type":"application/json", Authorization:"Bearer " + (session ? session.access_token : "") }, body: JSON.stringify(payload) });
   const d = await r.json().catch(() => ({}));
-  if (!r.ok || !d.title) throw new Error(d.error || "error");
+  if (!r.ok || !d.title) throw new Error(d.error || ("HTTP " + r.status + (r.status === 404 ? " : fonction article introuvable" : "")));
   return d;
 }
 async function makeCover(title) {
@@ -465,14 +465,14 @@ async function articleEditor(key) {
     const topic = $("#atopic").value.trim(); if (!topic) return $("#atopic").focus();
     keep(); $("#aimsg").textContent = t("art_generating");
     try { const d = await callArticleAI({ mode:"draft", topic }); a.topic = topic; a.title.fr = d.title; a.body.fr = d.body; cur = "fr"; show(); $("#aimsg").textContent = ""; }
-    catch (e) { $("#aimsg").textContent = t("art_ai_error"); }
+    catch (e) { $("#aimsg").innerHTML = `${esc(t("art_ai_error"))}<br><code>${esc(e.message)}</code>`; }
   };
   $("#atr").onclick = async () => {
     keep(); if (!a.title.fr || !a.body.fr) { cur = "fr"; show(); return $("#atitle").focus(); }
     for (const l of LANGS.filter(x => x !== "fr")) {
       $("#aimsg").textContent = `${t("art_translating")} ${H.LANG_NAMES[l]}…`;
       try { const d = await callArticleAI({ mode:"translate", to:l, title:a.title.fr, body:a.body.fr }); a.title[l] = d.title; a.body[l] = d.body; }
-      catch (e) { $("#aimsg").textContent = t("art_ai_error"); return; }
+      catch (e) { $("#aimsg").innerHTML = `${esc(t("art_ai_error"))}<br><code>${esc(e.message)}</code>`; return; }
     }
     $("#aimsg").textContent = "✓"; show();
   };
