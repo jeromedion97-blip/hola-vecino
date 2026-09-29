@@ -20,14 +20,14 @@ window.APP_CONFIG_EXTRA = {
     youtube: "https://regardful6.gumroad.com/l/hv-youtube",    // Chaîne YouTube référencée (4,90 €/mois)
     rental: "https://regardful6.gumroad.com/l/hv-location",    // Location d'un bien, 30 jours (9,90 €)
     featured: "https://regardful6.gumroad.com/l/hv-vedette",  // Mise en vedette (5 €/mois)
-    pro_full: "",        // Annonce professionnelle complète (49,90 €/mois ou 499 €/an) — lien personnalisé : hv-pro-complet
-    guide_complete: "",  // Guide complet (9,90 €)
-    guide_achat: "",     // Guide « Acheter un bien » (4,90 €)
-    guide_impots: "",    // Guide « Les impôts la première année » (4,90 €)
-    guide_autonomo: "",  // Guide « Devenir autónomo » (4,90 €)
-    guide_retraite: "",  // Guide « Prendre sa retraite en Espagne » (4,90 €)
-    guide_pack: "",      // Pack des 5 guides (19,90 €)
-    course: ""           // Cours « Parlez espagnol ! » (12,90 €) — un seul produit contenant les 4 PDF (FR, EN, DE, NL)
+    pro_full: "https://regardful6.gumroad.com/l/annonce-completepng",        // Annonce professionnelle complète (49,90 €/mois ou 499 €/an) — lien personnalisé : hv-pro-complet
+    guide_complete: "https://regardful6.gumroad.com/l/hv-guide-complet",  // Guide complet (9,90 €)
+    guide_achat: "https://regardful6.gumroad.com/l/hv-guide-achat",     // Guide « Acheter un bien » (4,90 €)
+    guide_impots: "https://regardful6.gumroad.com/l/hv-guide-impots",    // Guide « Les impôts la première année » (4,90 €)
+    guide_autonomo: "https://regardful6.gumroad.com/l/hv-guide-autonomo",  // Guide « Devenir autónomo » (4,90 €)
+    guide_retraite: "https://regardful6.gumroad.com/l/hv-guide-retraite",  // Guide « Prendre sa retraite en Espagne » (4,90 €)
+    guide_pack: "https://regardful6.gumroad.com/l/hv-guides-pack",      // Pack des 5 guides (19,90 €)
+    course: "https://regardful6.gumroad.com/l/hv-cours-espagnol"           // Cours « Parlez espagnol ! » (12,90 €) — un seul produit contenant les 4 PDF (FR, EN, DE, NL)
   },
 
   // Tarifs supplémentaires affichés sur le site (en euros)
