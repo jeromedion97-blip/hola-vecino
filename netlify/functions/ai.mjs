@@ -22,17 +22,19 @@ export default async (req) => {
   let b; try { b = await req.json(); } catch { return Response.json({ error: "bad request" }, { status: 400 }); }
 
   // Quota
-  const pr = await fetch(`${URL_()}/rest/v1/profiles?select=premium_until&id=eq.${user.id}`, { headers: svc });
+  const pr = await fetch(`${URL_()}/rest/v1/profiles?select=premium_until,premium_plan&id=eq.${user.id}`, { headers: svc });
   const prof = ((await pr.json()) || [])[0] || {};
   const premium = prof.premium_until && new Date(prof.premium_until) > new Date();
   const dayStart = new Date(); dayStart.setUTCHours(0, 0, 0, 0);
   const day = await countSince(user.id, dayStart.toISOString());
   const week = await countSince(user.id, new Date(Date.now() - 7 * 86400e3).toISOString());
-  const limDay = premium ? 100 : 15, limWeek = premium ? 700 : 50;
+  const allIn = premium && prof.premium_plan === "all_in";
+  const limDay = allIn ? 300 : premium ? 100 : 15, limWeek = allIn ? 2000 : premium ? 700 : 50;
   if (day >= limDay || week >= limWeek) return Response.json({ error: "quota", premium, day, week }, { status: 429 });
 
   const lang = LANGS[b.lang] || "English";
   let system, messages, max = 900;
+  if (!process.env.ANTHROPIC_API_KEY) return Response.json({ error: "ANTHROPIC_API_KEY manquante dans Netlify" }, { status: 500 });
   if (b.mode === "translate") {
     const from = LANGS[b.from] || "the detected language", to = LANGS[b.to];
     const text = String(b.text || "").slice(0, 2000);
@@ -57,11 +59,12 @@ For any personal legal, tax or residency situation, recommend consulting a lawye
       body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: max, system, messages })
     });
     const data = await r.json();
-    if (!r.ok) return Response.json({ error: data?.error?.message || "api error" }, { status: 502 });
+    if (!r.ok) { console.error("Anthropic", r.status, data?.error?.message); return Response.json({ error: `${r.status} ${data?.error?.message || "api error"}` }, { status: 502 }); }
     const text = (data.content || []).filter(x => x.type === "text").map(x => x.text).join("\n").trim();
     await fetch(`${URL_()}/rest/v1/ai_calls`, { method: "POST", headers: { ...svc, "Content-Type": "application/json", Prefer: "return=minimal" }, body: JSON.stringify({ user_id: user.id, kind: b.mode === "translate" ? "translate" : "assistant" }) });
     return Response.json({ text, premium, left_day: limDay - day - 1, left_week: limWeek - week - 1 });
   } catch (e) {
-    return Response.json({ error: "network" }, { status: 502 });
+    console.error("ai network", e);
+    return Response.json({ error: "network: " + (e && e.message) }, { status: 502 });
   }
 };

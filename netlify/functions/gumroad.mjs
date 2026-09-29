@@ -7,6 +7,7 @@ const PRODUCTS = {
   "hv-premium":  { kind: "premium",  monthly: 30, yearly: 365 },   // 9,90 €/mois ou 79 €/an
   "hv-pro":      { kind: "pro",      monthly: 30, yearly: 365 },   // formule simple : 14,90 €/mois ou 119 €/an
   "hv-pro-complet": { kind: "pro_full", monthly: 30, yearly: 365 }, // formule complète : 49,90 €/mois ou 499 €/an
+  "hv-tout-compris": { kind: "all_in", monthly: 30, yearly: 365 },  // membres « Tout compris » : 59 €/mois ou 590 €/an
   "hv-youtube":  { kind: "youtube",  monthly: 30, yearly: 365 },   // 4,90 €/mois
   "hv-location": { kind: "rental",   once: 30 },                   // 9,90 € pour 30 jours
   "hv-vedette":  { kind: "featured", monthly: 30, yearly: 365 }    // + 5 €/mois
@@ -27,7 +28,7 @@ export default async (req) => {
   const permalink = (f.get("permalink") || f.get("short_product_id") || "").toLowerCase();
   // Si le lien personnalisé n'a pas été réglé, on reconnaît le produit par son nom
   const name = (f.get("product_name") || "").toLowerCase();
-  const byName = name.includes("premium") ? "hv-premium" : name.includes("vedette") ? "hv-vedette"
+  const byName = name.includes("tout compris") ? "hv-tout-compris" : name.includes("premium") ? "hv-premium" : name.includes("vedette") ? "hv-vedette"
     : (name.includes("complète") || name.includes("complete")) ? "hv-pro-complet"
     : name.includes("youtube") ? "hv-youtube" : name.includes("location") ? "hv-location"
     : name.includes("professionnel") ? "hv-pro" : "";

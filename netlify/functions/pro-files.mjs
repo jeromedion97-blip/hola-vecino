@@ -35,7 +35,7 @@ export default async (req) => {
     if (!GUIDES.includes(b.file)) return Response.json({ error: "not found" }, { status: 404 });
     const p = (await get(`profiles?select=premium_until,premium_plan&id=eq.${user.id}`))[0] || {};
     const admin = (await get(`admins?select=user_id&user_id=eq.${user.id}`)).length > 0;
-    const ok = admin || (p.premium_plan === "year" && p.premium_until && new Date(p.premium_until) > new Date());
+    const ok = admin || (["year", "all_in"].includes(p.premium_plan) && p.premium_until && new Date(p.premium_until) > new Date());
     if (!ok) return Response.json({ error: "forbidden" }, { status: 403 });
     const url = await sign("guides", b.file);
     return url ? Response.json({ url }) : Response.json({ error: "missing file" }, { status: 404 });
