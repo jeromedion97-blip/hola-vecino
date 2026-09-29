@@ -58,7 +58,10 @@ For any personal legal, tax or residency situation, recommend consulting a lawye
       headers: { "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json" },
       body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: max, system, messages })
     });
-    const data = await r.json();
+    const raw = await r.text();
+    let data;
+    try { data = JSON.parse(raw); }
+    catch { console.error("Anthropic non-JSON", r.status, raw.slice(0, 300)); return Response.json({ error: `${r.status} réponse inattendue de l'IA : ${raw.slice(0, 220)}` }, { status: 502 }); }
     if (!r.ok) { console.error("Anthropic", r.status, data?.error?.message); return Response.json({ error: `${r.status} ${data?.error?.message || "api error"}` }, { status: 502 }); }
     const text = (data.content || []).filter(x => x.type === "text").map(x => x.text).join("\n").trim();
     await fetch(`${URL_()}/rest/v1/ai_calls`, { method: "POST", headers: { ...svc, "Content-Type": "application/json", Prefer: "return=minimal" }, body: JSON.stringify({ user_id: user.id, kind: b.mode === "translate" ? "translate" : "assistant" }) });
