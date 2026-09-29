@@ -36,6 +36,8 @@ const PRICE_ROWS = () => [
 ];
 
 // ---------- Premium ----------
+// Lien d'abonnement « Tout compris » : réglage, sinon adresse du produit Gumroad
+const allInUrl = () => { const u = ((C.GUMROAD_LINKS || {}).all_in || "").trim() || "https://regardful6.gumroad.com/l/hv-tout-compris"; return u + (u.includes("?") ? "&" : "?") + "wanted=true"; };
 async function premium() {
   const me = H.me, p = H.myProfile;
   const until = p && p.premium_until && new Date(p.premium_until) > new Date() ? new Date(p.premium_until) : null;
@@ -53,7 +55,7 @@ async function premium() {
         <p class="plan-price"><strong>${price(C.PRICES.all_in_month || 59)}</strong>${esc(t("per_month"))}</p>
         <p class="muted">${esc(t("buy_year"))} : <strong>${price(C.PRICES.all_in_year || 590)}</strong>${esc(t("per_year"))}</p>
         <ul class="ticks">${["allin_f_premium","allin_f_ai","allin_f_guides","allin_f_course","allin_f_new"].map(k => `<li>${esc(t(k))}</li>`).join("")}</ul>
-        <div id="astate"></div></div>
+        <div id="astate"><div class="actions"><a class="btn primary" href="${esc(allInUrl())}" target="_blank" rel="noopener">${esc(t("allin_cta"))}</a></div><p class="muted small">${esc(t("allin_after"))}</p></div></div>
       <div class="plan"><h2>${esc(t("free_title"))}</h2><p>${esc(t("free_text"))}</p></div>
     </div>
     <p class="muted small">${esc(t("cancel_info"))}</p>
@@ -65,8 +67,7 @@ async function premium() {
   if (!H.configured) return;
   if (!me) { st.innerHTML = `<p class="notice">${esc(t("login_first"))}</p><a class="btn primary" href="#/connexion?signup">${esc(t("hero_join"))}</a>`; return; }
   const allIn = until && p.premium_plan === "all_in";
-  $("#astate").innerHTML = allIn ? `<p class="ok">${esc(t("allin_active"))} ${esc(date(until))}</p><a class="btn" href="#/boutique">📚 ${esc(t("nav_shop"))}</a>`
-    : ((C.GUMROAD_LINKS || {}).all_in ? `<div class="actions">${buyBtn("all_in", t("allin_cta"), true)}</div><p class="muted small">${esc(t("allin_after"))}</p>` : "");
+  if (allIn) $("#astate").innerHTML = `<p class="ok">${esc(t("allin_active"))} ${esc(date(until))}</p><a class="btn" href="#/boutique">📚 ${esc(t("nav_shop"))}</a>`;
   st.innerHTML = `${until && !allIn ? `<p class="ok">${esc(t("premium_active"))} ${esc(date(until))}</p>` : ""}
     <p class="notice small">${esc(t("same_email"))}<br><strong>${esc(t("your_email"))} ${esc(me.email || "")}</strong></p>
     <div class="actions">${buyBtn("premium", t("premium_cta"), true)}
