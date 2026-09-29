@@ -180,3 +180,18 @@ Deux espaces de stockage sont à créer à la main :
 - `SOCIAL` : adresses complètes de vos comptes YouTube, TikTok et Instagram.
 - `YOUTUBE_CHANNEL_ID` : identifiant de la chaîne (commence par UC), pour afficher les dernières vidéos.
 - Articles : Administration → Articles. L'IA prépare un brouillon, vous relisez, vous traduisez puis publiez.
+
+## Mise à jour v10 (grosse mise à jour)
+
+Nouveautés : menu regroupé et barre d'onglets mobile, assistant IA et traducteur (15 demandes/jour, 50/semaine pour les gratuits),
+groupes et discussions de groupe, vidéos (Shorts, Reels, TikTok), météo, avis avec étoiles et photos, formule pro complète (49,90 €),
+points et récompenses (mois de Premium), parrainage, profil public partageable, alertes e-mail, tableau de bord administrateur,
+accès des avocats et gestores au dossier client, guides PDF, newsletter, pages par ville.
+
+Installation :
+1. SQL Editor : `supabase/migration-v9.sql`, puis `supabase/contacts-officiels-2.sql`.
+2. Storage : bucket privé `guides` (ne pas cocher Public), y déposer les 5 PDF.
+3. GitHub : fichiers du site à la racine, fonctions dans `netlify/functions` (ai.mjs, pro-files.mjs, notify-email.mjs, gumroad.mjs, youtube.mjs).
+4. Brevo (gratuit) : vérifier l'expéditeur, créer une clé API. Variables Netlify : BREVO_API_KEY, MAIL_FROM, SITE_URL.
+5. Gumroad : produit « Annonce professionnelle complète » (URL hv-pro-complet) et 6 produits guides ; coller les liens dans config-extra.js.
+6. Administration → Statistiques : vérifier les professionnels, récompenser le top 3 chaque début de mois.

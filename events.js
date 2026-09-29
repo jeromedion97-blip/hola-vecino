@@ -339,7 +339,7 @@ async function notifications() {
   const { data } = await sb.from("notifications").select("*").eq("user_id", me.id).order("created_at", { ascending:false }).limit(100);
   const rows = (data || []).filter(n => !H.blocks.has(n.actor_id));
   const people = await H.profilesFor(rows.map(n => n.actor_id));
-  const href = n => n.type === "reply" ? "#/forum/" + n.ref : n.type === "reminder_share" ? "#/agenda" : n.type === "post_comment" ? "#/voisins/" + n.ref : "#/evenements/" + n.ref;
+  const href = n => n.type === "reply" ? "#/forum/" + n.ref : n.type === "reminder_share" ? "#/agenda" : n.type === "post_comment" ? "#/voisins/" + n.ref : n.type === "friend_request" ? "#/amis" : n.type === "group_invite" ? "#/groupes/" + n.ref : n.type === "reward" ? "#/points" : n.type === "client_access" ? "#/mes-clients" : n.type === "friend_accept" ? "#/profil/" + n.ref : "#/evenements/" + n.ref;
   $("#nl").innerHTML = rows.length ? `<ul class="notifs">${rows.map(n => { const p = people[n.actor_id] || { display_name:"?" };
     return `<li class="${n.read ? "" : "unread"}"><a href="${href(n)}" data-id="${n.id}">${avatar(p, "tiny")}<span><strong>${esc(p.display_name)}</strong> ${esc(t("notif_" + n.type))}<br><span class="muted small">${esc(dateTime(n.created_at))}</span></span></a></li>`; }).join("")}</ul>`
     : `<p class="empty">${esc(t("notif_none"))}</p>`;

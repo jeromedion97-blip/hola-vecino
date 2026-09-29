@@ -226,7 +226,10 @@ const fmtSize = b => { const fr = H.lang === "fr"; return b > 1048576 ? (b / 104
 async function drive(pre) {
   const sb = H.sb, me = H.me;
   if (!H.isPremium) {
-    view.innerHTML = `<section class="narrow"><h1>${esc(t("drive_title"))}</h1><p class="lead">${esc(t("drive_intro"))}</p><div class="locked"><p><strong>${esc(t("premium_locked"))}</strong></p><p>${esc(t("pf_drive"))}</p><a class="btn primary" href="#/premium">${esc(t("premium_cta"))}</a></div></section>`;
+    view.innerHTML = `<section class="narrow"><h1>${esc(t("drive_title"))}</h1><p class="lead">${esc(t("drive_intro"))}</p><div id="keepnote"></div><div class="locked"><p><strong>${esc(t("premium_locked"))}</strong></p><p>${esc(t("pf_drive"))}</p><a class="btn primary" href="#/premium">${esc(t("premium_cta"))}</a></div></section>`;
+    const { count } = await sb.from("documents").select("id", { count:"exact", head:true }).eq("owner_id", me.id);
+    const pu = (H.myProfile || {}).premium_until;
+    if (count && pu) $("#keepnote").innerHTML = `<p class="notice">🛟 ${count} ${esc(t("drive_docs"))} — ${esc(t("cx_kept_until"))} <strong>${esc(date(new Date(new Date(pu).getTime() + 90 * 86400e3)))}</strong>.</p>`;
     return;
   }
   const quota = (C.DRIVE_QUOTA_MB || 50) * 1048576, maxFile = (C.DRIVE_FILE_MB || 10) * 1048576;

@@ -21,7 +21,7 @@ const OPT = {
   housing:["renting","owner","searching","hosted"],
   spanish:["none","basic","mid","fluent","native"],
   forum:["admin","housing","work","health","family","taxes","social","market","general"],
-  contact:["embassy","emergency","lawyer","gestoria","bank","doctor","realestate","insurance","translator","school","other"]
+  contact:["embassy","admin","emergency","lawyer","notary","gestoria","realestate","translator","bank","insurance","doctor","school","other"]
 };
 const SPOKEN = "fr en es de nl it pt ca eu gl pl ro ru uk ar zh sv da no fi cs hu el tr".split(" ");
 const COUNTRIES = "AD AE AF AL AM AO AR AT AU AZ BA BD BE BG BO BR BY CA CH CL CN CO CR CU CY CZ DE DK DO DZ EC EE EG ES ET FI FR GB GE GH GR GT HN HR HU ID IE IL IN IQ IR IS IT JM JO JP KE KR KW KZ LB LT LU LV LY MA MC MD ME MK MX NG NI NL NO NZ PA PE PH PK PL PT PY QA RO RS RU SA SE SG SI SK SN SV SY TN TR UA US UY VE VN ZA".split(" ");
@@ -142,17 +142,39 @@ const BELL = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"
 function renderHeader() {
   document.documentElement.lang = lang;
   const br = $("#brand"); if (br) br.textContent = C.APP_NAME; document.title = C.APP_NAME;
-  const links = [["#/", "nav_home"], ["#/guide", "nav_guide"], ["#/finances", "nav_finances"], ["#/communaute", "nav_community"], ["#/voisins", "nav_wall"], ["#/evenements", "nav_events"], ["#/forum", "nav_forum"], ["#/articles", "nav_articles"], ["#/bons-plans", "nav_deals"], ["#/youtube", "nav_youtube"], ["#/contacts", "nav_contacts"]];
-  if (me) links.push(["#/messages", "nav_messages"]);
-  if (isAdmin) links.push(["#/admin", "nav_admin"]);
+  const GROUPS = [
+    ["grp_settle", "🧭", [["#/guide","nav_guide"],["#/finances","nav_finances"],["#/assistant","nav_assistant"],["#/traducteur","nav_translator"],["#/contacts","nav_contacts"],["#/boutique","nav_shop"]]],
+    ["grp_community", "👥", [["#/communaute","nav_community"],["#/voisins","nav_wall"],["#/groupes","nav_groups"],["#/evenements","nav_events"],["#/forum","nav_forum"]]],
+    ["grp_live", "🌞", [["#/articles","nav_articles"],["#/bons-plans","nav_deals"],["#/videos","nav_videos"],["#/youtube","nav_youtube"],["#/meteo","nav_weather"]]],
+    ["grp_fun", "🎮", [["#/jeux","nav_games"],["#/points","nav_points"],["#/parrainage","nav_referral"]]]
+  ];
   const cur = (location.hash || "#/").split("/").slice(0, 2).join("/");
+  const isCur = h => cur === h || (h !== "#/" && cur.startsWith(h));
   const badgeId = { nav_messages:"unread", nav_events:"evbadge" };
-  $("#nav").innerHTML = links.map(([h, k]) => `<a href="${h}" ${cur === h || (h !== "#/" && cur.startsWith(h)) ? 'aria-current="page"' : ""}>${esc(t(k))}${badgeId[k] ? `<span class="badge" id="${badgeId[k]}" hidden></span>` : ""}</a>`).join("");
+  const lnk = ([h, k]) => `<a href="${h}" ${isCur(h) ? 'aria-current="page"' : ""}>${esc(t(k))}${badgeId[k] ? `<span class="badge" id="${badgeId[k]}" hidden></span>` : ""}</a>`;
+  $("#nav").innerHTML = `<a href="#/" ${cur === "#/" ? 'aria-current="page"' : ""}>${esc(t("nav_home"))}</a>` +
+    GROUPS.map(([g, ic, items]) => `<div class="navgroup ${items.some(i => isCur(i[0])) ? "cur" : ""}"><button class="navbtn" aria-expanded="false">${esc(t(g))} <span aria-hidden="true">▾</span></button><div class="navdrop">${items.map(lnk).join("")}</div></div>`).join("") +
+    (me ? lnk(["#/messages", "nav_messages"]) : "") + (isAdmin ? lnk(["#/admin", "nav_admin"]) : "");
+  $$("#nav .navbtn").forEach(b => b.onclick = e => { e.stopPropagation(); const g = b.parentElement, open = !g.classList.contains("open"); $$("#nav .navgroup").forEach(x => { x.classList.remove("open"); x.firstElementChild.setAttribute("aria-expanded", "false"); }); if (open) { g.classList.add("open"); b.setAttribute("aria-expanded", "true"); } });
+  $$("#nav .navdrop a").forEach(a => a.onclick = () => $$("#nav .navgroup").forEach(x => x.classList.remove("open")));
+  // Barre d'onglets sur téléphone
+  let tb = $("#tabbar");
+  if (!tb) { tb = document.createElement("nav"); tb.id = "tabbar"; tb.className = "tabbar"; document.body.appendChild(tb); }
+  tb.innerHTML = `<a href="#/" class="${cur === "#/" ? "on" : ""}"><span>🏠</span>${esc(t("nav_home"))}</a>` +
+    GROUPS.map(([g, ic, items], i) => `<button data-sheet="${i}" class="${items.some(x => isCur(x[0])) ? "on" : ""}"><span>${ic}</span>${esc(t(g))}</button>`).join("");
+  let sheet = $("#tabsheet");
+  if (!sheet) { sheet = document.createElement("div"); sheet.id = "tabsheet"; sheet.className = "tabsheet"; sheet.hidden = true; document.body.appendChild(sheet); }
+  $$("[data-sheet]", tb).forEach(b => b.onclick = () => {
+    const [g, ic, items] = GROUPS[+b.dataset.sheet];
+    sheet.innerHTML = `<div class="sheet-panel"><p class="sheet-title">${ic} ${esc(t(g))}</p>${items.map(lnk).join("")}</div>`;
+    sheet.hidden = false;
+  });
+  sheet.onclick = e => { if (e.target === sheet || e.target.closest("a")) sheet.hidden = true; };
   $("#account").innerHTML = me
     ? `<a class="premium-link ${isPremium ? "on" : ""}" href="#/premium">★ ${esc(t("nav_premium"))}</a>
        <a class="bell" href="#/notifications" aria-label="${esc(t("nav_notifications"))}">${BELL}<span class="badge" id="notifcount" hidden></span></a>
        <div class="me-wrap"><button class="me-btn" id="mebtn" aria-haspopup="true" aria-expanded="false">${avatar(myProfile || { display_name: "?" }, "tiny")}<span class="me-name">${esc(((myProfile && myProfile.display_name) || t("nav_profile")).split(" ")[0])}</span><span aria-hidden="true">▾</span></button>
-       <ul class="me-menu" id="memenu" hidden>${[["#/mon-profil","nav_profile"],["#/agenda","nav_agenda"],["#/drive","nav_drive"],["#/messages","nav_messages"],["#/notifications","nav_notifications"],["#/mes-annonces","nav_my_listings"],["#/premium","nav_premium"]].concat(isAdmin ? [["#/admin","nav_admin"]] : []).map(([h, k]) => `<li><a href="${h}">${esc(t(k))}</a></li>`).join("")}<li><button class="linkbtn" id="logout">${esc(t("nav_logout"))}</button></li></ul></div>`
+       <ul class="me-menu" id="memenu" hidden>${[["#/mon-profil","nav_profile"],["#/amis","nav_friends"],["#/groupes","nav_groups"],["#/agenda","nav_agenda"],["#/drive","nav_drive"],["#/messages","nav_messages"],["#/notifications","nav_notifications"],["#/mes-annonces","nav_my_listings"],["#/premium","nav_premium"]].concat([["#/points","nav_points"],["#/parrainage","nav_referral"],["#/mes-pros","nav_my_pros"]]).concat(myProfile && myProfile.pro_status === "verified" ? [["#/mes-clients","nav_my_clients"]] : []).concat(isAdmin ? [["#/admin","nav_admin"],["#/admin/stats","as_title"]] : []).map(([h, k]) => `<li><a href="${h}">${esc(t(k))}</a></li>`).join("")}<li><button class="linkbtn" id="logout">${esc(t("nav_logout"))}</button></li></ul></div>`
     : `<a class="premium-link" href="#/premium">★ ${esc(t("nav_premium"))}</a><a class="btn small primary" href="#/connexion">${esc(t("nav_login"))}</a>`;
   if (me) {
     $("#logout").onclick = async () => { await sb.auth.signOut(); location.hash = "#/"; };
@@ -165,10 +187,11 @@ function renderHeader() {
   $("#footer").innerHTML = `<p class="footer-links"><a href="#/premium">${esc(t("nav_premium"))}</a> · <a href="${me ? "#/mes-annonces" : "#/bons-plans"}">${esc(t(me ? "nav_my_listings" : "publish_listing"))}</a> · <a href="#/suggestions">${esc(t("nav_suggestions"))}</a> · <a href="#/contact">${esc(t("nav_contact"))}</a></p>${window.HV_SOCIAL ? window.HV_SOCIAL(t("follow_us")) : ""}<p>${esc(t("footer_disclaimer"))}</p><p><a href="#/charte">${esc(t("charter_title"))}</a> · <a href="#/confidentialite">${esc(t("privacy_title"))}</a> · ${esc(C.APP_NAME)}</p>${installPrompt ? `<p><button class="btn small" id="installbtn">${esc(t("install_app"))}</button></p>` : ""}`;
   const ib = $("#installbtn"); if (ib) ib.onclick = async () => { installPrompt.prompt(); await installPrompt.userChoice; installPrompt = null; renderHeader(); };
   if (me) refreshCounts();
+  (window.HV_HOOKS && window.HV_HOOKS.header || []).forEach(f => { try { f(); } catch (e) {} });
 }
 function refreshCounts() {
   const show = (id, n) => { const b = $("#" + id); if (b) { b.textContent = n; b.hidden = !n; } };
-  sb.from("messages").select("id", { count:"exact", head:true }).eq("recipient_id", me.id).eq("read", false).then(({ count }) => show("unread", count));
+  sb.from("messages").select("id", { count:"exact", head:true }).eq("recipient_id", me.id).eq("read", false).then(({ count }) => { show("unread", count); show("chatbadge", count); });
   sb.from("notifications").select("id", { count:"exact", head:true }).eq("user_id", me.id).eq("read", false).then(({ count }) => show("notifcount", count));
   sb.from("event_rsvps").select("event_id", { count:"exact", head:true }).eq("user_id", me.id).eq("status", "invited").then(({ count }) => show("evbadge", count));
 }
@@ -176,9 +199,10 @@ $("#langbtn").onclick = () => { const l = $("#langlist"); l.hidden = !l.hidden; 
 $("#langlist").onclick = e => {
   const b = e.target.closest("button[data-lang]"); if (!b) return;
   lang = b.dataset.lang; try { localStorage.setItem("lang", lang); } catch (err) {}
+  if (sb && me && myProfile) sb.from("profiles").update({ lang }).eq("id", me.id).then(() => {});
   $("#langlist").hidden = true; $("#langbtn").setAttribute("aria-expanded", "false"); route();
 };
-document.addEventListener("click", e => { if (!e.target.closest(".lang")) $("#langlist").hidden = true; const mm = $("#memenu"); if (mm && !e.target.closest(".me-wrap")) mm.hidden = true; });
+document.addEventListener("click", e => { if (!e.target.closest(".navgroup")) $$("#nav .navgroup").forEach(x => x.classList.remove("open")); if (!e.target.closest(".lang")) $("#langlist").hidden = true; const mm = $("#memenu"); if (mm && !e.target.closest(".me-wrap")) mm.hidden = true; });
 
 // ---------- Routeur ----------
 const ROUTES = [
@@ -197,10 +221,18 @@ const ROUTES = [
   [/^#\/messages$/, () => messages(), true],
   [/^#\/messages\/([\w-]+)$/, m => conversation(m[1]), true]
 ];
+let hvSession = null;
+function trackVisit(hash) {
+  if (!sb) return;
+  try { hvSession = hvSession || sessionStorage.getItem("hv_s") || Math.random().toString(36).slice(2, 12); sessionStorage.setItem("hv_s", hvSession); } catch (e) { hvSession = hvSession || "x"; }
+  const path = (hash.replace(/^#/, "") || "/").replace(/\/[0-9a-f-]{36}$/i, "/:id").split("?")[0].slice(0, 120);
+  sb.rpc("track_visit", { p_path: path, p_session: hvSession }).then(() => {}, () => {});
+}
 async function route() {
   cleanup.forEach(f => { try { f(); } catch (e) {} }); cleanup = [];
   const hash = location.hash || "#/";
   renderHeader();
+  trackVisit(hash);
   for (const [re, fn, needAuth] of ROUTES) {
     const m = hash.match(re); if (!m) continue;
     if (needAuth) {
@@ -260,7 +292,8 @@ function home() {
 function login(notice = "", signup = false) {
   if (!configured) return notConfigured();
   const draw = () => {
-    view.innerHTML = `<section class="narrow">
+    const perks = ["pk_map","pk_intro","pk_events","pk_chat","pk_guide","pk_games"];
+    view.innerHTML = `<section class="auth-wrap"><div class="auth-form">
       <h1>${esc(t(signup ? "signup_title" : "login_title"))}</h1>
       ${notice ? `<p class="notice">${esc(notice)}</p>` : ""}
       <form id="authf" class="stack">
@@ -271,6 +304,8 @@ function login(notice = "", signup = false) {
         <p class="msg" role="status"></p>
       </form>
       <button class="linkbtn" id="toggle">${esc(t(signup ? "to_login" : "to_signup"))}</button>
+    </div>
+    <aside class="auth-perks"><h2>${esc(t("pk_title"))}</h2><ul>${perks.map(k => `<li>${esc(t(k))}</li>`).join("")}</ul><p class="small">${esc(t("pk_free"))}</p><p class="pro-link">💼 <a href="#/pro">${esc(t("pk_pro"))}</a></p></aside>
     </section>`;
     $("#toggle").onclick = () => { signup = !signup; notice = ""; draw(); };
     $("#authf").onsubmit = async e => {
@@ -348,6 +383,20 @@ function profileEdit() {
       <div class="field"><span class="label">${esc(t("f_looking"))}</span>${checks("looking_for", OPT.looking.map(k => [k, t("l_" + k)]), p.looking_for || [])}</div>
       <label class="check"><input type="checkbox" name="is_guide" ${p.is_guide ? "checked" : ""}> ${esc(t("f_is_guide"))}</label></fieldset>
 
+      <fieldset><legend>${esc(t("sec_prefs"))}</legend>
+        <label class="check"><input type="checkbox" name="public_profile" ${p.public_profile ? "checked" : ""}> ${esc(t("f_public_profile"))}</label>
+        <label class="check"><input type="checkbox" name="email_alerts" ${p.email_alerts === false ? "" : "checked"}> ${esc(t("f_email_alerts"))}</label>
+      </fieldset>
+
+      <fieldset><legend>${esc(t("sec_pro"))}</legend>
+        <label class="check"><input type="checkbox" name="is_pro" id="is_pro" ${p.pro_status && p.pro_status !== "none" ? "checked" : ""}> ${esc(t("f_is_pro"))}</label>
+        <div class="grid" id="prowrap" ${p.pro_status && p.pro_status !== "none" ? "" : "hidden"}>
+          ${field(t("f_pro_title"), `<select id="pro_title" name="pro_title"><option value="">${esc(t("choose"))}</option>${["lawyer","gestoria","notary","realestate","translator","restaurant","hotel","service","other"].map(k => `<option value="${k}" ${p.pro_title === k ? "selected" : ""}>${esc(t("ct_" + k) !== "ct_" + k ? t("ct_" + k) : t("kind_" + k))}</option>`).join("")}</select>`, "pro_title")}
+          ${field(t("f_pro_number"), `<input id="pro_number" name="pro_number" maxlength="60" value="${esc(p.pro_number)}">`, "pro_number")}
+        </div>
+        ${p.pro_status === "verified" ? `<p class="ok small">✓ ${esc(t("pro_verified"))}</p>` : p.pro_status === "pending" ? `<p class="muted small">⏳ ${esc(t("pro_pending"))}</p>` : ""}
+      </fieldset>
+
       <fieldset><legend>${esc(t("sec_about"))}</legend>
         ${field(t("f_interests"), `<input id="interests" name="interests" maxlength="500" value="${esc(p.interests)}">`, "interests")}
         ${field(t("f_bio"), `<textarea id="bio" name="bio" rows="5" maxlength="1500">${esc(p.bio)}</textarea>`, "bio")}
@@ -387,6 +436,7 @@ function profileEdit() {
     cleanup.push(() => map.remove());
   };
   if (p.show_on_map) initMap();
+  $("#is_pro").onchange = e => { $("#prowrap").hidden = !e.target.checked; };
   $("#show_on_map").onchange = e => { $("#pickmap").hidden = !e.target.checked; if (e.target.checked) { initMap(); setTimeout(() => map.invalidateSize(), 50); } };
 
   $("#pf").onsubmit = async e => {
@@ -403,12 +453,19 @@ function profileEdit() {
       is_guide: !!f.get("is_guide"), interests: val("interests"), bio: val("bio"), avatar_url: avatarUrl,
       show_on_map: !!f.get("show_on_map") && !!pos, lat: pos ? pos[0] : null, lng: pos ? pos[1] : null
     };
-    if (!myProfile) row.charter_accepted_at = new Date().toISOString();
+    if (!myProfile) {
+      row.charter_accepted_at = new Date().toISOString(); row.lang = lang;
+      try { const ref = localStorage.getItem("hv_ref"); if (ref && /^[0-9a-f-]{36}$/i.test(ref) && ref !== me.id) row.referred_by = ref; } catch (e) {}
+    }
+    row.public_profile = !!f.get("public_profile"); row.email_alerts = !!f.get("email_alerts");
+    row.pro_title = val("pro_title"); row.pro_number = val("pro_number");
+    if (f.get("is_pro") && (!myProfile || myProfile.pro_status === "none" || !myProfile.pro_status)) row.pro_status = "pending";
+    if (!f.get("is_pro") && myProfile && myProfile.pro_status === "pending") row.pro_status = "none";
     msg.textContent = t("loading");
     const { data, error } = await sb.from("profiles").upsert(row).select().single();
     if (error) { msg.textContent = errMsg(error); return; }
     const first = !myProfile; myProfile = data; msg.textContent = t("saved"); renderHeader();
-    if (first) location.hash = "#/communaute";
+    if (first) location.hash = f.get("is_pro") ? "#/pro" : "#/communaute";
   };
   const lo = $("#logout2"); if (lo) lo.onclick = async () => { await sb.auth.signOut(); location.hash = "#/"; };
   const del = $("#del");
@@ -682,6 +739,7 @@ async function contacts(preCat) {
     $("#clist").innerHTML = rows.length ? `<div class="contacts">${rows.map(x => `<article class="contact">
       <p class="muted small">${esc(t("ct_" + x.category))}${x.city ? " · " + esc(x.city) : ""}</p>
       <h3>${esc(x.name)}</h3>
+      <p class="rate"><a data-rate="contact" data-id="${x.id}" href="#/avis/contact/${x.id}"></a></p>
       ${(x.languages || []).length ? `<p class="small">${esc(t("speaks"))} : ${(x.languages || []).map(c2 => esc(langName(c2))).join(", ")}</p>` : ""}
       ${x.description ? `<p>${nl2br(x.description)}</p>` : ""}
       <p class="contact-links">
@@ -692,7 +750,7 @@ async function contacts(preCat) {
       ${x.address ? `<p class="small muted">${esc(x.address)}</p>` : ""}
     </article>`).join("")}</div>` : `<p class="empty">${esc(t("no_contacts"))}</p>`;
   };
-  ["#clang", "#ccat", "#ccity", "#cq"].forEach(s => $(s).addEventListener("input", apply)); apply();
+  ["#clang", "#ccat", "#ccity", "#cq"].forEach(s => $(s).addEventListener("input", () => { apply(); if (HV.fillRatings) HV.fillRatings(view, "contact"); })); apply(); if (HV.fillRatings) HV.fillRatings(view, "contact");
 
   if (!me) { $("#suggest").innerHTML = `<p><a href="#/connexion">${esc(t("login_to_suggest"))}</a></p>`; return; }
   $("#suggest").innerHTML = `<form id="sf" class="stack card"><div class="grid">
@@ -970,6 +1028,7 @@ window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); instal
 if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 
 (async () => {
+  try { const ref = new URLSearchParams(location.search).get("ref"); if (ref) localStorage.setItem("hv_ref", ref); } catch (e) {}
   await loadMe();
   if (sb) {
     sb.auth.onAuthStateChange(ev => {

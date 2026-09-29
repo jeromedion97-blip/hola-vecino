@@ -20,6 +20,7 @@ async function shrink(file) {
 const pathOf = url => { const i = (url || "").indexOf("/photos/"); return i >= 0 ? decodeURIComponent(url.slice(i + 8).split("?")[0]) : null; };
 
 // ---------- Visionneuse ----------
+H.lightbox = (l, s) => lightbox(l, s);
 function lightbox(list, start) {
   let i = start;
   const box = document.createElement("div"); box.className = "lightbox"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true");
@@ -61,7 +62,7 @@ async function wall(opts) {
     </form>
     <p class="muted small">🔒 ${esc(t("wall_privacy"))}</p>
     <div class="tools">
-      <nav class="tabs">${["all", "intro", "photos"].map(k => `<button data-tab="${k}" ${tab === k ? 'aria-pressed="true"' : ""}>${esc(t("wall_tab_" + k))}</button>`).join("")}</nav>
+      <nav class="tabs">${["all", "friends", "intro", "photos"].map(k => `<button data-tab="${k}" ${tab === k ? 'aria-pressed="true"' : ""}>${esc(t("wall_tab_" + k))}</button>`).join("")}</nav>
       ${p.city ? `<label class="check small"><input type="checkbox" id="pcity" ${myCity ? "checked" : ""}> ${esc(t("wall_my_city"))} : ${esc(p.city)}</label>` : ""}
     </div>
     ${H.searchBox("pq")}`}
@@ -113,6 +114,7 @@ async function wall(opts) {
     else {
       if (opts.author) q = q.eq("author_id", opts.author);
       if (tab === "intro") q = q.eq("kind", "intro");
+      if (tab === "friends") { const f = H.friendIds ? await H.friendIds() : []; q = q.in("author_id", f.length ? f : ["00000000-0000-0000-0000-000000000000"]); }
       if (tab === "photos") q = q.neq("photos", "{}");
       if (myCity && p.city) q = q.ilike("city", p.city);
     }

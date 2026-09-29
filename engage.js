@@ -25,7 +25,7 @@ async function stats(uid) { const { data } = await H.sb.rpc("member_stats", { ui
   const s = await stats(p.id), list = earned(p, s), page = $(".page", view);
   if (!page) return;
   const box = document.createElement("section"); box.className = "rep card";
-  box.innerHTML = `<h2>${esc(t("rep_title"))} <span class="rep-points">${points(s)} ${esc(t("dash_points"))}</span></h2>
+  box.innerHTML = `<h2>${esc(t("rep_title"))} <span class="rep-points">${p.points != null ? p.points : points(s)} ${esc(t("dash_points"))}</span></h2>
     ${list.length ? `<p class="bds">${badgeList(list)}</p>` : ""}
     ${s ? `<p class="small muted">${s.replies} ${esc(t("stat_replies"))} · ${s.events_organized} ${esc(t("stat_events_org"))} · ${s.events_attended} ${esc(t("stat_events_att"))}</p>` : ""}`;
   const facts = $(".facts", page); (facts || page.lastElementChild).insertAdjacentElement("afterend", box);
@@ -79,7 +79,7 @@ async function dashboard() {
       ${(dl.data || []).length ? section(t("dash_deals"), "#/bons-plans", `<ul class="threads">${dl.data.map(l => `<li><a href="#/bons-plans/${l.kind}"><strong>${esc(l.title)}</strong></a><span class="muted small"><span class="tag sponsored">${esc(t("sponsored"))}</span> ${esc(t("kind_" + l.kind))}${l.price_text ? " · " + esc(l.price_text) : ""}</span></li>`).join("")}</ul>`) : ""}
     </div><aside class="dash-side">
       ${section(t("dash_journey"), "#/guide/deadlines", `
-        <p class="rep-big"><strong>${points(s)}</strong> ${esc(t("dash_points"))}</p>
+        <p class="rep-big"><a href="#/points"><strong>${p.points != null ? p.points : points(s)}</strong></a> ${esc(t("dash_points"))}</p>
         ${next === "done" ? `<p class="small">${esc(t("dash_all_done"))}</p>`
           : next ? `<p class="small muted">${esc(t("dash_next_step"))}</p><p><strong>${esc(date(next.date))}</strong><br>${esc(next.title)}</p>`
           : `<p class="small">${esc(t("dash_set_arrival"))} <a href="#/mon-profil">${esc(t("nav_profile"))}</a></p>`}`)}

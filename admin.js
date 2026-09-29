@@ -19,7 +19,7 @@ async function linkFor(r) {
 async function admin() {
   if (!H.isAdmin) { view.innerHTML = `<section class="narrow"><p class="notice">${esc(t("adm_denied"))}</p></section>`; return; }
   const sb = H.sb;
-  view.innerHTML = `<section class="page wide"><div class="titlebar"><h1>${esc(t("adm_title"))}</h1><a class="btn primary" href="#/admin/articles">✎ ${esc(t("art_admin"))}</a></div>
+  view.innerHTML = `<section class="page wide"><div class="titlebar"><h1>${esc(t("adm_title"))}</h1><span class="actions"><a class="btn primary" href="#/admin/stats">📊 ${esc(t("as_title"))}</a><a class="btn" href="#/admin/articles">✎ ${esc(t("art_admin"))}</a></span></div>
     <div id="stats" class="stats"></div>
     <h2>${esc(t("adm_reports"))}</h2><div id="reports"><p>${esc(t("loading"))}</p></div>
     <h2>${esc(t("adm_listings"))}</h2><div id="alist"></div>

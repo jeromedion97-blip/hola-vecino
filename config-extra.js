@@ -19,8 +19,19 @@ window.APP_CONFIG_EXTRA = {
     pro: "https://regardful6.gumroad.com/l/hv-pro",            // Annonce professionnelle (14,90 €/mois ou 119 €/an)
     youtube: "https://regardful6.gumroad.com/l/hv-youtube",    // Chaîne YouTube référencée (4,90 €/mois)
     rental: "https://regardful6.gumroad.com/l/hv-location",    // Location d'un bien, 30 jours (9,90 €)
-    featured: "https://regardful6.gumroad.com/l/hv-vedette"   // Mise en vedette (5 €/mois)
+    featured: "https://regardful6.gumroad.com/l/hv-vedette",  // Mise en vedette (5 €/mois)
+    pro_full: "",        // Annonce professionnelle complète (49,90 €/mois ou 499 €/an) — lien personnalisé : hv-pro-complet
+    guide_complete: "",  // Guide complet (9,90 €)
+    guide_achat: "",     // Guide « Acheter un bien » (4,90 €)
+    guide_impots: "",    // Guide « Les impôts la première année » (4,90 €)
+    guide_autonomo: "",  // Guide « Devenir autónomo » (4,90 €)
+    guide_retraite: "",  // Guide « Prendre sa retraite en Espagne » (4,90 €)
+    guide_pack: "",      // Pack des 5 guides (19,90 €)
+    course: ""           // Cours « Parlez espagnol ! » (12,90 €) — un seul produit contenant les 4 PDF (FR, EN, DE, NL)
   },
+
+  // Tarifs supplémentaires affichés sur le site (en euros)
+  PRICES_EXTRA: { pro_full_month: 49.90, pro_full_year: 499, guide_complete: 9.90, guide_theme: 4.90, guide_pack: 19.90, course: 12.90 },
 
   // Identifiant de votre chaîne YouTube (commence par UC, 24 caractères).
   // Il sert à afficher vos dernières vidéos sur le site. Voir le guide pour le trouver.
@@ -31,3 +42,4 @@ window.APP_CONFIG_EXTRA = {
   DRIVE_FILE_MB: 10
 };
 Object.assign(window.APP_CONFIG, window.APP_CONFIG_EXTRA);
+window.APP_CONFIG.PRICES = Object.assign({}, window.APP_CONFIG.PRICES || {}, window.APP_CONFIG_EXTRA.PRICES_EXTRA || {});

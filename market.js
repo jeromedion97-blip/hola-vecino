@@ -4,7 +4,7 @@ const { t, esc, nl2br, $, $$, field, select, checks, toast, langName, date, errM
 const view = H.view, C = H.C;
 const KINDS = ["restaurant","hotel","service","rental"];
 const TOPICS = ["admin","housing","work","health","family","taxes","social","general"];
-const creditKind = k => ["restaurant","hotel","service"].includes(k) ? "pro" : k;
+const creditKind = (k, plan) => ["restaurant","hotel","service"].includes(k) ? (plan === "full" ? "pro_full" : "pro") : k;
 
 ROUTES.unshift(
   [/^#\/premium$/, () => premium()],
@@ -20,7 +20,7 @@ ROUTES.unshift(
 const price = n => new Intl.NumberFormat(H.lang, { style:"currency", currency:"EUR", minimumFractionDigits: n % 1 ? 2 : 0 }).format(n);
 const buyUrl = kind => {
   const exact = ((C.GUMROAD_LINKS || {})[kind] || "").trim();
-  const base = /^https:\/\//.test(exact) ? exact : C.GUMROAD_STORE + C.GUMROAD_PRODUCTS[kind];
+  const base = /^https:\/\//.test(exact) ? exact : C.GUMROAD_STORE + ((C.GUMROAD_PRODUCTS || {})[kind] || (kind === "pro_full" ? "hv-pro-complet" : kind));
   return base + (base.includes("?") ? "&" : "?") + "wanted=true";
 };
 const buyBtn = (kind, label, primary) => `<a class="btn ${primary ? "primary" : ""}" href="${esc(buyUrl(kind))}" target="_blank" rel="noopener">${esc(label)}</a>`;
@@ -29,6 +29,7 @@ const mapErr = e => { const m = (e && e.message) || ""; if (m.includes("NO_CREDI
 const PRICE_ROWS = () => [
   [t("ck_premium"), `${price(C.PRICES.premium_month)}${t("per_month")} · ${price(C.PRICES.premium_year)}${t("per_year")}`],
   [t("ck_pro"), `${price(C.PRICES.pro_month)}${t("per_month")} · ${price(C.PRICES.pro_year)}${t("per_year")}`],
+  [t("ck_pro_full"), `${price(C.PRICES.pro_full_month || 49.9)}${t("per_month")} · ${price(C.PRICES.pro_full_year || 499)}${t("per_year")}`],
   [t("ck_youtube"), `${price(C.PRICES.youtube_month)}${t("per_month")}`],
   [t("ck_rental"), `${price(C.PRICES.rental_30)} ${t("pr_rental")}`],
   [t("ck_featured"), `+ ${price(C.PRICES.featured_month)} ${t("pr_featured")}`]
@@ -51,6 +52,9 @@ async function premium() {
       <div class="plan"><h2>${esc(t("free_title"))}</h2><p>${esc(t("free_text"))}</p></div>
     </div>
     <p class="muted small">${esc(t("cancel_info"))}</p>
+    <section class="card cancel-box"><h2>⚠️ ${esc(t("cx_title"))}</h2><p>${esc(t("cx_lose"))}</p>
+      <ul class="cx-list">${["pf_ai","pf_compare","pf_checklist","pf_deadlines","pf_drive","pf_events"].map(k => `<li>✗ ${esc(t(k))}</li>`).join("")}<li>✗ ${esc(t("cx_quota"))}</li></ul>
+      <p class="ok small">🛟 ${esc(t("cx_keep"))}</p></section>
   </section>`;
   const st = $("#pstate");
   if (!H.configured) return;
@@ -79,9 +83,10 @@ function listingCard(l) {
   ].filter(Boolean).join("");
   return `<article class="listing ${isFeatured(l) ? "is-featured" : ""}">
     <p class="tags"><span class="tag sponsored">${esc(t("sponsored"))}</span>${isFeatured(l) ? `<span class="tag obj">${esc(t("featured"))}</span>` : ""}<span class="tag">${esc(t("kind_" + l.kind))}</span></p>
-    <h3>${esc(l.title)}</h3>
+    <h3><a href="#/annonce/${l.id}">${esc(l.title)}</a></h3>
+    <p class="rate" data-rate="listing" data-id="${l.id}"></p>
     <p class="muted small">${[l.city, l.price_text].filter(Boolean).map(esc).join(" · ")}</p>
-    ${l.description ? `<p>${nl2br(l.description)}</p>` : ""}
+    ${l.description ? `<p>${nl2br(l.plan === "full" ? l.description.slice(0, 260) + (l.description.length > 260 ? "…" : "") : l.description.slice(0, 300))}</p>` : ""}
     ${(l.languages || []).length ? `<p class="small">${esc(t("speaks"))} : ${(l.languages || []).map(c => esc(langName(c))).join(", ")}</p>` : ""}
     ${l.address ? `<p class="small muted">${esc(l.address)}</p>` : ""}
     ${l.kind === "rental" && l.licence_number ? `<p class="small">${esc(t("lst_licence"))} : <strong>${esc(l.licence_number)}</strong></p>` : ""}
@@ -115,7 +120,7 @@ async function deals(kind) {
     const city = $("#dcity").value.trim().toLowerCase(), lg = $("#dlang").value, q = H.norm($("#dsq").value);
     const shown = rows.filter(l => (!city || (l.city || "").toLowerCase().includes(city)) && (!lg || (l.languages || []).includes(lg)) && (!q || H.norm(`${l.title} ${l.description || ""}`).includes(q)));
     $("#dlist").innerHTML = shown.length ? `<div class="listings">${shown.map(listingCard).join("")}</div>` : `<p class="empty">${esc(t("no_listings"))}</p>`;
-    bindReports();
+    bindReports(); if (H.fillRatings) H.fillRatings(view, "listing");
   };
   ["#dcity", "#dlang", "#dsq"].forEach(s => $(s).addEventListener("input", apply)); apply();
 }
@@ -166,7 +171,7 @@ async function myListings() {
     <h2>${esc(t("credits_title"))}</h2><div id="credits"></div>
     <div id="mylist"><p>${esc(t("loading"))}</p></div>
     <h2>${esc(t("prices_title"))}</h2>
-    <div class="table-wrap"><table><tbody>${PRICE_ROWS().slice(1).map(([k, v], i) => `<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td><td>${buyBtn(["pro","youtube","rental","featured"][i], t("lst_buy"))}</td></tr>`).join("")}</tbody></table></div>
+    <div class="table-wrap"><table><tbody>${PRICE_ROWS().slice(1).map(([k, v], i) => `<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td><td>${buyBtn(["pro","pro_full","youtube","rental","featured"][i], t("lst_buy"))}</td></tr>`).join("")}</tbody></table></div>
   </section>`;
   const [{ data: ls }, { data: cr }] = await Promise.all([
     sb.from("listings").select("*").eq("owner_id", H.me.id).order("created_at", { ascending:false }),
@@ -182,7 +187,7 @@ async function myListings() {
       <p class="small ${active ? "ok" : "muted"}">${esc(state)}${isFeatured(l) ? ` · ${esc(t("featured_until"))} ${esc(date(l.featured_until))}` : ""}</p></div>
       <div class="actions">${l.status !== "rejected" ? `<button class="btn small primary" data-act="${l.id}">${esc(t(active ? "lst_extend" : "lst_activate"))}</button>${active ? `<button class="btn small" data-feat="${l.id}">${esc(t("lst_feature"))}</button>` : ""}` : ""}
       <a class="btn small" href="#/annonces/${l.id}">${esc(t("lst_edit"))}</a>
-      <a class="linkbtn small" href="${esc(buyUrl(creditKind(l.kind)))}" target="_blank" rel="noopener">${esc(t("lst_buy"))}</a>
+      <a class="linkbtn small" href="${esc(buyUrl(creditKind(l.kind, l.plan)))}" target="_blank" rel="noopener">${esc(t("lst_buy"))}</a>
       <button class="linkbtn small" data-del="${l.id}">${esc(t("delete"))}</button></div></li>`; }).join("")}</ul>`
     : `<p class="empty">${esc(t("lst_none"))}</p>`;
   const run = async (id, featured) => {
@@ -222,14 +227,37 @@ async function listingForm(id) {
       <div data-k="rental">${inp("licence_number", t("lst_licence") + " *", "text", 80)}<p class="muted small">${esc(t("lst_licence_help"))}</p></div>
       <div data-k="youtube" class="field"><span class="label">${esc(t("lst_topics"))}</span>${checks("topics", TOPICS.map(k => [k, t("cat_" + k)]), l.topics || [])}</div>
       <div class="field"><span class="label">${esc(t("lst_langs"))}</span>${checks("languages", H.SPOKEN.map(c => [c, langName(c)]), l.languages || [])}</div>
-      ${field(t("lst_desc"), `<textarea id="l_desc" name="description" rows="5" maxlength="2000">${esc(l.description || "")}</textarea>`, "l_desc")}
+      <div data-k="restaurant hotel service" class="field"><span class="label">${esc(t("lp_plan"))}</span>
+        <div class="segmented wrap"><label><input type="radio" name="plan" value="simple" ${l.plan !== "full" ? "checked" : ""}><span>${esc(t("pro_simple"))} · ${price(C.PRICES.pro_month)}${esc(t("per_month"))}</span></label><label><input type="radio" name="plan" value="full" ${l.plan === "full" ? "checked" : ""}><span>★ ${esc(t("pro_full"))} · ${price(C.PRICES.pro_full_month || 49.9)}${esc(t("per_month"))}</span></label></div>
+        <p class="muted small" id="planhelp"></p></div>
+      ${field(t("lst_desc"), `<textarea id="l_desc" name="description" rows="5" maxlength="2000">${esc(l.description || "")}</textarea><span class="small muted" id="desccount"></span>`, "l_desc")}
+      <div id="fullwrap">
+        ${field(t("lp_hours"), `<textarea id="l_hours" name="hours" rows="3" maxlength="300" placeholder="${esc(t("lp_hours_ph"))}">${esc(l.hours || "")}</textarea>`, "l_hours")}
+        <div class="field"><span class="label">${esc(t("lp_photos"))}</span><div class="thumbs" id="lphotos"></div><label class="btn small" for="lpin">📷 ${esc(t("lp_add_photos"))}</label><input id="lpin" type="file" accept="image/*" multiple class="sr"></div>
+      </div>
     </fieldset>
     <div class="actions"><button class="btn primary">${esc(t("lst_save"))}</button><span class="msg" role="status"></span></div></form>
   </section>`;
   const F = $("#lf");
   const kindNow = () => id ? l.kind : F.querySelector("input[name=kind]:checked").value;
   const show = () => { const k = kindNow(); $$("[data-k]", F).forEach(el => { const on = el.dataset.k.split(" ").includes(k); el.hidden = !on; $$("input", el).forEach(i => { if (i.name === "youtube_url") i.required = on; if (i.name === "licence_number") i.required = on; }); }); };
-  $$("input[name=kind]", F).forEach(r => r.onchange = show); show();
+  $$("input[name=kind]", F).forEach(r => r.onchange = () => { show(); planUI(); }); show();
+  let photos = (l.photos || []).slice(), newFiles = [];
+  const isPro = () => ["restaurant","hotel","service"].includes(kindNow());
+  const planNow = () => isPro() ? (F.querySelector("input[name=plan]:checked") || {}).value || "simple" : "simple";
+  const drawPhotos = () => { $("#lphotos").innerHTML = photos.map((u, i) => `<span class="thumb"><img src="${esc(u)}" alt=""><button type="button" data-rp="${i}">×</button></span>`).join("") + newFiles.map((x, i) => `<span class="thumb"><img src="${URL.createObjectURL(x)}" alt=""><button type="button" data-rn="${i}">×</button></span>`).join("");
+    $$("[data-rp]", F).forEach(b => b.onclick = () => { photos.splice(+b.dataset.rp, 1); drawPhotos(); }); $$("[data-rn]", F).forEach(b => b.onclick = () => { newFiles.splice(+b.dataset.rn, 1); drawPhotos(); }); };
+  const planUI = () => {
+    const full = planNow() === "full";
+    $("#fullwrap").hidden = !full || !isPro();
+    $("#l_desc").maxLength = full || !isPro() ? 2000 : 300;
+    $("#planhelp").textContent = t(full ? "lp_full_help" : "lp_simple_help");
+    $("#desccount").textContent = `${$("#l_desc").value.length} / ${$("#l_desc").maxLength}`;
+  };
+  $$("input[name=plan]", F).forEach(r => r.onchange = planUI);
+  $("#l_desc").addEventListener("input", planUI);
+  $("#lpin").onchange = e => { newFiles = newFiles.concat([...e.target.files].filter(x => x.type.startsWith("image/"))).slice(0, 8 - photos.length); e.target.value = ""; drawPhotos(); };
+  drawPhotos(); planUI();
   F.onsubmit = async e => {
     e.preventDefault();
     const f = new FormData(F), v = k => (f.get(k) || "").toString().trim() || null, k = kindNow(), msg = $(".msg", F);
@@ -238,6 +266,14 @@ async function listingForm(id) {
     if (k === "youtube") Object.assign(row, { youtube_url: v("youtube_url"), topics: f.getAll("topics") });
     else Object.assign(row, { city: v("city"), price_text: v("price_text"), address: v("address"), phone: v("phone"), email: v("email"), website: v("website"), licence_number: k === "rental" ? v("licence_number") : null });
     msg.textContent = t("loading");
+    if (isPro()) {
+      row.plan = planNow();
+      if (row.plan === "full") {
+        row.hours = v("hours");
+        try { const up = newFiles.length && H.uploadPhotos ? await H.uploadPhotos(newFiles, "listing") : []; row.photos = photos.concat(up).slice(0, 8); }
+        catch (err) { msg.textContent = mapErr(err); return; }
+      } else if (row.description) row.description = row.description.slice(0, 300);
+    }
     const { error } = id
       ? await H.sb.from("listings").update(row).eq("id", id)
       : await H.sb.from("listings").insert({ ...row, kind: k, owner_id: H.me.id });
