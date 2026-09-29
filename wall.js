@@ -121,7 +121,9 @@ async function wall(opts) {
     const { data, error } = await q;
     if (error) { $("#feed").innerHTML = `<p class="notice">${esc(errMsg(error))}</p>`; return; }
     const rows = (data || []).filter(x => !H.blocks.has(x.author_id));
-    const ids = rows.map(x => x.id);
+    const ids = rows.map(x => x.id), artIds = rows.filter(x => x.article_id).map(x => x.article_id);
+    const { data: arts } = artIds.length ? await sb.from("articles").select("id,title,body,cover_url").in("id", artIds) : { data: [] };
+    rows.forEach(x => { if (x.article_id) x._article = (arts || []).find(a => a.id === x.article_id) || null; });
     const [people, likes, comments] = await Promise.all([
       H.profilesFor(rows.map(x => x.author_id)),
       ids.length ? sb.from("post_likes").select("post_id,user_id").in("post_id", ids) : { data: [] },
@@ -138,7 +140,24 @@ async function wall(opts) {
     if (opts.post && posts[0]) openComments(posts[0].id);
   };
 
-  const card = x => `<article class="post-card" data-id="${x.id}">
+  const Lg = o => o ? (o[H.lang] || o.fr || o.en || Object.values(o)[0] || "") : "";
+  const plainTxt = s => String(s || "").replace(/\*\*/g, "").replace(/^##\s*/gm, "").replace(/^[-•]\s*/gm, "").replace(/\s+/g, " ").trim();
+  const articleCard = x => { const a = x._article || {}; return `<article class="post-card art-post" data-id="${x.id}">
+    <header><img class="hv-avatar" src="favicon.png" alt=""><div><strong>¡Hola Vecino!</strong>
+      <p class="small muted"><span class="tag art-tag">📰 ${esc(t("wall_article_tag"))}</span> <a href="#/voisins/${x.id}" class="muted">${esc(dateTime(x.created_at))}</a></p></div></header>
+    ${(x.photos || []).length ? `<a href="#/articles/${x.article_id}"><img class="art-cover" src="${esc(x.photos[0])}" alt="" loading="lazy"></a>` : ""}
+    <h3 class="art-post-title"><a href="#/articles/${x.article_id}">${esc(Lg(a.title) || x.body)}</a></h3>
+    <p class="post-body">${esc(plainTxt(Lg(a.body)).slice(0, 220))}${plainTxt(Lg(a.body)).length > 220 ? "…" : ""}</p>
+    <p><a class="btn small primary" href="#/articles/${x.article_id}">${esc(t("wall_read"))} →</a></p>
+    <footer>
+      <button class="ole ${x._liked ? "on" : ""}" data-like aria-pressed="${x._liked}">💃 ${esc(t("wall_ole"))} <strong>${x._likes || ""}</strong></button>
+      <button class="linkbtn" data-com>💬 ${x._comments} ${esc(t("wall_comments"))}</button>
+      <button class="linkbtn small" data-share>↗ ${esc(t("ev_share"))}</button>
+      ${H.isAdmin ? `<a class="linkbtn small" href="#/admin/articles/${x.article_id}">✎</a>` : ""}
+    </footer>
+    <div class="comments" hidden></div>
+  </article>`; };
+  const card = x => x.kind === "article" ? articleCard(x) : `<article class="post-card" data-id="${x.id}">
     <header>${avatar(x._author)}<div><a href="#/profil/${x.author_id}"><strong>${esc(x._author.display_name)}</strong></a> ${badges(x._author)}
       <p class="small muted">${x.kind === "intro" ? `<span class="tag obj">${esc(t("wall_intro_tag"))}</span> ` : ""}${x.city ? esc(x.city) + " · " : ""}<a href="#/voisins/${x.id}" class="muted">${esc(dateTime(x.created_at))}</a></p></div></header>
     <p class="post-body">${nl2br(x.body)}</p>
@@ -165,11 +184,11 @@ async function wall(opts) {
         x._liked = !x._liked; x._likes += x._liked ? 1 : -1; draw();
       };
       $("[data-com]", el).onclick = () => openComments(x.id);
-      $("[data-share]", el).onclick = () => H.share(C_NAME(), location.href.split("#")[0] + "#/voisins/" + x.id);
+      $("[data-share]", el).onclick = () => x.kind === "article" ? H.share(Lg((x._article || {}).title) || x.body, location.href.split("#")[0] + "#/articles/" + x.article_id) : H.share(C_NAME(), location.href.split("#")[0] + "#/voisins/" + x.id);
       const d = $("[data-del]", el); if (d) d.onclick = async () => {
         if (!confirm(t("confirm_delete"))) return;
         const { error } = await sb.from("posts").delete().eq("id", x.id); if (error) return toast(errMsg(error));
-        if (x.author_id === me.id && (x.photos || []).length) await sb.storage.from("photos").remove(x.photos.map(pathOf).filter(Boolean));
+        if (x.kind !== "article" && x.author_id === me.id && (x.photos || []).length) await sb.storage.from("photos").remove(x.photos.map(pathOf).filter(Boolean));
         posts = posts.filter(y => y.id !== x.id); draw();
       };
       const r = $("[data-rep]", el); if (r) r.onclick = () => H.report("post", x.id);

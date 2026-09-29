@@ -79,11 +79,11 @@ push("youtube", channelBlock);
 
 async function latestArticles(n) {
   if (!H.configured) return [];
-  const { data } = await H.sb.from("articles").select("id,title,body,published_at").eq("status", "published").order("published_at", { ascending:false }).limit(n);
+  const { data } = await H.sb.from("articles").select("id,title,body,published_at,cover_url").eq("status", "published").order("published_at", { ascending:false }).limit(n);
   return data || [];
 }
 const plain = s => String(s || "").replace(/\*\*/g, "").replace(/^##\s*/gm, "").replace(/^[-•]\s*/gm, "").replace(/\s+/g, " ").trim();
-const articleCard = a => `<a class="article-card" href="#/articles/${a.id}"><span class="muted small">${esc(date(a.published_at))}</span><strong>${esc(L(a.title))}</strong><span class="small">${esc(plain(L(a.body)).slice(0, 170))}…</span></a>`;
+const articleCard = a => `<a class="article-card ${a.cover_url ? "has-cover" : ""}" href="#/articles/${a.id}">${a.cover_url ? `<img class="art-thumb" src="${esc(a.cover_url)}" alt="" loading="lazy">` : ""}<span class="muted small">${esc(date(a.published_at))}</span><strong>${esc(L(a.title))}</strong><span class="small">${esc(plain(L(a.body)).slice(0, 170))}…</span></a>`;
 
 // Accueil visiteur : derniers articles + chaîne
 push("home", async () => {
@@ -334,12 +334,22 @@ async function articlePage(id) {
     <a class="back" href="#/articles">${esc(t("back"))}</a>
     <p class="muted small">${a.published_at ? esc(date(a.published_at)) : `<span class="tag">${esc(t("art_status_draft"))}</span>`}</p>
     <h1>${esc(L(a.title))}</h1>
+    ${a.cover_url ? `<img class="art-cover" src="${esc(a.cover_url)}" alt="">` : ""}
     <div class="article-body">${md(L(a.body))}</div>
+    <div id="artreact"></div>
     ${window.HV_LAWYER(t, esc)}
     <div class="actions"><button class="btn small" id="share">${esc(t("ev_share"))}</button>${H.isAdmin ? `<a class="btn small" href="#/admin/articles/${a.id}">✎ ${esc(t("lst_edit"))}</a>` : ""}</div>
     ${window.HV_SOCIAL(t("follow_us"))}
   </article>`;
   $("#share").onclick = () => H.share(L(a.title), location.href);
+  if (a.status !== "published") return;
+  if (!H.me) { $("#artreact").innerHTML = `<p class="react-box"><a href="#/connexion?signup">💬 ${esc(t("art_react_login"))}</a></p>`; return; }
+  const { data: fp } = await H.sb.from("posts").select("id").eq("article_id", a.id).maybeSingle();
+  if (!fp) return;
+  const [{ count: ol }, { count: cm }] = await Promise.all([
+    H.sb.from("post_likes").select("post_id", { count:"exact", head:true }).eq("post_id", fp.id),
+    H.sb.from("post_comments").select("id", { count:"exact", head:true }).eq("post_id", fp.id)]);
+  $("#artreact").innerHTML = `<a class="react-box" href="#/voisins/${fp.id}"><span>💃 ¡Olé! <strong>${ol || 0}</strong> · 💬 <strong>${cm || 0}</strong> ${esc(t("wall_comments"))}</span><span class="btn small primary">${esc(t("art_react"))}</span></a>`;
 }
 
 // Partage d'une page (téléphone : menu natif ; ordinateur : copie du lien)
@@ -373,6 +383,27 @@ async function callArticleAI(payload) {
   if (!r.ok || !d.title) throw new Error(d.error || "error");
   return d;
 }
+async function makeCover(title) {
+  const c = document.createElement("canvas"); c.width = 1200; c.height = 630; const g = c.getContext("2d");
+  const sky = g.createLinearGradient(0, 0, 0, 630);
+  [[0, "#26246a"], [0.4, "#7a3880"], [0.66, "#e86854"], [0.78, "#fca848"], [0.78, "#284678"], [1, "#142850"]].forEach(([k, col]) => sky.addColorStop(k, col));
+  g.fillStyle = sky; g.fillRect(0, 0, 1200, 630);
+  const glow = g.createRadialGradient(900, 491, 20, 900, 491, 260); glow.addColorStop(0, "rgba(255,210,120,.9)"); glow.addColorStop(1, "rgba(255,210,120,0)");
+  g.fillStyle = glow; g.fillRect(600, 200, 600, 430);
+  g.fillStyle = "#ffe28c"; g.beginPath(); g.arc(900, 491, 120, Math.PI, 0); g.fill();
+  g.strokeStyle = "rgba(255,255,255,.25)"; g.lineWidth = 3;
+  for (let i = 0; i < 4; i++) { g.beginPath(); for (let x = 0; x <= 1200; x += 20) { const y = 525 + i * 28 + 6 * Math.sin(x / 60 + i); x ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke(); }
+  g.fillStyle = "#AA151B"; g.fillRect(0, 0, 1200, 18); g.fillStyle = "#F2B705"; g.fillRect(0, 18, 1200, 12);
+  const logo = new Image(); logo.src = "logo-horizontal.png"; await new Promise(r => { logo.onload = r; logo.onerror = r; });
+  g.fillStyle = "#fff"; g.beginPath(); g.roundRect(56, 60, 330, 96, 22); g.fill();
+  if (logo.naturalWidth) { const w = 290, h = w * logo.naturalHeight / logo.naturalWidth; g.drawImage(logo, 76, 108 - h / 2, w, h); }
+  g.textAlign = "left"; g.lineJoin = "round"; g.font = "bold 58px sans-serif";
+  const words = String(title).split(/\s+/), lines = []; let cur = "";
+  words.forEach(w => { const tt = (cur + " " + w).trim(); if (g.measureText(tt).width > 700 && cur) { lines.push(cur); cur = w; } else cur = tt; }); if (cur) lines.push(cur);
+  let y = 250; lines.slice(0, 4).forEach((l, i, arr) => { const txt = i === 3 && lines.length > 4 ? l + "…" : l; g.lineWidth = 10; g.strokeStyle = "rgba(20,16,48,.85)"; g.strokeText(txt, 60, y); g.fillStyle = "#fff"; g.fillText(txt, 60, y); y += 70; });
+  return await new Promise(r => c.toBlob(r, "image/jpeg", .9));
+}
+
 async function articleEditor(key) {
   if (!H.isAdmin) { view.innerHTML = `<section class="narrow"><p class="notice">${esc(t("adm_denied"))}</p></section>`; return; }
   const sb = H.sb, LANGS = H.LANGS;
@@ -388,6 +419,12 @@ async function articleEditor(key) {
       ${field(t("art_topic"), `<input id="atopic" maxlength="300" value="${esc(a.topic || "")}">`, "atopic")}
       <div class="actions"><button class="btn" id="agen">✨ ${esc(t("art_generate"))}</button><button class="btn" id="atr">🌍 ${esc(t("art_translate"))}</button><span class="msg" id="aimsg" role="status"></span></div>
     </div>
+    <div class="card stack cover-edit"><strong>🖼 ${esc(t("art_cover"))}</strong>
+      <div id="acover"></div>
+      <div class="actions"><label class="btn small" for="acin">📷 ${esc(t("art_cover_upload"))}</label><input id="acin" type="file" accept="image/*" class="sr">
+        <button class="btn small" id="acgen">✨ ${esc(t("art_cover_gen"))}</button><button class="linkbtn small" id="acrm">${esc(t("art_cover_remove"))}</button><span class="msg small" id="acmsg" role="status"></span></div>
+      <p class="small muted">${esc(t("art_cover_help"))}</p></div>
+    <p class="notice small">📣 ${esc(t("art_feed_note"))}</p>
     <nav class="tabs" id="altabs">${LANGS.map(l => `<button data-l="${l}" ${l === cur ? 'aria-pressed="true"' : ""}>${esc(H.LANG_NAMES[l])}</button>`).join("")}</nav>
     <div class="stack wide-stack">
       ${field(t("art_title_field"), `<input id="atitle" maxlength="200">`, "atitle")}
@@ -399,6 +436,28 @@ async function articleEditor(key) {
       <span class="msg" id="amsg" role="status"></span></div>
   </section>`;
   const keep = () => { a.title[cur] = $("#atitle").value; a.body[cur] = $("#abody").value; };
+  const drawCover = () => { $("#acover").innerHTML = a.cover_url ? `<img class="art-cover small-cover" src="${esc(a.cover_url)}" alt="">` : `<p class="muted small">${esc(t("art_cover_none"))}</p>`; $("#acrm").hidden = !a.cover_url; };
+  const uploadBlob = async blob => {
+    const path = `${H.me.id}/cover-${Date.now()}.jpg`;
+    const up = await sb.storage.from("photos").upload(path, blob, { contentType:"image/jpeg" });
+    if (up.error) throw up.error;
+    return sb.storage.from("photos").getPublicUrl(path).data.publicUrl;
+  };
+  $("#acin").onchange = async e => {
+    const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+    $("#acmsg").textContent = t("loading");
+    try { a.cover_url = (await H.uploadPhotos([f], "cover"))[0]; drawCover(); $("#acmsg").textContent = t("art_cover_ok"); }
+    catch (err) { $("#acmsg").textContent = errMsg(err); }
+  };
+  $("#acgen").onclick = async () => {
+    keep(); const title = a.title[cur] || a.title.fr || $("#atopic").value.trim();
+    if (!title) { $("#acmsg").textContent = t("art_cover_need_title"); return; }
+    $("#acmsg").textContent = t("loading");
+    try { a.cover_url = await uploadBlob(await makeCover(title)); drawCover(); $("#acmsg").textContent = t("art_cover_ok"); }
+    catch (err) { $("#acmsg").textContent = errMsg(err); }
+  };
+  $("#acrm").onclick = () => { a.cover_url = null; drawCover(); };
+  drawCover();
   const show = () => { $("#atitle").value = a.title[cur] || ""; $("#abody").value = a.body[cur] || ""; $$("#altabs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.l === cur))); };
   $$("#altabs button").forEach(b => b.onclick = () => { keep(); cur = b.dataset.l; show(); });
   show();
@@ -419,7 +478,7 @@ async function articleEditor(key) {
   };
   const save = async (status) => {
     keep();
-    const row = { topic: $("#atopic").value.trim() || null, title: a.title, body: a.body, status: status || a.status, updated_at: new Date().toISOString() };
+    const row = { topic: $("#atopic").value.trim() || null, title: a.title, body: a.body, status: status || a.status, cover_url: a.cover_url || null, updated_at: new Date().toISOString() };
     if (row.status === "published" && !a.published_at) row.published_at = new Date().toISOString();
     if (row.status === "draft") row.published_at = null;
     const res = a.id ? await sb.from("articles").update(row).eq("id", a.id).select().single() : await sb.from("articles").insert({ ...row, author_id: H.me.id }).select().single();
