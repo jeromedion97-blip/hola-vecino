@@ -120,8 +120,11 @@ async function contactReviews(id) {
   if (!H.configured) return;
   const { data: c } = await H.sb.from("contacts").select("*").eq("id", id).maybeSingle();
   if (!c) { location.hash = "#/contacts"; return; }
-  view.innerHTML = `<section class="page"><a class="back" href="#/contacts">${esc(t("back"))}</a><p class="muted small">${esc(t("ct_" + c.category))}${c.city ? " · " + esc(c.city) : ""}</p><h1>${esc(c.name)}</h1>
-    ${c.description ? `<p>${nl2br(c.description)}</p>` : ""}<div id="creviews"></div></section>`;
+  view.innerHTML = `<section class="page"><a class="back" href="#/pros">${esc(t("back"))}</a><p class="muted small">${esc(t("ct_" + c.category))}${c.city ? " · " + esc(c.city) : ""}</p><h1>${esc(c.name)}</h1>
+    ${c.description ? `<p>${nl2br(c.description)}</p>` : ""}
+    <dl class="facts">${(c.languages || []).length ? `<div><dt>${esc(t("lst_langs"))}</dt><dd>${(c.languages || []).map(H.langName).map(esc).join(", ")}</dd></div>` : ""}${c.address ? `<div><dt>${esc(t("lst_address"))}</dt><dd>${esc(c.address)} · <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.address)}" target="_blank" rel="noopener">${esc(t("lp_route"))}</a></dd></div>` : ""}</dl>
+    <p class="contact-links">${c.phone ? `<a class="btn small" href="tel:${esc(c.phone.replace(/\s/g, ""))}">📞 ${esc(c.phone)}</a>` : ""}${c.email ? `<a class="btn small" href="mailto:${esc(c.email)}">✉️ ${esc(c.email)}</a>` : ""}${c.website ? `<a class="btn small primary" href="${esc(/^https?:/i.test(c.website) ? c.website : "https://" + c.website)}" target="_blank" rel="noopener">🌐 ${esc(t("lp_site"))}</a>` : ""}</p>
+    <div id="creviews"></div></section>`;
   reviewsBlock("contact", c.id, $("#creviews"), null);
 }
 

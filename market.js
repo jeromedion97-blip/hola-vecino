@@ -249,6 +249,7 @@ async function listingForm(id) {
       <div data-k="rental">${inp("licence_number", t("lst_licence") + " *", "text", 80)}<p class="muted small">${esc(t("lst_licence_help"))}</p></div>
       <div data-k="youtube" class="field"><span class="label">${esc(t("lst_topics"))}</span>${checks("topics", TOPICS.map(k => [k, t("cat_" + k)]), l.topics || [])}</div>
       <div class="field"><span class="label">${esc(t("lst_langs"))}</span>${checks("languages", H.SPOKEN.map(c => [c, langName(c)]), l.languages || [])}</div>
+      <div data-k="service" class="field"><label for="l_pcat" class="label">${esc(t("pd_category"))}</label>${H.proCatSelect ? H.proCatSelect("l_pcat", l.category || "other") : ""}<p class="small muted">${esc(t("pd_category_help"))}</p></div>
       <div data-k="restaurant hotel service" class="field"><span class="label">${esc(t("lp_plan"))}</span>
         <div class="segmented wrap"><label><input type="radio" name="plan" value="simple" ${l.plan !== "full" ? "checked" : ""}><span>${esc(t("pro_simple"))} · ${price(C.PRICES.pro_month)}${esc(t("per_month"))}</span></label><label><input type="radio" name="plan" value="full" ${l.plan === "full" ? "checked" : ""}><span>★ ${esc(t("pro_full"))} · ${price(C.PRICES.pro_full_month || 49.9)}${esc(t("per_month"))}</span></label></div>
         <p class="muted small" id="planhelp"></p></div>
@@ -288,6 +289,7 @@ async function listingForm(id) {
     if (k === "youtube") Object.assign(row, { youtube_url: v("youtube_url"), topics: f.getAll("topics") });
     else Object.assign(row, { city: v("city"), price_text: v("price_text"), address: v("address"), phone: v("phone"), email: v("email"), website: v("website"), licence_number: k === "rental" ? v("licence_number") : null });
     msg.textContent = t("loading");
+    if (k === "service" && $("#l_pcat")) row.category = $("#l_pcat").value;
     if (isPro()) {
       row.plan = planNow();
       if (row.plan === "full") {

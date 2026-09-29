@@ -804,3 +804,47 @@ button.yt-thumb{border:0;padding:0;cursor:pointer;width:100%}
 .variants{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:10px 0}
 .variant{padding:14px;border:1px solid var(--line);border-radius:var(--r-m);background:var(--paper)}
 .variant p.small{white-space:normal}
+/* v15 : vente et donnerie, annuaire, accueil, voisins */
+.big-tabs .tabbtn{font-size:1rem;padding:9px 18px}
+.filters{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}
+.filters label{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:.85rem;min-width:170px;flex:1}
+.item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin:14px 0}
+.item-card{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden;text-decoration:none;color:var(--ink);transition:transform .18s ease,box-shadow .18s ease}
+.item-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(20,33,61,.1)}
+.item-ph{position:relative;aspect-ratio:4/3;background:var(--sky);display:grid;place-items:center;font-size:2.4rem}
+.item-ph img{width:100%;height:100%;object-fit:cover}
+.item-status{position:absolute;top:8px;left:8px;padding:3px 10px;border-radius:12px;font:700 .75rem var(--body);background:var(--sun);color:var(--ink)}
+.item-status.st-done{background:var(--muted);color:#fff}
+.item-body{display:flex;flex-direction:column;gap:3px;padding:10px 12px}
+.item-price{font:800 1.15rem var(--display);color:var(--cobalt)}
+.item-price.free{color:var(--olive)}
+.item-price.big{font-size:1.8rem;margin:0 0 10px}
+.safety{margin:18px 0;padding:12px 16px;border-left:5px solid var(--olive);background:#EEF5E8;border-radius:8px}
+.safety p{margin:4px 0 0}
+.seller{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.finder{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;padding:16px;margin:14px 0;background:var(--white);border:1px solid var(--line);border-radius:var(--r-m)}
+.finder label{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:.85rem}
+.pro-list{display:flex;flex-direction:column;gap:12px}
+.pro-card{display:flex;gap:16px;padding:16px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-m)}
+.pro-card.is-full{border:2px solid var(--sun);background:linear-gradient(135deg,#FFFBEF,#fff)}
+.pro-ph{flex:0 0 160px}.pro-ph img{width:160px;height:120px;object-fit:cover;border-radius:10px}
+.pro-body{flex:1;min-width:0}.pro-body h3{margin:4px 0}.pro-body h3 a{color:var(--cobalt);text-decoration:none}
+.pro-rate{margin:2px 0 4px}
+.tag.b-official{background:#E6EEF8;color:var(--cobalt)}.tag.b-recommended{background:#EEF5E8;color:var(--olive)}.tag.b-sponsored{background:#FFF2C6;color:#8A6A00}
+@media (max-width:600px){.pro-card{flex-direction:column}.pro-ph{flex:none}.pro-ph img{width:100%;height:170px}}
+.home-v14{display:flex;flex-direction:column;gap:18px;margin:26px 0}
+.paths{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.path{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:22px;border-radius:var(--r-m);text-decoration:none;color:var(--ink);border:1px solid var(--line);transition:transform .18s ease}
+.path:hover{transform:translateY(-3px)}
+.path.before{background:linear-gradient(135deg,#E6EEF8,#fff)}.path.after{background:linear-gradient(135deg,#FFF6DA,#fff)}
+.path strong{font:800 1.35rem var(--display);color:var(--cobalt)}.path-ic{font-size:2.2rem}
+.quick-finder,.ask-box,.city-counts{padding:18px 20px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-m)}
+.quick-finder h2,.ask-box h2,.city-counts h2{margin:0 0 10px;font-size:1.2rem}
+.qf-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}.qf-row select,.qf-row input{width:auto;min-width:150px;flex:1}
+.ask-box{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;border-left:6px solid var(--sun)}.ask-box p{margin:0}
+@media (max-width:700px){.paths{grid-template-columns:1fr}}
+.amb-card{display:flex;gap:12px;align-items:center;padding:14px;margin-bottom:14px;border-radius:var(--r-m);background:linear-gradient(135deg,#EEF5E8,#fff);border:2px solid var(--olive)}
+.amb-card p{margin:0}.amb-card .btn{margin-top:6px}
+.near-card{padding:14px;margin-bottom:14px;border-radius:var(--r-m);background:var(--white);border:1px solid var(--line)}
+.near-card h3{margin:0 0 6px}.near-card p{margin:0 0 8px}
+.version-banner{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:5000;display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--ink);color:#fff;border-radius:30px;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:hv-rise .3s ease both}

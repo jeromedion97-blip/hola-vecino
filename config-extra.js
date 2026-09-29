@@ -27,8 +27,8 @@ window.APP_CONFIG_EXTRA = {
     guide_autonomo: "https://regardful6.gumroad.com/l/hv-guide-autonomo",  // Guide « Devenir autónomo » (4,90 €)
     guide_retraite: "https://regardful6.gumroad.com/l/hv-guide-retraite",  // Guide « Prendre sa retraite en Espagne » (4,90 €)
     guide_pack: "https://regardful6.gumroad.com/l/hv-guides-pack",      // Pack des 5 guides (19,90 €)
-    course: "https://regardful6.gumroad.com/l/hv-cours-espagnol",
-    all_in: ""           // Membres « Tout compris » (59 €/mois ou 590 €/an) — lien personnalisé : hv-tout-compris           // Cours « Parlez espagnol ! » (12,90 €) — un seul produit contenant les 4 PDF (FR, EN, DE, NL)
+    course: "https://regardful6.gumroad.com/l/hv-cours-espagnol",   // Cours « Parlez espagnol ! » (12,90 €), 4 PDF (FR, EN, DE, NL)
+    all_in: "https://regardful6.gumroad.com/l/hv-tout-compris"      // Membres « Tout compris » (59 €/mois ou 590 €/an)
   },
 
   // Tarifs supplémentaires affichés sur le site (en euros)

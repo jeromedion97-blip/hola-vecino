@@ -153,19 +153,28 @@ push("dashboard", async () => {
   try { if (localStorage.getItem("hv_welcome_done_" + H.me.id)) return; } catch (e) {}
   const me = H.me.id, p = H.myProfile || {}, sb = H.sb;
   const count = async q => { const { count } = await q; return count || 0; };
-  const [intro, friends, going, played] = await Promise.all([
+  const [intro, friends, groups, welcomed] = await Promise.all([
     count(sb.from("posts").select("id", { count:"exact", head:true }).eq("author_id", me).eq("kind", "intro")),
-    count(sb.from("friendships").select("requester_id", { count:"exact", head:true }).or(`requester_id.eq.${me},addressee_id.eq.${me}`)),
-    count(sb.from("event_rsvps").select("event_id", { count:"exact", head:true }).eq("user_id", me).eq("status", "going")),
-    count(sb.from("game_scores").select("id", { count:"exact", head:true }).eq("user_id", me))
+    count(sb.from("friendships").select("requester_id", { count:"exact", head:true }).eq("status", "accepted").or(`requester_id.eq.${me},addressee_id.eq.${me}`)),
+    count(sb.from("group_members").select("group_id", { count:"exact", head:true }).eq("user_id", me).eq("status", "member")),
+    sb.from("post_comments").select("post_id").eq("author_id", me).limit(50).then(async ({ data }) => {
+      const ids = [...new Set((data || []).map(x => x.post_id))]; if (!ids.length) return 0;
+      const { count } = await sb.from("posts").select("id", { count:"exact", head:true }).in("id", ids).eq("kind", "intro").neq("author_id", me); return count || 0; })
   ]);
+  const { data: cg } = p.city ? await sb.from("groups").select("id").ilike("city", p.city).eq("visibility", "public").limit(1) : { data: [] };
   const steps = [
     ["wl_photo", !!p.avatar_url, "#/mon-profil"], ["wl_city", !!p.city, "#/mon-profil"], ["wl_intro", intro > 0, "#/voisins"],
-    ["wl_friend", friends > 0, "#/communaute"], ["wl_event", going > 0, "#/evenements"], ["wl_game", played > 0, "#/jeux"]
+    ["wl_group", groups > 0 || friends > 0, (cg || [])[0] ? "#/groupes/" + cg[0].id : "#/groupes"], ["wl_welcome", welcomed > 0, "#/voisins"], ["wl_friend", friends > 0, "#/communaute"]
   ];
   const done = steps.filter(s => s[1]).length;
-  if (done === steps.length) { try { localStorage.setItem("hv_welcome_done_" + me, "1"); } catch (e) {} return; }
+  if (done === steps.length) {
+    const { data: ok } = await sb.rpc("complete_onboarding");
+    if (ok) { try { localStorage.setItem("hv_welcome_done_" + me, "1"); } catch (e) {} toast(t("wl_bonus_ok")); }
+    return;
+  }
+  const left = Math.max(0, 48 * 3600e3 - (Date.now() - new Date(p.created_at || Date.now()).getTime()));
   main.insertAdjacentHTML("afterbegin", `<section class="welcome-card"><div class="titlebar"><h2>🌴 ${esc(t("wl_title"))}</h2><span class="small muted">${done} / ${steps.length}</span></div>
+    <p class="small">${left > 0 ? `⏳ ${esc(t("wl_48h"))} <strong>${Math.ceil(left / 3600e3)} h</strong> · ` : ""}🎁 ${esc(t("wl_bonus"))}</p>
     <p class="progress"><span class="bar"><span style="width:${Math.round(done / steps.length * 100)}%"></span></span></p>
     <ul class="welcome-steps">${steps.map(([k, ok, h]) => `<li class="${ok ? "done" : ""}"><a href="${h}"><span aria-hidden="true">${ok ? "✅" : "⬜"}</span> ${esc(t(k))}</a></li>`).join("")}</ul></section>`);
 });

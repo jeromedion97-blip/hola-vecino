@@ -143,8 +143,8 @@ function renderHeader() {
   document.documentElement.lang = lang;
   const br = $("#brand"); if (br) br.textContent = C.APP_NAME; document.title = C.APP_NAME;
   const GROUPS = [
-    ["grp_settle", "🧭", [["#/guide","nav_guide"],["#/finances","nav_finances"],["#/assistant","nav_assistant"],["#/traducteur","nav_translator"],["#/contacts","nav_contacts"],["#/boutique","nav_shop"]]],
-    ["grp_community", "👥", [["#/communaute","nav_community"],["#/voisins","nav_wall"],["#/groupes","nav_groups"],["#/evenements","nav_events"],["#/forum","nav_forum"]]],
+    ["grp_settle", "🧭", [["#/guide","nav_guide"],["#/finances","nav_finances"],["#/assistant","nav_assistant"],["#/traducteur","nav_translator"],["#/pros","nav_pros"],["#/boutique","nav_shop"]]],
+    ["grp_community", "👥", [["#/communaute","nav_community"],["#/voisins","nav_wall"],["#/groupes","nav_groups"],["#/evenements","nav_events"],["#/forum","nav_forum"],["#/vente","nav_market"]]],
     ["grp_live", "🌞", [["#/articles","nav_articles"],["#/bons-plans","nav_deals"],["#/videos","nav_videos"],["#/youtube","nav_youtube"],["#/meteo","nav_weather"]]],
     ["grp_fun", "🎮", [["#/jeux","nav_games"],["#/points","nav_points"],["#/parrainage","nav_referral"]]]
   ];
@@ -269,7 +269,7 @@ function notConfigured() {
 
 // ---------- Accueil ----------
 function home() {
-  const doors = [["#/guide","guide"],["#/finances","fin"],["#/communaute","comm"],["#/contacts","contacts"],["#/bons-plans","deals"],["#/youtube","yt"]];
+  const doors = [["#/guide","guide"],["#/finances","fin"],["#/communaute","comm"],["#/pros","contacts"],["#/bons-plans","deals"],["#/youtube","yt"]];
   view.innerHTML = `
   <section class="hero">
     <div class="hero-text">
