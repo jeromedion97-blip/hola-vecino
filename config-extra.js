@@ -31,6 +31,20 @@ window.APP_CONFIG_EXTRA = {
     all_in: "https://regardful6.gumroad.com/l/hv-tout-compris"      // Membres « Tout compris » (59 €/mois ou 590 €/an)
   },
 
+  // Connexion avec Google / Facebook : passez à true APRÈS avoir activé le fournisseur dans Supabase
+  AUTH_GOOGLE: false,
+  AUTH_FACEBOOK: false,
+
+  // Informations légales (pages Mentions légales, Conditions générales, Confidentialité)
+  LEGAL: {
+    owner: "Jérôme Dion",   // nom de l'éditeur (ou de votre société)
+    status: "",             // ex. : "indépendant en personne physique" ou "SRL Hola Vecino"
+    address: "",            // adresse postale complète
+    company: "",            // numéro d'entreprise BCE, ex. : "BE 0123.456.789"
+    vat: "",                // numéro de TVA, ou "non assujetti à la TVA"
+    publisher: "Jérôme Dion"
+  },
+
   // Tarifs supplémentaires affichés sur le site (en euros)
   PRICES_EXTRA: { pro_full_month: 49.90, pro_full_year: 499, guide_complete: 9.90, guide_theme: 4.90, guide_pack: 19.90, course: 12.90, all_in_month: 59, all_in_year: 590 },
 
