@@ -746,3 +746,12 @@ button.yt-thumb{border:0;padding:0;cursor:pointer;width:100%}
 .course-body h2{margin:6px 0;color:var(--red)}
 .course-body .actions{flex-wrap:wrap}
 @media (max-width:600px){.course-card{flex-direction:column;gap:8px}}
+/* v11 : Tout compris et offre de lancement */
+.premium-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.plan-allin{border:2px solid var(--red);background:linear-gradient(160deg,#FFF6DA,#fff 60%);box-shadow:0 12px 30px rgba(170,21,27,.12)}
+.plan-allin h2{color:var(--red)}
+.launch-box{margin:14px 0;padding:18px 20px;border-radius:var(--r-m);background:linear-gradient(135deg,#FFF6DA,#fff);border:2px dashed var(--sun)}
+.launch-box h2{margin:0 0 6px}
+.launch-count{display:flex;flex-wrap:wrap;gap:18px}
+.launch-count strong{font:800 1.6rem var(--display);color:var(--red)}
+.btn.launch{background:var(--sun);border-color:var(--sun);color:var(--ink)}

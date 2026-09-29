@@ -225,7 +225,7 @@ async function videos() {
 const GUIDES = [["complete","guide-complet.pdf","📘"],["achat","guide-achat.pdf","🏠"],["impots","guide-impots.pdf","🧾"],["autonomo","guide-autonomo.pdf","💼"],["retraite","guide-retraite.pdf","🌅"]];
 function shop() {
   const P = C.PRICES || {}, links = C.GUMROAD_LINKS || {}, p = H.myProfile || {};
-  const annual = H.isAdmin || (p.premium_plan === "year" && p.premium_until && new Date(p.premium_until) > new Date());
+  const annual = H.isAdmin || (["year", "all_in"].includes(p.premium_plan) && p.premium_until && new Date(p.premium_until) > new Date());
   const buy = k => (k === "course" ? links.course || "" : links["guide_" + k] || "").trim();
   view.innerHTML = `<section class="page wide"><h1>📚 ${esc(t("sp_title"))}</h1><p class="lead">${esc(t("sp_intro"))}</p>
     ${annual ? `<p class="ok">🎁 ${esc(t("sp_offered"))}</p>` : `<p class="notice small">🎁 ${esc(t("sp_offer_note"))} <a href="#/premium">${esc(t("premium_cta"))}</a></p>`}
@@ -337,7 +337,7 @@ async function pointsPage() {
 function proPage() {
   const P = C.PRICES || {}, L = C.GUMROAD_LINKS || {};
   const feat = keys => `<ul class="ticks">${keys.map(k => `<li>${esc(t(k))}</li>`).join("")}</ul>`;
-  view.innerHTML = `<section class="page"><h1>💼 ${esc(t("pro_title"))}</h1><p class="lead">${esc(t("pro_intro"))}</p>
+  view.innerHTML = `<section class="page"><h1>💼 ${esc(t("pro_title"))}</h1><p class="lead">${esc(t("pro_intro"))}</p><div id="prolaunch"></div>
     <div class="premium-grid">
       <div class="plan"><h2>${esc(t("pro_simple"))}</h2><p class="plan-price"><strong>${price(P.pro_month || 14.9)}</strong>${esc(t("per_month"))}</p><p class="muted">${price(P.pro_year || 119)}${esc(t("per_year"))}</p>
         ${feat(["pro_f_link","pro_f_short","pro_f_langs","pro_f_reviews"])}
@@ -348,6 +348,12 @@ function proPage() {
     </div>
     <section class="card"><h2>⚖️ ${esc(t("pro_legal_t"))}</h2><p>${esc(t("pro_legal_d"))}</p><a class="btn small" href="${H.me ? "#/mon-profil" : "#/connexion?signup"}">${esc(t("pro_verify"))}</a></section>
   </section>`;
+  if (H.configured) H.sb.rpc("launch_offer_status").then(({ data: o }) => {
+    if (!o || (o.full <= 0 && o.simple <= 0)) return;
+    $("#prolaunch").innerHTML = `<section class="launch-box"><h2>🎁 ${esc(t("launch_title"))}</h2><p>${esc(t("launch_d"))}</p>
+      <p class="launch-count"><span><strong>${o.full}</strong> ${esc(t("launch_left_full"))}</span><span><strong>${o.simple}</strong> ${esc(t("launch_left_simple"))}</span></p>
+      <a class="btn primary" href="${H.me ? "#/annonces/nouvelle" : "#/connexion?signup"}">${esc(t("launch_start"))}</a></section>`;
+  });
 }
 
 // ============ NEWSLETTER ============

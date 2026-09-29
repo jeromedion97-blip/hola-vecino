@@ -25,7 +25,7 @@ const buyUrl = kind => {
 };
 const buyBtn = (kind, label, primary) => `<a class="btn ${primary ? "primary" : ""}" href="${esc(buyUrl(kind))}" target="_blank" rel="noopener">${esc(label)}</a>`;
 const safeUrl = u => /^https?:\/\//i.test(u || "") ? u : (u ? "https://" + u : "");
-const mapErr = e => { const m = (e && e.message) || ""; if (m.includes("NO_CREDIT")) return t("no_credit"); if (m.includes("LICENCE_REQUIRED")) return t("licence_required"); return errMsg(e); };
+const mapErr = e => { const m = (e && e.message) || ""; if (m.includes("NO_CREDIT")) return t("no_credit"); if (m.includes("OFFER_FULL")) return t("launch_full"); if (m.includes("ALREADY_CLAIMED")) return t("launch_already"); if (m.includes("LICENCE_REQUIRED")) return t("licence_required"); return errMsg(e); };
 const PRICE_ROWS = () => [
   [t("ck_premium"), `${price(C.PRICES.premium_month)}${t("per_month")} · ${price(C.PRICES.premium_year)}${t("per_year")}`],
   [t("ck_pro"), `${price(C.PRICES.pro_month)}${t("per_month")} · ${price(C.PRICES.pro_year)}${t("per_year")}`],
@@ -49,6 +49,11 @@ async function premium() {
         <ul class="ticks">${["pf_ai","pf_compare","pf_checklist","pf_deadlines","pf_drive","pf_export","pf_events"].map(k => `<li>${esc(t(k))}</li>`).join("")}</ul>
         <div id="pstate"></div>
       </div>
+      <div class="plan plan-allin"><p class="tag obj">★ ${esc(t("allin_badge"))}</p><h2>${esc(t("allin_title"))}</h2>
+        <p class="plan-price"><strong>${price(C.PRICES.all_in_month || 59)}</strong>${esc(t("per_month"))}</p>
+        <p class="muted">${esc(t("buy_year"))} : <strong>${price(C.PRICES.all_in_year || 590)}</strong>${esc(t("per_year"))}</p>
+        <ul class="ticks">${["allin_f_premium","allin_f_ai","allin_f_guides","allin_f_course","allin_f_new"].map(k => `<li>${esc(t(k))}</li>`).join("")}</ul>
+        <div id="astate"></div></div>
       <div class="plan"><h2>${esc(t("free_title"))}</h2><p>${esc(t("free_text"))}</p></div>
     </div>
     <p class="muted small">${esc(t("cancel_info"))}</p>
@@ -59,7 +64,10 @@ async function premium() {
   const st = $("#pstate");
   if (!H.configured) return;
   if (!me) { st.innerHTML = `<p class="notice">${esc(t("login_first"))}</p><a class="btn primary" href="#/connexion?signup">${esc(t("hero_join"))}</a>`; return; }
-  st.innerHTML = `${until ? `<p class="ok">${esc(t("premium_active"))} ${esc(date(until))}</p>` : ""}
+  const allIn = until && p.premium_plan === "all_in";
+  $("#astate").innerHTML = allIn ? `<p class="ok">${esc(t("allin_active"))} ${esc(date(until))}</p><a class="btn" href="#/boutique">📚 ${esc(t("nav_shop"))}</a>`
+    : ((C.GUMROAD_LINKS || {}).all_in ? `<div class="actions">${buyBtn("all_in", t("allin_cta"), true)}</div><p class="muted small">${esc(t("allin_after"))}</p>` : "");
+  st.innerHTML = `${until && !allIn ? `<p class="ok">${esc(t("premium_active"))} ${esc(date(until))}</p>` : ""}
     <p class="notice small">${esc(t("same_email"))}<br><strong>${esc(t("your_email"))} ${esc(me.email || "")}</strong></p>
     <div class="actions">${buyBtn("premium", t("premium_cta"), true)}
     <button class="btn" id="claim">${esc(t("premium_refresh"))}</button></div>`;
@@ -168,15 +176,22 @@ async function myListings() {
   view.innerHTML = `<section class="page">
     <div class="titlebar"><h1>${esc(t("lst_mine"))}</h1><a class="btn primary" href="#/annonces/nouvelle">${esc(t("lst_new"))}</a></div>
     <p class="notice small">${esc(t("lst_how"))}<br><strong>${esc(t("your_email"))} ${esc(H.me.email || "")}</strong></p>
+    <div id="launchbox"></div>
     <h2>${esc(t("credits_title"))}</h2><div id="credits"></div>
     <div id="mylist"><p>${esc(t("loading"))}</p></div>
     <h2>${esc(t("prices_title"))}</h2>
     <div class="table-wrap"><table><tbody>${PRICE_ROWS().slice(1).map(([k, v], i) => `<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td><td>${buyBtn(["pro","pro_full","youtube","rental","featured"][i], t("lst_buy"))}</td></tr>`).join("")}</tbody></table></div>
   </section>`;
-  const [{ data: ls }, { data: cr }] = await Promise.all([
+  const [{ data: ls }, { data: cr }, { data: lo }] = await Promise.all([
     sb.from("listings").select("*").eq("owner_id", H.me.id).order("created_at", { ascending:false }),
-    sb.from("credits").select("kind,days").is("used_at", null)
+    sb.from("credits").select("kind,days").is("used_at", null),
+    sb.rpc("launch_offer_status")
   ]);
+  const offer = lo || { full: 0, simple: 0, claimed: true };
+  if (!offer.claimed && (offer.full > 0 || offer.simple > 0))
+    $("#launchbox").innerHTML = `<section class="launch-box"><h2>🎁 ${esc(t("launch_title"))}</h2><p>${esc(t("launch_d"))}</p>
+      <p class="launch-count"><span><strong>${offer.full}</strong> ${esc(t("launch_left_full"))}</span><span><strong>${offer.simple}</strong> ${esc(t("launch_left_simple"))}</span></p></section>`;
+  const canLaunch = l => !offer.claimed && ["restaurant","hotel","service"].includes(l.kind) && l.status !== "rejected" && (offer[l.plan === "full" ? "full" : "simple"] || 0) > 0;
   const counts = {}; (cr || []).filter(c => c.kind !== "premium").forEach(c => counts[c.kind] = (counts[c.kind] || 0) + 1);
   $("#credits").innerHTML = Object.keys(counts).length ? `<p class="tags">${Object.entries(counts).map(([k, n]) => `<span class="tag st-going">${esc(t("ck_" + k))} × ${n}</span>`).join("")}</p>` : `<p class="muted">${esc(t("credits_none"))}</p>`;
   const now = new Date();
@@ -185,7 +200,7 @@ async function myListings() {
     const state = l.status === "rejected" ? t("ls_rejected") : active ? `${t("ls_active")} ${date(l.active_until)}` : l.active_until ? t("ls_expired") : t("ls_draft");
     return `<li><div><strong>${esc(l.title)}</strong> <span class="tag">${esc(t("kind_" + l.kind))}</span>
       <p class="small ${active ? "ok" : "muted"}">${esc(state)}${isFeatured(l) ? ` · ${esc(t("featured_until"))} ${esc(date(l.featured_until))}` : ""}</p></div>
-      <div class="actions">${l.status !== "rejected" ? `<button class="btn small primary" data-act="${l.id}">${esc(t(active ? "lst_extend" : "lst_activate"))}</button>${active ? `<button class="btn small" data-feat="${l.id}">${esc(t("lst_feature"))}</button>` : ""}` : ""}
+      <div class="actions">${!active && canLaunch(l) ? `<button class="btn small launch" data-launch="${l.id}">${esc(t("launch_claim"))}</button>` : ""}${l.status !== "rejected" ? `<button class="btn small primary" data-act="${l.id}">${esc(t(active ? "lst_extend" : "lst_activate"))}</button>${active ? `<button class="btn small" data-feat="${l.id}">${esc(t("lst_feature"))}</button>` : ""}` : ""}
       <a class="btn small" href="#/annonces/${l.id}">${esc(t("lst_edit"))}</a>
       <a class="linkbtn small" href="${esc(buyUrl(creditKind(l.kind, l.plan)))}" target="_blank" rel="noopener">${esc(t("lst_buy"))}</a>
       <button class="linkbtn small" data-del="${l.id}">${esc(t("delete"))}</button></div></li>`; }).join("")}</ul>`
@@ -196,6 +211,12 @@ async function myListings() {
     myListings();
   };
   $$("[data-act]", view).forEach(b => b.onclick = () => run(b.dataset.act, false));
+  $$("[data-launch]", view).forEach(b => b.onclick = async () => {
+    if (!confirm(t("launch_confirm"))) return;
+    const { error } = await sb.rpc("claim_launch_offer", { p_listing: +b.dataset.launch });
+    if (error) return toast(mapErr(error));
+    toast(t("launch_ok")); myListings();
+  });
   $$("[data-feat]", view).forEach(b => b.onclick = () => run(b.dataset.feat, true));
   $$("[data-del]", view).forEach(b => b.onclick = async () => { if (!confirm(t("confirm_delete"))) return; await sb.from("listings").delete().eq("id", b.dataset.del); myListings(); });
 }

@@ -1,0 +1,41 @@
+// Textes ajoutés en v10 (formule Tout compris, offre de lancement)
+(() => {
+const add = {
+fr: { allin_badge:"Le plus complet", allin_title:"Tout compris", allin_f_premium:"Toutes les fonctions Premium", allin_f_ai:"Assistant IA et traducteur sans limite", allin_f_guides:"Les 5 guides PDF à télécharger", allin_f_course:"Le cours « Parlez espagnol ! » en 4 langues", allin_f_new:"Tous les futurs guides inclus",
+  allin_active:"Formule Tout compris active jusqu'au", allin_cta:"Choisir Tout compris", allin_after:"Après le paiement, revenez ici et cliquez sur « J'ai payé : activer » avec la même adresse e-mail.",
+  sp_offered:"Vos guides et le cours sont offerts avec votre formule.", sp_offer_note:"Tous les guides et le cours sont offerts avec le Premium annuel et la formule Tout compris.",
+  launch_title:"Offre de lancement", launch_d:"Les 10 premières annonces complètes et les 20 premières annonces simples sont publiées gratuitement, sans limite de durée. Une annonce par professionnel.",
+  launch_left_full:"annonces complètes gratuites restantes", launch_left_simple:"annonces simples gratuites restantes", launch_claim:"🎁 Publier gratuitement", launch_start:"Créer mon annonce",
+  launch_confirm:"Publier cette annonce gratuitement grâce à l'offre de lancement ? L'offre est limitée à une annonce par professionnel.", launch_ok:"Votre annonce est publiée gratuitement. Bienvenue parmi nos membres fondateurs !",
+  launch_full:"Il n'y a plus de place gratuite pour cette formule.", launch_already:"Vous avez déjà profité de l'offre de lancement." },
+en: { allin_badge:"Most complete", allin_title:"All inclusive", allin_f_premium:"All Premium features", allin_f_ai:"Unlimited AI assistant and translator", allin_f_guides:"All 5 PDF guides to download", allin_f_course:"The “Speak Spanish!” course in 4 languages", allin_f_new:"All future guides included",
+  allin_active:"All inclusive plan active until", allin_cta:"Choose All inclusive", allin_after:"After paying, come back here and click “I've paid: activate” using the same email address.",
+  sp_offered:"Your guides and the course are included with your plan.", sp_offer_note:"All guides and the course are included with yearly Premium and the All inclusive plan.",
+  launch_title:"Launch offer", launch_d:"The first 10 complete listings and the first 20 simple listings are published for free, with no time limit. One listing per business.",
+  launch_left_full:"free complete listings left", launch_left_simple:"free simple listings left", launch_claim:"🎁 Publish for free", launch_start:"Create my listing",
+  launch_confirm:"Publish this listing for free with the launch offer? The offer is limited to one listing per business.", launch_ok:"Your listing is published for free. Welcome among our founding members!",
+  launch_full:"There are no free places left for this plan.", launch_already:"You have already used the launch offer." },
+es: { allin_badge:"El más completo", allin_title:"Todo incluido", allin_f_premium:"Todas las funciones Premium", allin_f_ai:"Asistente IA y traductor sin límite", allin_f_guides:"Las 5 guías PDF para descargar", allin_f_course:"El curso «Parlez espagnol!» en 4 idiomas", allin_f_new:"Todas las guías futuras incluidas",
+  allin_active:"Tarifa Todo incluido activa hasta el", allin_cta:"Elegir Todo incluido", allin_after:"Después del pago, vuelve aquí y pulsa «He pagado: activar» con el mismo correo.",
+  sp_offered:"Tus guías y el curso están incluidos en tu tarifa.", sp_offer_note:"Todas las guías y el curso están incluidos en Premium anual y en Todo incluido.",
+  launch_title:"Oferta de lanzamiento", launch_d:"Los 10 primeros anuncios completos y los 20 primeros anuncios sencillos se publican gratis, sin límite de tiempo. Un anuncio por profesional.",
+  launch_left_full:"anuncios completos gratis restantes", launch_left_simple:"anuncios sencillos gratis restantes", launch_claim:"🎁 Publicar gratis", launch_start:"Crear mi anuncio",
+  launch_confirm:"¿Publicar este anuncio gratis con la oferta de lanzamiento? La oferta se limita a un anuncio por profesional.", launch_ok:"Tu anuncio se ha publicado gratis. ¡Bienvenido entre nuestros miembros fundadores!",
+  launch_full:"Ya no quedan plazas gratuitas para esta tarifa.", launch_already:"Ya has disfrutado de la oferta de lanzamiento." },
+de: { allin_badge:"Am umfassendsten", allin_title:"Alles inklusive", allin_f_premium:"Alle Premium-Funktionen", allin_f_ai:"KI-Assistent und Übersetzer ohne Limit", allin_f_guides:"Alle 5 PDF-Leitfäden zum Herunterladen", allin_f_course:"Der Kurs „Sprich Spanisch!“ in 4 Sprachen", allin_f_new:"Alle künftigen Leitfäden inklusive",
+  allin_active:"Alles inklusive aktiv bis", allin_cta:"Alles inklusive wählen", allin_after:"Komm nach der Zahlung hierher zurück und klicke mit derselben E-Mail-Adresse auf „Ich habe bezahlt: aktivieren“.",
+  sp_offered:"Deine Leitfäden und der Kurs sind in deinem Angebot enthalten.", sp_offer_note:"Alle Leitfäden und der Kurs sind im jährlichen Premium und in Alles inklusive enthalten.",
+  launch_title:"Startangebot", launch_d:"Die ersten 10 Komplett-Anzeigen und die ersten 20 Basis-Anzeigen werden kostenlos und ohne Zeitlimit veröffentlicht. Eine Anzeige pro Unternehmen.",
+  launch_left_full:"kostenlose Komplett-Anzeigen übrig", launch_left_simple:"kostenlose Basis-Anzeigen übrig", launch_claim:"🎁 Kostenlos veröffentlichen", launch_start:"Meine Anzeige erstellen",
+  launch_confirm:"Diese Anzeige mit dem Startangebot kostenlos veröffentlichen? Das Angebot gilt für eine Anzeige pro Unternehmen.", launch_ok:"Deine Anzeige ist kostenlos veröffentlicht. Willkommen bei unseren Gründungsmitgliedern!",
+  launch_full:"Für dieses Angebot gibt es keine kostenlosen Plätze mehr.", launch_already:"Du hast das Startangebot bereits genutzt." },
+nl: { allin_badge:"Het meest volledig", allin_title:"Alles inbegrepen", allin_f_premium:"Alle Premium-functies", allin_f_ai:"AI-assistent en vertaler zonder limiet", allin_f_guides:"Alle 5 pdf-gidsen om te downloaden", allin_f_course:"De cursus ‘Spreek Spaans!’ in 4 talen", allin_f_new:"Alle toekomstige gidsen inbegrepen",
+  allin_active:"Alles inbegrepen actief tot", allin_cta:"Kies Alles inbegrepen", allin_after:"Kom na de betaling hier terug en klik op ‘Ik heb betaald: activeren’ met hetzelfde e-mailadres.",
+  sp_offered:"Je gidsen en de cursus zitten bij je formule.", sp_offer_note:"Alle gidsen en de cursus zitten bij jaarlijks Premium en bij Alles inbegrepen.",
+  launch_title:"Lanceringsaanbod", launch_d:"De eerste 10 volledige en de eerste 20 eenvoudige advertenties worden gratis gepubliceerd, zonder tijdslimiet. Eén advertentie per zaak.",
+  launch_left_full:"gratis volledige advertenties over", launch_left_simple:"gratis eenvoudige advertenties over", launch_claim:"🎁 Gratis publiceren", launch_start:"Mijn advertentie maken",
+  launch_confirm:"Deze advertentie gratis publiceren met het lanceringsaanbod? Het aanbod is beperkt tot één advertentie per zaak.", launch_ok:"Je advertentie is gratis gepubliceerd. Welkom bij onze stichtende leden!",
+  launch_full:"Er zijn geen gratis plaatsen meer voor deze formule.", launch_already:"Je hebt het lanceringsaanbod al gebruikt." }
+};
+for (const l in add) Object.assign(window.I18N[l], add[l]);
+})();

@@ -27,11 +27,12 @@ window.APP_CONFIG_EXTRA = {
     guide_autonomo: "https://regardful6.gumroad.com/l/hv-guide-autonomo",  // Guide « Devenir autónomo » (4,90 €)
     guide_retraite: "https://regardful6.gumroad.com/l/hv-guide-retraite",  // Guide « Prendre sa retraite en Espagne » (4,90 €)
     guide_pack: "https://regardful6.gumroad.com/l/hv-guides-pack",      // Pack des 5 guides (19,90 €)
-    course: "https://regardful6.gumroad.com/l/hv-cours-espagnol"           // Cours « Parlez espagnol ! » (12,90 €) — un seul produit contenant les 4 PDF (FR, EN, DE, NL)
+    course: "https://regardful6.gumroad.com/l/hv-cours-espagnol",
+    all_in: ""           // Membres « Tout compris » (59 €/mois ou 590 €/an) — lien personnalisé : hv-tout-compris           // Cours « Parlez espagnol ! » (12,90 €) — un seul produit contenant les 4 PDF (FR, EN, DE, NL)
   },
 
   // Tarifs supplémentaires affichés sur le site (en euros)
-  PRICES_EXTRA: { pro_full_month: 49.90, pro_full_year: 499, guide_complete: 9.90, guide_theme: 4.90, guide_pack: 19.90, course: 12.90 },
+  PRICES_EXTRA: { pro_full_month: 49.90, pro_full_year: 499, guide_complete: 9.90, guide_theme: 4.90, guide_pack: 19.90, course: 12.90, all_in_month: 59, all_in_year: 590 },
 
   // Identifiant de votre chaîne YouTube (commence par UC, 24 caractères).
   // Il sert à afficher vos dernières vidéos sur le site. Voir le guide pour le trouver.
