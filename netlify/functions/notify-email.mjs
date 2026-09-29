@@ -13,16 +13,16 @@ const iso = ms => new Date(Date.now() + ms).toISOString();
 const esc = s => String(s || "").replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
 
 const T = {
-  fr: { subj:"Du nouveau sur Hola Vecino", hi:"Bonjour", msg:"nouveau(x) message(s)", reply:"a répondu à votre sujet", invite:"vous invite à un événement", rsvp:"participe à votre événement", reminder_share:"a partagé un rappel avec vous", post_comment:"a commenté votre publication", friend_request:"vous a envoyé une demande d'ami", friend_accept:"a accepté votre demande d'ami", group_invite:"vous invite dans un groupe", client_access:"vous a donné accès à son dossier", reward:"Vous avez gagné 1 mois de Premium offert !", open:"Ouvrir Hola Vecino", stop:"Pour ne plus recevoir ces e-mails, décochez l'option dans Mon profil.",
+  fr: { subj:"Du nouveau sur Hola Vecino", hi:"Bonjour", msg:"nouveau(x) message(s)", reply:"a répondu à votre sujet", invite:"vous invite à un événement", rsvp:"participe à votre événement", reminder_share:"a partagé un rappel avec vous", post_comment:"a commenté votre publication", friend_request:"vous a envoyé une demande d'ami", friend_accept:"a accepté votre demande d'ami", group_invite:"vous invite dans un groupe", client_access:"vous a donné accès à son dossier", new_neighbor:"vient de s'installer dans votre ville : souhaitez-lui la bienvenue !", newcomer:"vient d'arriver dans votre ville : vous êtes son ambassadeur", neighbor_intro:"de votre ville vient de se présenter", reward:"Vous avez gagné du Premium offert !", open:"Ouvrir Hola Vecino", stop:"Pour ne plus recevoir ces e-mails, décochez l'option dans Mon profil.",
     endSubj:"Votre abonnement Premium se termine bientôt", endTxt:"Votre abonnement Premium se termine le", endMore:"Sans renouvellement, vous perdrez l'accès à l'analyse IA, au comparateur, à la checklist, aux rappels, au drive et à la création d'événements. Vos données restent conservées 3 mois.",
     purgeSubj:"Vos documents seront bientôt effacés", purgeTxt:"Votre Premium est terminé depuis 2 mois. Les documents de votre drive seront effacés définitivement dans 30 jours. Réabonnez-vous pour les retrouver." },
-  en: { subj:"New on Hola Vecino", hi:"Hello", msg:"new message(s)", reply:"replied to your topic", invite:"invited you to an event", rsvp:"is going to your event", reminder_share:"shared a reminder with you", post_comment:"commented on your post", friend_request:"sent you a friend request", friend_accept:"accepted your friend request", group_invite:"invited you to a group", client_access:"gave you access to their file", reward:"You won 1 free month of Premium!", open:"Open Hola Vecino", stop:"To stop these emails, untick the option in My profile.",
+  en: { subj:"New on Hola Vecino", hi:"Hello", msg:"new message(s)", reply:"replied to your topic", invite:"invited you to an event", rsvp:"is going to your event", reminder_share:"shared a reminder with you", post_comment:"commented on your post", friend_request:"sent you a friend request", friend_accept:"accepted your friend request", group_invite:"invited you to a group", client_access:"gave you access to their file", new_neighbor:"just moved to your city: say welcome!", newcomer:"just arrived in your city: you are their ambassador", neighbor_intro:"from your city just introduced themselves", reward:"You won free Premium!", open:"Open Hola Vecino", stop:"To stop these emails, untick the option in My profile.",
     endSubj:"Your Premium subscription ends soon", endTxt:"Your Premium subscription ends on", endMore:"Without renewal you will lose AI analysis, the city comparison, your checklist, reminders, drive and event creation. Your data is kept for 3 months.",
     purgeSubj:"Your documents will soon be deleted", purgeTxt:"Your Premium ended 2 months ago. The documents in your drive will be permanently deleted in 30 days. Subscribe again to keep them." }
 };
-T.es = { ...T.en, subj:"Novedades en Hola Vecino", hi:"Hola", msg:"mensaje(s) nuevo(s)", open:"Abrir Hola Vecino", reward:"¡Has ganado 1 mes de Premium gratis!" };
-T.de = { ...T.en, subj:"Neues auf Hola Vecino", hi:"Hallo", msg:"neue Nachricht(en)", open:"Hola Vecino öffnen", reward:"Du hast 1 Gratismonat Premium gewonnen!" };
-T.nl = { ...T.en, subj:"Nieuw op Hola Vecino", hi:"Hallo", msg:"nieuwe bericht(en)", open:"Hola Vecino openen", reward:"Je hebt 1 gratis maand Premium gewonnen!" };
+T.es = { ...T.en, subj:"Novedades en Hola Vecino", hi:"Hola", msg:"mensaje(s) nuevo(s)", open:"Abrir Hola Vecino", reward:"¡Has ganado Premium gratis!" };
+T.de = { ...T.en, subj:"Neues auf Hola Vecino", hi:"Hallo", msg:"neue Nachricht(en)", open:"Hola Vecino öffnen", reward:"Du hast Premium geschenkt bekommen!" };
+T.nl = { ...T.en, subj:"Nieuw op Hola Vecino", hi:"Hallo", msg:"nieuwe bericht(en)", open:"Hola Vecino openen", reward:"Je hebt gratis Premium gewonnen!" };
 
 async function emailOf(uid) {
   const r = await fetch(`${URL_()}/auth/v1/admin/users/${uid}`, { headers: svc() });
@@ -42,6 +42,8 @@ async function send(to, subject, lines, t) {
 }
 
 export default async () => {
+  // Rappel du lendemain dans la messagerie (fonctionne même sans Brevo)
+  try { await fetch(`${URL_()}/rest/v1/rpc/onboarding_reminders`, { method: "POST", headers: svc(), body: "{}" }); } catch (e) {}
   if (!process.env.BREVO_API_KEY || !process.env.MAIL_FROM) return new Response("brevo not configured");
   // 1) Notifications et messages non lus
   const notifs = await get(`notifications?select=id,user_id,type,actor_id&emailed_at=is.null&created_at=gte.${encodeURIComponent(iso(-2 * 86400e3))}&limit=500`);
