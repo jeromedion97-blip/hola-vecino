@@ -29,7 +29,7 @@ async function emailOf(uid) {
   if (!r.ok) return null; const u = await r.json(); return u.email || (u.user && u.user.email) || null;
 }
 async function send(to, subject, lines, t) {
-  const site = process.env.SITE_URL || "https://hola-vecino.netlify.app";
+  const site = process.env.SITE_URL || "https://holavecino-espagne.com";
   const html = `<div style="font-family:Arial,sans-serif;max-width:520px;margin:auto;color:#14213D">
     <p style="font-size:18px;font-weight:bold;color:#1E4E8C">¡Hola Vecino!</p>${lines.map(l => `<p>${l}</p>`).join("")}
     <p><a href="${site}" style="display:inline-block;background:#1E4E8C;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none">${esc(t.open)}</a></p>
@@ -44,6 +44,7 @@ async function send(to, subject, lines, t) {
 export default async () => {
   // Rappel du lendemain dans la messagerie (fonctionne même sans Brevo)
   try { await fetch(`${URL_()}/rest/v1/rpc/onboarding_reminders`, { method: "POST", headers: svc(), body: "{}" }); } catch (e) {}
+  try { await fetch(`${URL_()}/rest/v1/rpc/purge_search_log`, { method: "POST", headers: svc(), body: "{}" }); } catch (e) {}
   if (!process.env.BREVO_API_KEY || !process.env.MAIL_FROM) return new Response("brevo not configured");
   // 1) Notifications et messages non lus
   const notifs = await get(`notifications?select=id,user_id,type,actor_id&emailed_at=is.null&created_at=gte.${encodeURIComponent(iso(-2 * 86400e3))}&limit=500`);

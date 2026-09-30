@@ -2,6 +2,14 @@
 //  RÉGLAGES SUPPLÉMENTAIRES (v5) — à compléter
 //  Ce fichier s'ajoute à config.js, qui garde vos clés Supabase.
 // ============================================================
+// ------------------------------------------------------------
+//  ADRESSE DE VOTRE BOUTIQUE GUMROAD
+//  Elle se trouve dans Gumroad → Settings → Profile → « Username » : https://VOTRE-NOM.gumroad.com
+//  Si vous changez de nom d'utilisateur Gumroad, modifiez UNIQUEMENT la ligne ci-dessous.
+// ------------------------------------------------------------
+var HV_GUMROAD = "https://jeromedje1997.gumroad.com";
+window.HV_GUMROAD = HV_GUMROAD;
+
 window.APP_CONFIG_EXTRA = {
   // Vos réseaux sociaux : collez l'adresse complète de chaque compte.
   // Une icône s'affiche en bas du site et sur la page Contact dès qu'une adresse est remplie.
@@ -12,23 +20,22 @@ window.APP_CONFIG_EXTRA = {
     facebook: "https://www.facebook.com/profile.php?id=61594897831343"
   },
 
-  // Liens exacts de vos produits Gumroad (bouton « Share » ou « Copy link » de chaque produit).
-  // S'ils sont remplis, ils remplacent les liens construits à partir de GUMROAD_STORE dans config.js.
+  // Liens de vos produits Gumroad : la fin de chaque lien (/l/…) est le « lien personnalisé » du produit.
   GUMROAD_LINKS: {
-    premium: "https://regardful6.gumroad.com/l/lhoyfk",        // Hola Vecino Premium (9,90 €/mois ou 79 €/an)
-    pro: "https://regardful6.gumroad.com/l/hv-pro",            // Annonce professionnelle (14,90 €/mois ou 119 €/an)
-    youtube: "https://regardful6.gumroad.com/l/hv-youtube",    // Chaîne YouTube référencée (4,90 €/mois)
-    rental: "https://regardful6.gumroad.com/l/hv-location",    // Location d'un bien, 30 jours (9,90 €)
-    featured: "https://regardful6.gumroad.com/l/hv-vedette",  // Mise en vedette (5 €/mois)
-    pro_full: "https://regardful6.gumroad.com/l/annonce-completepng",        // Annonce professionnelle complète (49,90 €/mois ou 499 €/an) — lien personnalisé : hv-pro-complet
-    guide_complete: "https://regardful6.gumroad.com/l/hv-guide-complet",  // Guide complet (9,90 €)
-    guide_achat: "https://regardful6.gumroad.com/l/hv-guide-achat",     // Guide « Acheter un bien » (4,90 €)
-    guide_impots: "https://regardful6.gumroad.com/l/hv-guide-impots",    // Guide « Les impôts la première année » (4,90 €)
-    guide_autonomo: "https://regardful6.gumroad.com/l/hv-guide-autonomo",  // Guide « Devenir autónomo » (4,90 €)
-    guide_retraite: "https://regardful6.gumroad.com/l/hv-guide-retraite",  // Guide « Prendre sa retraite en Espagne » (4,90 €)
-    guide_pack: "https://regardful6.gumroad.com/l/hv-guides-pack",      // Pack des 5 guides (19,90 €)
-    course: "https://regardful6.gumroad.com/l/hv-cours-espagnol",   // Cours « Parlez espagnol ! » (12,90 €), 4 PDF (FR, EN, DE, NL)
-    all_in: "https://regardful6.gumroad.com/l/hv-tout-compris"      // Membres « Tout compris » (59 €/mois ou 590 €/an)
+    premium: HV_GUMROAD + "/l/lhoyfk",        // Hola Vecino Premium (9,90 €/mois ou 79 €/an)
+    pro: HV_GUMROAD + "/l/hv-pro",            // Annonce professionnelle (14,90 €/mois ou 119 €/an)
+    youtube: HV_GUMROAD + "/l/hv-youtube",    // Chaîne YouTube référencée (4,90 €/mois)
+    rental: HV_GUMROAD + "/l/hv-location",    // Location d'un bien, 30 jours (9,90 €)
+    featured: HV_GUMROAD + "/l/hv-vedette",  // Mise en vedette (5 €/mois)
+    pro_full: HV_GUMROAD + "/l/annonce-completepng",        // Annonce professionnelle complète (49,90 €/mois ou 499 €/an) — lien personnalisé : hv-pro-complet
+    guide_complete: HV_GUMROAD + "/l/hv-guide-complet",  // Guide complet (9,90 €)
+    guide_achat: HV_GUMROAD + "/l/hv-guide-achat",     // Guide « Acheter un bien » (4,90 €)
+    guide_impots: HV_GUMROAD + "/l/hv-guide-impots",    // Guide « Les impôts la première année » (4,90 €)
+    guide_autonomo: HV_GUMROAD + "/l/hv-guide-autonomo",  // Guide « Devenir autónomo » (4,90 €)
+    guide_retraite: HV_GUMROAD + "/l/hv-guide-retraite",  // Guide « Prendre sa retraite en Espagne » (4,90 €)
+    guide_pack: HV_GUMROAD + "/l/hv-guides-pack",      // Pack des 5 guides (19,90 €)
+    course: HV_GUMROAD + "/l/hv-cours-espagnol",   // Cours « Parlez espagnol ! » (12,90 €), 4 PDF (FR, EN, DE, NL)
+    all_in: HV_GUMROAD + "/l/hv-tout-compris"      // Membres « Tout compris » (59 €/mois ou 590 €/an)
   },
 
   // Connexion avec Google / Facebook : passez à true APRÈS avoir activé le fournisseur dans Supabase

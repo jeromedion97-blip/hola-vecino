@@ -51,6 +51,7 @@ async function handle(req) {
   let b = {}; try { b = await req.json(); } catch {}
   const lang = { fr: "French", en: "English", es: "Spanish", de: "German", nl: "Dutch" }[b.lang] || "French";
   if (b.action === "welcome" || b.action === "broadcast") return compose(b);
+  if (b.action === "search_ideas") return searchIdeas(b, lang);
 
   // Contenus récents (sans aucun nom de membre)
   const [sugg, comments, posts, reviews, threads, replies, arts, views, profiles] = await Promise.all([
@@ -107,4 +108,24 @@ Give 5 article ideas (not duplicating existing articles, useful for expats, seas
   await fetch(`${URL_()}/rest/v1/site_settings`, { method: "POST", headers: { ...svc(), "Content-Type": "application/json", Prefer: "resolution=merge-duplicates,return=minimal" },
     body: JSON.stringify({ key: "insights", value: out, updated_at: out.generated_at }) });
   return Response.json(out);
+}
+
+// Transformer les recherches des visiteurs en idées d'articles et d'actions
+async function searchIdeas(b, lang) {
+  const data = JSON.stringify(b.searches || {}).slice(0, 12000);
+  const system = `You are the content and growth advisor of "Hola Vecino", a website and community for people moving to or living in Spain (paperwork guide, budget simulator, directory of professionals, buy-sell-give section, groups, events, articles).
+You receive what visitors searched for on the site: top terms, searches with NO result, rising terms, and the topics of questions asked to the AI assistant. Write in ${lang}.
+Turn this into concrete opportunities: articles to write (with the main keyword people use), professionals to recruit in the directory (for searches without results), and pages or features to add. Base everything on the data; if there is little data, say so briefly.
+Reply with ONLY a JSON object: {"summary":"2 sentences","article_ideas":[{"title":"...","keyword":"...","why":"..."}],"actions":[{"task":"...","why":"..."}]} with 5 article ideas and 3 to 5 actions.`;
+  const r = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+    body: JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: 1800, system, messages: [{ role: "user", content: "Search data:\n" + data }] })
+  });
+  const raw = await r.text(); let resp;
+  try { resp = JSON.parse(raw); } catch { return Response.json({ error: `${r.status} réponse inattendue de l'IA : ${raw.slice(0, 220)}` }, { status: 502 }); }
+  if (!r.ok) return Response.json({ error: `${r.status} ${resp?.error?.message || "api error"}` }, { status: 502 });
+  const text = (resp.content || []).filter(x => x.type === "text").map(x => x.text).join("\n");
+  const m = text.match(/\{[\s\S]*\}/);
+  try { return Response.json(JSON.parse(m ? m[0] : text)); } catch { return Response.json({ error: "L'IA a répondu dans un format inattendu. Réessayez." }, { status: 502 }); }
 }

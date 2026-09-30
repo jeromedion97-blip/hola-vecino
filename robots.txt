@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hola-vecino.netlify.app/sitemap.xml
+Sitemap: https://holavecino-espagne.com/sitemap.xml
+Sitemap: https://holavecino-espagne.com/sitemap-articles.xml

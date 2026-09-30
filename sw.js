@@ -1,7 +1,7 @@
 // Application installable : met en cache les fichiers du site pour un démarrage rapide.
 // Changez VERSION à chaque mise à jour importante du site.
-const VERSION = "hv-v16";
-const SHELL = ["./", "index.html", "style.css", "manifest.webmanifest", "logo-horizontal.png", "favicon.png", "icon-192.png", "config.js", "config-extra.js", "hv-app.js?v=hv-v16"];
+const VERSION = "hv-v18";
+const SHELL = ["./", "index.html", "style.css", "manifest.webmanifest", "logo-horizontal.png", "favicon.png", "icon-192.png", "config.js", "config-extra.js", "hv-app.js?v=hv-v18"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {

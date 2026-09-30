@@ -65,9 +65,26 @@ For any personal legal, tax or residency situation, recommend consulting a lawye
     if (!r.ok) { console.error("Anthropic", r.status, data?.error?.message); return Response.json({ error: `${r.status} ${data?.error?.message || "api error"}` }, { status: 502 }); }
     const text = (data.content || []).filter(x => x.type === "text").map(x => x.text).join("\n").trim();
     await fetch(`${URL_()}/rest/v1/ai_calls`, { method: "POST", headers: { ...svc, "Content-Type": "application/json", Prefer: "return=minimal" }, body: JSON.stringify({ user_id: user.id, kind: b.mode === "translate" ? "translate" : "assistant" }) });
+    if (b.mode !== "translate") { const q = [...(messages || [])].reverse().find(m => m.role === "user"); await logTheme(q && q.content, b.lang); }
     return Response.json({ text, premium, left_day: limDay - day - 1, left_week: limWeek - week - 1 });
   } catch (e) {
     console.error("ai network", e);
     return Response.json({ error: "network: " + (e && e.message) }, { status: 502 });
   }
 };
+
+// Thèmes des questions posées à l'assistant (statistiques anonymes pour l'administrateur : jamais le texte)
+const THEMES = [["NIE / séjour", /\bnie\b|tie\b|residen|séjour|sejour|extranjer|registro|visa|aufenthalt|verblijf/i], ["Padrón", /padr[oó]n|empadron/i],
+  ["Santé", /sant[ée]|m[ée]dec|salud|health|s1\b|hospital|arzt|dokter|pharma|farmacia|seguridad social|sécurité sociale/i],
+  ["Banque", /banque|banco|bank|compte|cuenta|account|konto|rekening/i], ["Logement", /logement|loyer|alquiler|louer|rent|piso|appartement|maison|casa|wohnung|huur|immobili|hipoteca|mortgage/i],
+  ["Impôts", /imp[ôo]t|irpf|hacienda|tax|fiscal|steuer|belasting|modelo\s?\d/i], ["Travail", /travail|emploi|trabajo|job|work|aut[óo]nomo|indépendant|arbeit|werk/i],
+  ["Voiture", /voiture|coche|car\b|permis|carnet|dgt|itv|matricul|auto\b/i], ["École", /[ée]cole|colegio|school|schule|enfant|kinder|niñ/i],
+  ["Retraite", /retrait|pension|jubil|rente|pensioen/i], ["Langue", /espagnol|spanish|español|spanisch|spaans|apprendre|learn/i]];
+async function logTheme(text, lang) {
+  try {
+    const hit = THEMES.find(([, re]) => re.test(String(text || ""))); const theme = hit ? hit[0] : "Autre";
+    await fetch(`${process.env.SUPABASE_URL}/rest/v1/rpc/log_search`, { method: "POST",
+      headers: { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ p_term: theme, p_section: "assistant", p_results: null, p_lang: lang || null }) });
+  } catch (e) {}
+}

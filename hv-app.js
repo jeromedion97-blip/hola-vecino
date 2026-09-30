@@ -1,4 +1,4 @@
-// ¡Hola Vecino! — fichier unique généré automatiquement (hv-v16). Ne pas modifier : les sources sont conservées séparément.
+// ¡Hola Vecino! — fichier unique généré automatiquement (hv-v18). Ne pas modifier : les sources sont conservées séparément.
 
 ;// ===== i18n.js =====
 // Textes de l'interface. Pour corriger un texte, modifiez-le ici dans chaque langue.
@@ -1390,6 +1390,179 @@ for (const l in add) Object.assign(window.I18N[l], add[l]);
 })();
 
 
+;// ===== i18n-v16.js =====
+// Textes ajoutés en v16 (annuaire enrichi, mode sombre, SEO et recherches)
+(() => {
+const add = {
+fr: { pd_whole_province:"toute la province", pd_type_ph:"Tapez : plombier, avocat, dentiste…", pd_or_browse:"ou parcourez", pd_place_ph:"Ville ou province…",
+  pd_zone:"Zone d'intervention", pd_zone_city:"Ma ville uniquement", pd_zone_province:"Toute ma province", pd_zone_spain:"Toute l'Espagne", pd_zone_province_short:"Province de",
+  pd_zone_help:"Vous apparaîtrez aussi dans les recherches des villes de votre zone.", th_auto:"Thème automatique", th_light:"Thème clair", th_dark:"Thème sombre",
+  seo_tab:"SEO et recherches", seo_days:"jours", seo_total:"recherches", seo_zero_total:"recherches sans résultat", seo_ai_q:"questions à l'assistant",
+  seo_top:"Les plus recherchés", seo_noresult_short:"sans résultat", seo_none:"Pas encore assez de données. Revenez dans quelques jours.",
+  seo_zero:"Recherches sans résultat", seo_zero_help:"Les opportunités : un article à écrire, un professionnel à démarcher, une ville à couvrir.",
+  seo_rising:"En hausse (7 derniers jours)", seo_themes:"Thèmes des questions à l'assistant", seo_sections:"Par rubrique", seo_langs:"Par langue",
+  seo_ideas_t:"Transformer en idées", seo_ideas_d:"L'IA analyse ces recherches et propose des articles (avec le mot-clé à viser) et des actions.", seo_ideas_btn:"Transformer les recherches en idées",
+  seo_audit:"Audit des pages", seo_audit_d:"Score SEO de chaque page lue par Google. Visez 80 ou plus.", seo_static:"Page guide", seo_art_pub:"Article publié", seo_art_draft:"Brouillon", seo_improve:"Améliorer",
+  seo_gsc:"Les mots tapés sur Google pour arriver chez vous sont dans Google Search Console, onglet « Performances » :",
+  seo_panel_t:"Référencement Google", seo_slug:"Adresse de la page", seo_kw:"Mot-clé principal", seo_title_f:"Titre pour Google", seo_desc_f:"Description pour Google",
+  seo_optimize:"Optimiser pour Google", seo_opt_done:"Propositions ajoutées : relisez, puis enregistrez.", seo_public:"Page publique lue par Google :", seo_public_after:"La page publique lue par Google sera créée à la publication.",
+  seo_c_title:"Titre de 30 à 65 caractères", seo_c_desc:"Description de 110 à 165 caractères", seo_c_kw:"Mot-clé principal choisi", seo_c_kw_title:"Mot-clé dans le titre", seo_c_kw_intro:"Mot-clé dans l'introduction",
+  seo_c_words:"Au moins 400 mots", seo_c_headings:"Au moins 2 intertitres (##)", seo_c_links:"Un lien vers une autre page du site", seo_c_cover:"Une image de couverture", seo_c_slug:"Une adresse courte" },
+en: { pd_whole_province:"whole province", pd_type_ph:"Type: plumber, lawyer, dentist…", pd_or_browse:"or browse", pd_place_ph:"City or province…",
+  pd_zone:"Service area", pd_zone_city:"My city only", pd_zone_province:"My whole province", pd_zone_spain:"All of Spain", pd_zone_province_short:"Province of",
+  pd_zone_help:"You will also appear in searches for cities in your area.", th_auto:"Automatic theme", th_light:"Light theme", th_dark:"Dark theme",
+  seo_tab:"SEO and searches", seo_days:"days", seo_total:"searches", seo_zero_total:"searches without results", seo_ai_q:"questions to the assistant",
+  seo_top:"Most searched", seo_noresult_short:"no result", seo_none:"Not enough data yet. Come back in a few days.",
+  seo_zero:"Searches without results", seo_zero_help:"Opportunities: an article to write, a professional to approach, a city to cover.",
+  seo_rising:"Rising (last 7 days)", seo_themes:"Topics of questions to the assistant", seo_sections:"By section", seo_langs:"By language",
+  seo_ideas_t:"Turn into ideas", seo_ideas_d:"The AI analyses these searches and suggests articles (with the keyword to target) and actions.", seo_ideas_btn:"Turn searches into ideas",
+  seo_audit:"Page audit", seo_audit_d:"SEO score of each page read by Google. Aim for 80 or more.", seo_static:"Guide page", seo_art_pub:"Published article", seo_art_draft:"Draft", seo_improve:"Improve",
+  seo_gsc:"The words typed on Google to reach your site are in Google Search Console, “Performance” tab:",
+  seo_panel_t:"Google ranking", seo_slug:"Page address", seo_kw:"Main keyword", seo_title_f:"Title for Google", seo_desc_f:"Description for Google",
+  seo_optimize:"Optimise for Google", seo_opt_done:"Suggestions added: review, then save.", seo_public:"Public page read by Google:", seo_public_after:"The public page read by Google will be created on publication.",
+  seo_c_title:"Title of 30 to 65 characters", seo_c_desc:"Description of 110 to 165 characters", seo_c_kw:"Main keyword chosen", seo_c_kw_title:"Keyword in the title", seo_c_kw_intro:"Keyword in the introduction",
+  seo_c_words:"At least 400 words", seo_c_headings:"At least 2 subheadings (##)", seo_c_links:"A link to another page of the site", seo_c_cover:"A cover image", seo_c_slug:"A short address" },
+es: { pd_whole_province:"toda la provincia", pd_type_ph:"Escribe: fontanero, abogado, dentista…", pd_or_browse:"o explora", pd_place_ph:"Ciudad o provincia…",
+  pd_zone:"Zona de trabajo", pd_zone_city:"Solo mi ciudad", pd_zone_province:"Toda mi provincia", pd_zone_spain:"Toda España", pd_zone_province_short:"Provincia de",
+  pd_zone_help:"También aparecerás en las búsquedas de las ciudades de tu zona.", th_auto:"Tema automático", th_light:"Tema claro", th_dark:"Tema oscuro" },
+de: { pd_whole_province:"ganze Provinz", pd_type_ph:"Tippe: Klempner, Anwalt, Zahnarzt…", pd_or_browse:"oder durchsuche", pd_place_ph:"Stadt oder Provinz…",
+  pd_zone:"Einsatzgebiet", pd_zone_city:"Nur meine Stadt", pd_zone_province:"Meine ganze Provinz", pd_zone_spain:"Ganz Spanien", pd_zone_province_short:"Provinz",
+  pd_zone_help:"Du erscheinst auch in den Suchen nach Städten in deinem Gebiet.", th_auto:"Automatisches Design", th_light:"Helles Design", th_dark:"Dunkles Design" },
+nl: { pd_whole_province:"hele provincie", pd_type_ph:"Typ: loodgieter, advocaat, tandarts…", pd_or_browse:"of blader", pd_place_ph:"Stad of provincie…",
+  pd_zone:"Werkgebied", pd_zone_city:"Alleen mijn stad", pd_zone_province:"Mijn hele provincie", pd_zone_spain:"Heel Spanje", pd_zone_province_short:"Provincie",
+  pd_zone_help:"Je verschijnt ook in zoekopdrachten voor steden in je gebied.", th_auto:"Automatisch thema", th_light:"Licht thema", th_dark:"Donker thema" }
+};
+for (const l in add) Object.assign(window.I18N[l], add[l]);
+})();
+
+
+;// ===== data-v16.js =====
+// v16 : données de l'annuaire — spécialités (5 langues) et villes d'Espagne par région et province
+(() => {
+// [clé, groupe, français, anglais, espagnol, allemand, néerlandais]
+const CATS = [
+ ["lawyer","legal","Avocat","Lawyer","Abogado","Rechtsanwalt","Advocaat"],
+ ["notary","legal","Notaire","Notary","Notario","Notar","Notaris"],
+ ["gestoria","legal","Gestoría","Gestoría (admin agency)","Gestoría","Gestoría (Verwaltungsbüro)","Gestoría (administratiekantoor)"],
+ ["tax_advisor","legal","Conseiller fiscal","Tax adviser","Asesor fiscal","Steuerberater","Belastingadviseur"],
+ ["accountant","legal","Expert-comptable","Accountant","Contable","Buchhalter","Boekhouder"],
+ ["translator","legal","Traducteur juré","Sworn translator","Traductor jurado","Vereidigter Übersetzer","Beëdigd vertaler"],
+ ["embassy","official","Ambassade et consulat","Embassy and consulate","Embajada y consulado","Botschaft und Konsulat","Ambassade en consulaat"],
+ ["admin","official","Administration (étrangers, mairie…)","Public office (foreigners, town hall…)","Administración (extranjería, ayuntamiento…)","Behörde (Ausländeramt, Rathaus…)","Overheid (vreemdelingen, gemeente…)"],
+ ["emergency","official","Urgences","Emergencies","Urgencias","Notfall","Noodgevallen"],
+ ["realestate","housing","Agence immobilière","Estate agent","Inmobiliaria","Immobilienmakler","Makelaar"],
+ ["property_mgmt","housing","Gestion locative","Property management","Gestión de alquileres","Mietverwaltung","Verhuurbeheer"],
+ ["fincas","housing","Syndic de copropriété","Community administrator","Administrador de fincas","Hausverwaltung","Syndicus"],
+ ["architect","housing","Architecte","Architect","Arquitecto","Architekt","Architect"],
+ ["surveyor","housing","Expert en bâtiment","Building surveyor","Perito / aparejador","Bausachverständiger","Bouwkundig expert"],
+ ["moving","housing","Déménageur","Removals","Mudanzas","Umzugsfirma","Verhuisbedrijf"],
+ ["intl_moving","housing","Déménagement international","International removals","Mudanzas internacionales","Internationale Umzüge","Internationale verhuizing"],
+ ["plumber","works","Plombier","Plumber","Fontanero","Klempner","Loodgieter"],
+ ["electrician","works","Électricien","Electrician","Electricista","Elektriker","Elektricien"],
+ ["painter","works","Peintre","Painter","Pintor","Maler","Schilder"],
+ ["builder","works","Maçon et rénovation","Builder and renovation","Albañil y reformas","Maurer und Renovierung","Metselaar en renovatie"],
+ ["carpenter","works","Menuisier","Carpenter","Carpintero","Schreiner","Schrijnwerker"],
+ ["locksmith","works","Serrurier","Locksmith","Cerrajero","Schlüsseldienst","Slotenmaker"],
+ ["aircon","works","Climatisation et chauffage","Air conditioning and heating","Climatización y calefacción","Klima und Heizung","Airco en verwarming"],
+ ["pool","works","Piscine","Swimming pool","Piscinas","Pool","Zwembad"],
+ ["gardener","works","Jardinier","Gardener","Jardinero","Gärtner","Tuinman"],
+ ["cleaning","works","Nettoyage","Cleaning","Limpieza","Reinigung","Schoonmaak"],
+ ["artisan","works","Autre artisan","Other tradesperson","Otros oficios","Sonstige Handwerker","Andere vakman"],
+ ["bank","money","Banque","Bank","Banco","Bank","Bank"],
+ ["insurance","money","Assurance","Insurance","Seguros","Versicherung","Verzekering"],
+ ["mortgage","money","Courtier en prêt immobilier","Mortgage broker","Intermediario hipotecario","Hypothekenvermittler","Hypotheekmakelaar"],
+ ["wealth","money","Conseiller en patrimoine","Financial adviser","Asesor financiero","Finanzberater","Financieel adviseur"],
+ ["money_transfer","money","Transfert d'argent et change","Money transfer and exchange","Transferencias y cambio","Geldtransfer und Wechsel","Geldtransfer en wissel"],
+ ["doctor","health","Médecin","Doctor","Médico","Arzt","Dokter"],
+ ["dentist","health","Dentiste","Dentist","Dentista","Zahnarzt","Tandarts"],
+ ["physio","health","Kinésithérapeute","Physiotherapist","Fisioterapeuta","Physiotherapeut","Kinesitherapeut"],
+ ["psychologist","health","Psychologue","Psychologist","Psicólogo","Psychologe","Psycholoog"],
+ ["optician","health","Opticien","Optician","Óptica","Optiker","Opticien"],
+ ["clinic","health","Clinique et hôpital","Clinic and hospital","Clínica y hospital","Klinik und Krankenhaus","Kliniek en ziekenhuis"],
+ ["pharmacy","health","Pharmacie","Pharmacy","Farmacia","Apotheke","Apotheek"],
+ ["vet","health","Vétérinaire","Vet","Veterinario","Tierarzt","Dierenarts"],
+ ["school","family","École","School","Colegio","Schule","School"],
+ ["intl_school","family","École internationale","International school","Colegio internacional","Internationale Schule","Internationale school"],
+ ["nursery","family","Crèche","Nursery","Guardería","Kita","Kinderdagverblijf"],
+ ["language_school","family","Cours d'espagnol","Spanish lessons","Clases de español","Spanischkurse","Spaanse les"],
+ ["home_care","family","Aide à domicile et seniors","Home care and seniors","Ayuda a domicilio y mayores","Häusliche Pflege und Senioren","Thuishulp en senioren"],
+ ["childcare","family","Garde d'enfants","Childcare","Cuidado de niños","Kinderbetreuung","Kinderopvang"],
+ ["garage","car","Garage","Garage","Taller mecánico","Autowerkstatt","Garage"],
+ ["driving_school","car","Auto-école","Driving school","Autoescuela","Fahrschule","Rijschool"],
+ ["vehicle_reg","car","Immatriculation et homologation","Vehicle registration","Matriculación y homologación","Zulassung und Umschreibung","Inschrijving en homologatie"],
+ ["car_rental","car","Location de voiture","Car rental","Alquiler de coches","Autovermietung","Autoverhuur"],
+ ["it_phone","daily","Informatique et téléphonie","IT and phones","Informática y telefonía","IT und Telefon","IT en telefonie"],
+ ["internet","daily","Internet et télévision","Internet and TV","Internet y televisión","Internet und Fernsehen","Internet en tv"],
+ ["beauty","daily","Coiffure et esthétique","Hair and beauty","Peluquería y estética","Friseur und Kosmetik","Kapper en schoonheid"],
+ ["sport","daily","Sport et coaching","Sport and coaching","Deporte y coaching","Sport und Coaching","Sport en coaching"],
+ ["relocation","expat","Accompagnement à l'installation","Relocation services","Servicios de reubicación","Umzugsbegleitung (Relocation)","Relocatiebegeleiding"],
+ ["concierge","expat","Conciergerie","Concierge services","Conserjería","Concierge-Service","Conciërgediensten"],
+ ["other","expat","Autre","Other","Otros","Sonstiges","Overige"]
+];
+const GROUPS = [["legal","Juridique et administratif","Legal and paperwork","Jurídico y administrativo","Recht und Verwaltung","Juridisch en administratief"],
+ ["official","Officiel et urgences","Official bodies and emergencies","Oficial y urgencias","Behörden und Notfälle","Officieel en noodgevallen"],
+ ["housing","Logement","Housing","Vivienda","Wohnen","Wonen"],
+ ["works","Travaux et maison","Works and home","Obras y hogar","Handwerk und Haus","Werken en huis"],
+ ["money","Argent et assurances","Money and insurance","Dinero y seguros","Geld und Versicherungen","Geld en verzekeringen"],
+ ["health","Santé","Health","Salud","Gesundheit","Gezondheid"],
+ ["family","Famille et éducation","Family and education","Familia y educación","Familie und Bildung","Gezin en onderwijs"],
+ ["car","Auto et mobilité","Car and mobility","Coche y movilidad","Auto und Mobilität","Auto en mobiliteit"],
+ ["daily","Vie quotidienne","Daily life","Vida diaria","Alltag","Dagelijks leven"],
+ ["expat","Services aux expatriés","Services for expats","Servicios para expatriados","Services für Auswanderer","Diensten voor expats"]];
+const LI = { fr: 0, en: 1, es: 2, de: 3, nl: 4 };
+window.I18N = window.I18N || {};
+for (const l in LI) {
+  window.I18N[l] = window.I18N[l] || {};
+  CATS.forEach(c => { window.I18N[l]["ct_" + c[0]] = c[2 + LI[l]]; });
+  GROUPS.forEach(g => { window.I18N[l]["pg_" + g[0]] = g[1 + LI[l]]; });
+}
+window.HV_PRO_GROUPS = GROUPS.map(g => [g[0], CATS.filter(c => c[1] === g[0]).map(c => c[0])]);
+
+// [communauté autonome, province, [villes]] — la capitale de province est toujours incluse
+const P = [
+ ["Andalucía","Almería",["Almería","Roquetas de Mar","Mojácar","Vera","El Ejido"]],
+ ["Andalucía","Cádiz",["Cádiz","Jerez de la Frontera","Algeciras","Chiclana de la Frontera","Tarifa","San Roque (Sotogrande)","El Puerto de Santa María"]],
+ ["Andalucía","Córdoba",["Córdoba"]],
+ ["Andalucía","Granada",["Granada","Motril","Almuñécar","Salobreña"]],
+ ["Andalucía","Huelva",["Huelva","Isla Cristina","Ayamonte"]],
+ ["Andalucía","Jaén",["Jaén"]],
+ ["Andalucía","Málaga",["Málaga","Marbella","Fuengirola","Benalmádena","Torremolinos","Estepona","Mijas","Nerja","Vélez-Málaga","Torrox","Ronda","Manilva","Rincón de la Victoria"]],
+ ["Andalucía","Sevilla",["Sevilla"]],
+ ["Aragón","Huesca",["Huesca"]], ["Aragón","Teruel",["Teruel"]], ["Aragón","Zaragoza",["Zaragoza"]],
+ ["Asturias","Asturias",["Oviedo","Gijón","Avilés"]],
+ ["Illes Balears","Illes Balears",["Palma","Ibiza","Santa Eulària des Riu","Mahón","Ciutadella","Calvià","Alcúdia","Pollença","Sóller"]],
+ ["Canarias","Las Palmas",["Las Palmas de Gran Canaria","San Bartolomé de Tirajana (Maspalomas)","Arrecife","Tías (Puerto del Carmen)","La Oliva (Corralejo)","Puerto del Rosario"]],
+ ["Canarias","Santa Cruz de Tenerife",["Santa Cruz de Tenerife","San Cristóbal de La Laguna","Adeje","Arona (Los Cristianos)","Puerto de la Cruz","La Orotava","Santa Cruz de La Palma"]],
+ ["Cantabria","Cantabria",["Santander"]],
+ ["Castilla-La Mancha","Albacete",["Albacete"]], ["Castilla-La Mancha","Ciudad Real",["Ciudad Real"]], ["Castilla-La Mancha","Cuenca",["Cuenca"]],
+ ["Castilla-La Mancha","Guadalajara",["Guadalajara"]], ["Castilla-La Mancha","Toledo",["Toledo"]],
+ ["Castilla y León","Ávila",["Ávila"]], ["Castilla y León","Burgos",["Burgos"]], ["Castilla y León","León",["León"]], ["Castilla y León","Palencia",["Palencia"]],
+ ["Castilla y León","Salamanca",["Salamanca"]], ["Castilla y León","Segovia",["Segovia"]], ["Castilla y León","Soria",["Soria"]],
+ ["Castilla y León","Valladolid",["Valladolid"]], ["Castilla y León","Zamora",["Zamora"]],
+ ["Cataluña","Barcelona",["Barcelona","Sitges","Badalona","Sabadell","Terrassa","Castelldefels","Mataró"]],
+ ["Cataluña","Girona",["Girona","Figueres","Lloret de Mar","Roses","Palafrugell","Blanes","L'Escala"]],
+ ["Cataluña","Lleida",["Lleida"]],
+ ["Cataluña","Tarragona",["Tarragona","Reus","Salou","Cambrils","L'Ametlla de Mar"]],
+ ["Comunidad Valenciana","Alicante",["Alicante","Elche","Benidorm","Altea","Calpe","Jávea","Dénia","Torrevieja","Orihuela","Orihuela Costa","Santa Pola","Villajoyosa","L'Alfàs del Pi","Guardamar del Segura","Teulada (Moraira)","Pilar de la Horadada","Rojales","Alcoy","Elda","Benissa","Finestrat"]],
+ ["Comunidad Valenciana","Castellón",["Castellón de la Plana","Benicàssim","Peñíscola","Vinaròs","Oropesa del Mar"]],
+ ["Comunidad Valenciana","Valencia",["Valencia","Gandia","Cullera","Oliva","Sagunto","Torrent","Xàtiva"]],
+ ["Extremadura","Badajoz",["Badajoz"]], ["Extremadura","Cáceres",["Cáceres"]],
+ ["Galicia","A Coruña",["A Coruña","Santiago de Compostela"]], ["Galicia","Lugo",["Lugo"]], ["Galicia","Ourense",["Ourense"]], ["Galicia","Pontevedra",["Pontevedra","Vigo"]],
+ ["La Rioja","La Rioja",["Logroño"]],
+ ["Comunidad de Madrid","Madrid",["Madrid","Alcalá de Henares","Majadahonda","Pozuelo de Alarcón","Las Rozas de Madrid"]],
+ ["Región de Murcia","Murcia",["Murcia","Cartagena","Mazarrón","San Javier","San Pedro del Pinatar","Los Alcázares","Águilas","Lorca","La Manga del Mar Menor"]],
+ ["Navarra","Navarra",["Pamplona"]],
+ ["País Vasco","Álava",["Vitoria-Gasteiz"]], ["País Vasco","Bizkaia",["Bilbao"]], ["País Vasco","Gipuzkoa",["San Sebastián"]],
+ ["Ceuta","Ceuta",["Ceuta"]], ["Melilla","Melilla",["Melilla"]]
+];
+window.HV_PLACES = P;
+const norm = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+window.HV_PROVINCES = P.map(x => x[1]).filter((v, i, a) => a.indexOf(v) === i);
+window.HV_CITY_PROVINCE = c => { const n = norm(c); const hit = P.find(x => x[2].some(y => norm(y) === n || norm(y).startsWith(n + " ("))); return hit ? hit[1] : null; };
+window.HV_PROVINCE_CITIES = pr => { const hit = P.filter(x => norm(x[1]) === norm(pr)); return hit.flatMap(x => x[2]).map(c => c.replace(/\s*\(.*\)$/, "")); };
+})();
+
+
 ;// ===== games-data.js =====
 // Contenu des jeux : quiz sur l'Espagne et mot espagnol du jour
 (() => {
@@ -2209,7 +2382,7 @@ const PRICE_ROWS = () => [
 
 // ---------- Premium ----------
 // Lien d'abonnement « Tout compris » : réglage, sinon adresse du produit Gumroad
-const allInUrl = () => { const u = ((C.GUMROAD_LINKS || {}).all_in || "").trim() || "https://regardful6.gumroad.com/l/hv-tout-compris"; return u + (u.includes("?") ? "&" : "?") + "wanted=true"; };
+const allInUrl = () => { const u = ((C.GUMROAD_LINKS || {}).all_in || "").trim() || ((window.HV_GUMROAD || "https://jeromedje1997.gumroad.com") + "/l/hv-tout-compris"); return u + (u.includes("?") ? "&" : "?") + "wanted=true"; };
 async function premium() {
   const me = H.me, p = H.myProfile;
   const until = p && p.premium_until && new Date(p.premium_until) > new Date() ? new Date(p.premium_until) : null;
@@ -2422,6 +2595,7 @@ async function listingForm(id) {
       <div data-k="youtube" class="field"><span class="label">${esc(t("lst_topics"))}</span>${checks("topics", TOPICS.map(k => [k, t("cat_" + k)]), l.topics || [])}</div>
       <div class="field"><span class="label">${esc(t("lst_langs"))}</span>${checks("languages", H.SPOKEN.map(c => [c, langName(c)]), l.languages || [])}</div>
       <div data-k="service" class="field"><label for="l_pcat" class="label">${esc(t("pd_category"))}</label>${H.proCatSelect ? H.proCatSelect("l_pcat", l.category || "other") : ""}<p class="small muted">${esc(t("pd_category_help"))}</p></div>
+      ${window.HV_ZONE_FIELDS ? window.HV_ZONE_FIELDS(l) : ""}
       <div data-k="restaurant hotel service" class="field"><span class="label">${esc(t("lp_plan"))}</span>
         <div class="segmented wrap"><label><input type="radio" name="plan" value="simple" ${l.plan !== "full" ? "checked" : ""}><span>${esc(t("pro_simple"))} · ${price(C.PRICES.pro_month)}${esc(t("per_month"))}</span></label><label><input type="radio" name="plan" value="full" ${l.plan === "full" ? "checked" : ""}><span>★ ${esc(t("pro_full"))} · ${price(C.PRICES.pro_full_month || 49.9)}${esc(t("per_month"))}</span></label></div>
         <p class="muted small" id="planhelp"></p></div>
@@ -2462,6 +2636,7 @@ async function listingForm(id) {
     else Object.assign(row, { city: v("city"), price_text: v("price_text"), address: v("address"), phone: v("phone"), email: v("email"), website: v("website"), licence_number: k === "rental" ? v("licence_number") : null });
     msg.textContent = t("loading");
     if (k === "service" && $("#l_pcat")) row.category = $("#l_pcat").value;
+    if (k === "service" && window.HV_ZONE_READ) window.HV_ZONE_READ(row, row.city);
     if (isPro()) {
       row.plan = planNow();
       if (row.plan === "full") {
@@ -2988,7 +3163,7 @@ async function articlePage(id) {
     <div class="actions"><button class="btn small" id="share">${esc(t("ev_share"))}</button>${H.isAdmin ? `<a class="btn small" href="#/admin/articles/${a.id}">✎ ${esc(t("lst_edit"))}</a>` : ""}</div>
     ${window.HV_SOCIAL(t("follow_us"))}
   </article>`;
-  $("#share").onclick = () => H.share(L(a.title), location.href);
+  $("#share").onclick = () => H.share(L(a.title), a.slug ? location.origin + "/articles/" + a.slug + (H.lang !== "fr" ? "?lang=" + H.lang : "") : location.href);
   if (a.status !== "published") return;
   if (!H.me) { $("#artreact").innerHTML = `<p class="react-box"><a href="#/connexion?signup">💬 ${esc(t("art_react_login"))}</a></p>`; return; }
   const { data: fp } = await H.sb.from("posts").select("id").eq("article_id", a.id).maybeSingle();
@@ -3077,6 +3252,7 @@ async function articleEditor(key) {
       ${field(t("art_title_field"), `<input id="atitle" maxlength="200">`, "atitle")}
       ${field(t("art_body_field"), `<textarea id="abody" rows="18"></textarea>`, "abody")}
     </div>
+    ${window.HV_SEO_PANEL ? window.HV_SEO_PANEL(a, cur) : ""}
     <div class="actions"><button class="btn" id="asave">${esc(t("art_save"))}</button>
       <button class="btn primary" id="apub">${esc(t(a.status === "published" ? "art_unpublish" : "art_publish"))}</button>
       ${a.id ? `<a class="btn small" href="#/articles/${a.id}">👁</a><button class="linkbtn" id="adel">${esc(t("delete"))}</button>` : ""}
@@ -3106,12 +3282,13 @@ async function articleEditor(key) {
   $("#acrm").onclick = () => { a.cover_url = null; drawCover(); };
   drawCover();
   const show = () => { $("#atitle").value = a.title[cur] || ""; $("#abody").value = a.body[cur] || ""; $$("#altabs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.l === cur))); };
-  $$("#altabs button").forEach(b => b.onclick = () => { keep(); cur = b.dataset.l; show(); });
+  $$("#altabs button").forEach(b => b.onclick = () => { keep(); cur = b.dataset.l; show(); if (seo) seo.onLang(); });
   show();
+  const seo = window.HV_SEO_BIND ? window.HV_SEO_BIND(a, () => cur, keep) : null;
   $("#agen").onclick = async () => {
     const topic = $("#atopic").value.trim(); if (!topic) return $("#atopic").focus();
     keep(); $("#aimsg").textContent = t("art_generating");
-    try { const d = await callArticleAI({ mode:"draft", topic }); a.topic = topic; a.title.fr = d.title; a.body.fr = d.body; cur = "fr"; show(); $("#aimsg").textContent = ""; }
+    try { const d = await callArticleAI({ mode:"draft", topic, keyword: $("#skw") ? $("#skw").value.trim() : "" }); a.topic = topic; a.title.fr = d.title; a.body.fr = d.body; cur = "fr"; show(); $("#aimsg").textContent = ""; }
     catch (e) { $("#aimsg").innerHTML = `${esc(t("art_ai_error"))}<br><code>${esc(e.message)}</code>`; }
   };
   $("#atr").onclick = async () => {
@@ -3125,7 +3302,7 @@ async function articleEditor(key) {
   };
   const save = async (status) => {
     keep();
-    const row = { topic: $("#atopic").value.trim() || null, title: a.title, body: a.body, status: status || a.status, cover_url: a.cover_url || null, updated_at: new Date().toISOString() };
+    const row = { topic: $("#atopic").value.trim() || null, title: a.title, body: a.body, status: status || a.status, cover_url: a.cover_url || null, updated_at: new Date().toISOString(), ...(seo ? seo.read() : {}) };
     if (row.status === "published" && !a.published_at) row.published_at = new Date().toISOString();
     if (row.status === "draft") row.published_at = null;
     const res = a.id ? await sb.from("articles").update(row).eq("id", a.id).select().single() : await sb.from("articles").insert({ ...row, author_id: H.me.id }).select().single();
@@ -3282,7 +3459,7 @@ async function wall(opts) {
       if ((pin || [])[0]) { rows = [Object.assign(pin[0], { _pinned: true })].concat(rows.filter(r => r.id !== pin[0].id)); }
     }
     const ids = rows.map(x => x.id), artIds = rows.filter(x => x.article_id).map(x => x.article_id);
-    const { data: arts } = artIds.length ? await sb.from("articles").select("id,title,body,cover_url").in("id", artIds) : { data: [] };
+    const { data: arts } = artIds.length ? await sb.from("articles").select("id,title,body,cover_url,slug").in("id", artIds) : { data: [] };
     rows.forEach(x => { if (x.article_id) x._article = (arts || []).find(a => a.id === x.article_id) || null; });
     const [people, likes, comments] = await Promise.all([
       H.profilesFor(rows.map(x => x.author_id)),
@@ -3365,7 +3542,7 @@ async function wall(opts) {
         const { error } = await sb.from("poll_votes").delete().eq("post_id", x.id).eq("user_id", me.id);
         if (error) return toast(errMsg(error)); x._counts[x._mine]--; x._total--; x._mine = null; draw();
       };
-      $("[data-share]", el).onclick = () => x.kind === "article" ? H.share(Lg((x._article || {}).title) || x.body, location.href.split("#")[0] + "#/articles/" + x.article_id) : H.share(C_NAME(), location.href.split("#")[0] + "#/voisins/" + x.id);
+      $("[data-share]", el).onclick = () => x.kind === "article" ? H.share(Lg((x._article || {}).title) || x.body, (x._article || {}).slug ? location.origin + "/articles/" + x._article.slug : location.href.split("#")[0] + "#/articles/" + x.article_id) : H.share(C_NAME(), location.href.split("#")[0] + "#/voisins/" + x.id);
       const d = $("[data-del]", el); if (d) d.onclick = async () => {
         if (!confirm(t("confirm_delete"))) return;
         const { error } = await sb.from("posts").delete().eq("id", x.id); if (error) return toast(errMsg(error));
@@ -4695,11 +4872,12 @@ const LANGS = ["fr", "en", "es", "de", "nl"];
 async function pilot(tab) {
   if (!H.isAdmin) { view.innerHTML = `<section class="narrow"><p class="notice">${esc(t("adm_denied"))}</p></section>`; return; }
   view.innerHTML = `<section class="page wide"><a class="back" href="#/admin">${esc(t("back"))}</a><h1>🧭 ${esc(t("ap_title"))}</h1>
-    <nav class="tabs">${[["membres", "ap_tab_members"], ["bienvenue", "ap_tab_welcome"], ["idees", "ap_tab_ideas"], ["export", "ex_tab"]].map(([k, l]) => `<a class="tabbtn" href="#/admin/pilotage/${k}" ${tab === k ? 'aria-current="page"' : ""}>${esc(t(l))}</a>`).join("")}</nav>
+    <nav class="tabs">${[["membres", "ap_tab_members"], ["bienvenue", "ap_tab_welcome"], ["idees", "ap_tab_ideas"], ["seo", "seo_tab"], ["export", "ex_tab"]].map(([k, l]) => `<a class="tabbtn" href="#/admin/pilotage/${k}" ${tab === k ? 'aria-current="page"' : ""}>${esc(t(l))}</a>`).join("")}</nav>
     <div id="ap"></div></section>`;
   if (tab === "bienvenue") return welcome($("#ap"));
   if (tab === "idees") return ideas($("#ap"));
   if (tab === "export" && window.HV_EXPORT) return window.HV_EXPORT($("#ap"));
+  if (tab === "seo" && window.HV_SEO) return window.HV_SEO($("#ap"));
   return members($("#ap"));
 }
 
@@ -5224,7 +5402,8 @@ fr: {
    <li><strong>Contenus</strong> : publications, commentaires, messages privés, avis, annonces, photos, événements.</li>
    <li><strong>Drive Premium</strong> : documents que vous y déposez, visibles de vous seul (et de votre professionnel si vous lui donnez accès).</li>
    <li><strong>Achats</strong> : traités par Gumroad ; nous recevons votre e-mail, le produit acheté et la date, jamais vos données bancaires.</li>
-   <li><strong>Statistiques</strong> : visites comptées de façon anonyme, sans cookie ni donnée personnelle.</li></ul>
+   <li><strong>Statistiques</strong> : visites comptées de façon anonyme, sans cookie ni donnée personnelle.</li>
+   <li><strong>Recherches</strong> : les mots tapés dans les recherches du site et le thème des questions posées à l'assistant (jamais leur texte) sont enregistrés sans lien avec votre identité, pour améliorer le site, et supprimés au bout de 12 mois.</li></ul>
   <h2>Prestataires (sous-traitants)</h2><p>Supabase (base de données et comptes), Netlify (hébergement), Gumroad (paiements), Brevo (e-mails), Anthropic (assistant IA, traducteur, rédaction : le texte de vos questions lui est transmis pour produire la réponse), Google et Facebook (si vous vous connectez avec eux), OpenStreetMap et Open-Meteo (cartes et météo). Certains sont situés hors de l'Union européenne ; ces transferts sont encadrés par les garanties prévues par le RGPD (clauses contractuelles types).</p>
   <h2>Durée de conservation</h2><p>Vos données sont conservées tant que votre compte existe. À la suppression du compte, votre profil et vos contenus sont effacés. Les documents du drive sont effacés 3 mois après la fin d'un abonnement Premium. L'inscription à la lettre d'information est conservée jusqu'à votre désinscription.</p>
   <h2>Vos droits</h2><p>Vous pouvez accéder à vos données, les corriger, les exporter, vous opposer à un traitement ou demander leur effacement (bouton « Supprimer mon compte » dans votre profil, ou par e-mail à ${fill(L.email)}). Vous pouvez aussi déposer une plainte auprès de l'Autorité de protection des données (autoriteprotectiondonnees.be).</p>
@@ -5242,7 +5421,7 @@ en: {
   <p>Paid offers (Premium, All inclusive, business listings, PDF guides, Spanish course) are shown with their price including VAT. Payments are processed by Gumroad. Subscriptions renew automatically and can be cancelled at any time from your Gumroad receipt; access remains until the end of the paid period. Consumers generally have a 14-day right of withdrawal, which does not apply to digital content supplied immediately at your express request. Contact ${fill(L.email)} for any request.</p>
   <p>Guides and AI answers are for information only and are not legal, tax or financial advice. These terms are governed by Belgian law; consumers keep the rights granted by the law of their country of residence.</p>`,
  privacy: L => `<h1>Privacy policy</h1><p>Controller: ${fill(L.owner)}, ${fill(L.address)} — ${fill(L.email)}.</p>
-  <p>We process your account data (email, login), the profile information you choose to share, your content (posts, comments, private messages, reviews, listings, photos), Premium drive documents (private), and purchase records from Gumroad (never your card details). Visits are counted anonymously, without cookies.</p>
+  <p>We process your account data (email, login), the profile information you choose to share, your content (posts, comments, private messages, reviews, listings, photos), Premium drive documents (private), and purchase records from Gumroad (never your card details). Visits are counted anonymously, without cookies. Words typed in site searches and the topic of questions asked to the assistant (never their text) are stored without any link to your identity, to improve the site, and deleted after 12 months.</p>
   <p>Providers: Supabase, Netlify, Gumroad, Brevo, Anthropic (AI features: the text of your questions is sent to produce the answer), Google and Facebook (if you log in with them), OpenStreetMap and Open-Meteo. Transfers outside the EU are covered by GDPR safeguards (standard contractual clauses).</p>
   <p>Data is kept while your account exists; drive documents are deleted 3 months after a Premium subscription ends. You can access, correct, export or delete your data (“Delete my account” in your profile, or by email), and complain to your data protection authority.</p>`,
  cookies: L => `<h1>Cookies and local storage</h1><p>We use no advertising or tracking cookies. The site stores your login session, your preferences, a temporary anonymous visit identifier and an offline copy of its files. TikTok, Instagram and YouTube videos only load when you click them, and those services may then set their own cookies.</p>` }
@@ -5303,6 +5482,294 @@ const SEO = [["s-installer-en-espagne", "S'installer en Espagne : les démarches
   const card = `<a class="qweek" href="#/voisins/${q.id}"><span class="qw-tag">${q.kind === "poll" ? "📊 " + esc(t("qp_t_poll")) : "❓ " + esc(t("qp_t_question"))}</span><strong>${esc(q.body.slice(0, 160))}</strong><span class="btn small primary">${esc(t(q.kind === "poll" ? "qp_vote" : "qp_answer"))} →</span></a>`;
   const wc = $(".welcome-card", main); wc ? wc.insertAdjacentHTML("afterend", card) : main.insertAdjacentHTML("afterbegin", card);
 });
+});
+
+
+;// ===== v16.js =====
+// v16 : annuaire enrichi (60 spécialités, villes et provinces, zones d'intervention), journal anonyme des recherches,
+// onglet « SEO et recherches », optimiseur SEO des articles, mode sombre
+(window.HV_EXT = window.HV_EXT || []).push((H, ROUTES) => {
+const { t, esc, $, $$, toast, date, dateTime, errMsg } = H;
+const view = H.view;
+const qs = () => new URLSearchParams((location.hash.split("?")[1] || ""));
+const norm = s => String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+ROUTES.unshift([/^#\/pros(?:\?.*)?$/, () => directory()]);
+
+// ================= SPÉCIALITÉS ET LIEUX =================
+const GROUPS = window.HV_PRO_GROUPS || [];
+const catLabel = c => { const v = t("ct_" + c); return v === "ct_" + c ? c : v; };
+H.PRO_GROUPS = GROUPS;
+H.proCatSelect = (id, sel, allLabel) => `<select id="${id}">${allLabel ? `<option value="">${esc(allLabel)}</option>` : ""}${GROUPS.map(([g, cs]) => `<optgroup label="${esc(t("pg_" + g))}">${cs.map(c => `<option value="${c}" ${sel === c ? "selected" : ""}>${esc(catLabel(c))}</option>`).join("")}</optgroup>`).join("")}</select>`;
+const provOpt = p => `${p} (${t("pd_whole_province")})`;
+function ensureLists() {
+  if ($("#hv-places")) return;
+  const places = (window.HV_PLACES || []).flatMap(([, p, cs]) => cs.map(c => `<option value="${esc(c.replace(/\s*\(.*\)$/, ""))}">${esc(p)}</option>`)).join("")
+    + (window.HV_PROVINCES || []).map(p => `<option value="${esc(provOpt(p))}"></option>`).join("");
+  const cats = GROUPS.flatMap(([g, cs]) => cs.map(c => `<option value="${esc(catLabel(c))}">${esc(t("pg_" + g))}</option>`)).join("");
+  document.body.insertAdjacentHTML("beforeend", `<datalist id="hv-places">${places}</datalist><datalist id="hv-cats">${cats}</datalist>`);
+}
+// Interprète le lieu saisi : ville (et sa province) ou province entière
+function parsePlace(v) {
+  v = String(v || "").trim(); if (!v) return { places: [], province: "" };
+  const m = v.match(/^(.*)\s\((.+)\)$/);
+  if (m && (window.HV_PROVINCES || []).some(p => norm(p) === norm(m[1]))) {
+    const prov = (window.HV_PROVINCES || []).find(p => norm(p) === norm(m[1]));
+    return { places: window.HV_PROVINCE_CITIES(prov), province: prov };
+  }
+  const prov = window.HV_CITY_PROVINCE ? window.HV_CITY_PROVINCE(v) : null;
+  return { places: [v], province: prov || "" };
+}
+const catFromLabel = v => { const n = norm(v); if (!n) return ""; for (const [, cs] of GROUPS) for (const c of cs) if (norm(catLabel(c)) === n) return c; return null; };
+const catGuess = v => { const n = norm(v); if (n.length < 3) return null; for (const [, cs] of GROUPS) for (const c of cs) if (norm(catLabel(c)).includes(n)) return c; return null; };
+
+// ================= ANNUAIRE =================
+async function directory() {
+  ensureLists();
+  const p = qs(), cat0 = p.get("cat") || "", place0 = p.get("place") || p.get("city") || (H.myProfile || {}).city || "";
+  view.innerHTML = `<section class="page wide"><h1>🔎 ${esc(t("pd_title"))}</h1><p class="lead">${esc(t("pd_intro"))}</p>
+    <div class="finder">
+      <label>${esc(t("pd_looking"))}<input id="pdq" list="hv-cats" placeholder="${esc(t("pd_type_ph"))}" value="${cat0 ? esc(catLabel(cat0)) : ""}" autocomplete="off"></label>
+      <label>${esc(t("pd_or_browse"))}${H.proCatSelect("pdcat", cat0, t("pd_all_pros"))}</label>
+      <label>${esc(t("pd_in"))}<input id="pdplace" list="hv-places" placeholder="${esc(t("pd_place_ph"))}" value="${esc(place0)}" autocomplete="off"></label>
+      <label>${esc(t("pd_speaks"))}<select id="pdlang"><option value="">${esc(t("all"))}</option>${(H.SPOKEN || H.LANGS).map(l => `<option value="${l}" ${p.get("lang") === l ? "selected" : ""}>${esc(H.langName(l))}</option>`).join("")}</select></label>
+      <label>${esc(t("pd_rating"))}<select id="pdmin"><option value="0">${esc(t("all"))}</option><option value="3">★ 3+</option><option value="4">★ 4+</option><option value="4.5">★ 4,5+</option></select></label>
+      <label>${esc(t("mk_sort"))}<select id="pdsort"><option value="relevance">${esc(t("pd_sort_rel"))}</option><option value="rating">${esc(t("pd_sort_rating"))}</option><option value="reviews">${esc(t("pd_sort_reviews"))}</option></select></label>
+    </div>
+    <p class="small muted" id="pdcount"></p><div id="pdlist" class="pro-list"><p>${esc(t("loading"))}</p></div>
+    <div class="actions"><button class="btn" id="pdmore" hidden>${esc(t("wall_more"))}</button></div>
+    <section class="card"><h2>🤝 ${esc(t("pd_recommend_t"))}</h2><p class="small muted">${esc(t("pd_recommend_d"))}</p><div id="pdrec"></div></section>
+    <p class="small muted">${esc(t("pd_legal"))}</p></section>`;
+  if (!H.configured) return;
+  let offset = 0, rows = [], lastLog = "";
+  const load = async reset => {
+    if (reset) { offset = 0; rows = []; }
+    const pl = parsePlace($("#pdplace").value);
+    const { data, error } = await H.sb.rpc("pro_directory", { p_category: $("#pdcat").value, p_places: pl.places, p_province: pl.province, p_lang: $("#pdlang").value, p_min: +$("#pdmin").value, p_sort: $("#pdsort").value, p_limit: 40, p_offset: offset });
+    if (error) { $("#pdlist").innerHTML = `<p class="notice">${esc(errMsg(error))}</p>`; return; }
+    rows = rows.concat(data.rows || []); offset += 40;
+    $("#pdcount").textContent = `${data.total} ${t("pd_results")}`;
+    $("#pdmore").hidden = rows.length >= data.total;
+    $("#pdlist").innerHTML = rows.length ? rows.map(proCard).join("") : `<p class="empty">${esc(t("pd_none"))}</p>`;
+    const term = [$("#pdcat").value ? catLabel($("#pdcat").value) : "", $("#pdplace").value.trim()].filter(Boolean).join(" · ");
+    if (reset && term && term !== lastLog) { lastLog = term; H.logSearch(term, "pros", data.total); }
+  };
+  $("#pdq").addEventListener("change", () => { const c = catFromLabel($("#pdq").value) ?? catGuess($("#pdq").value); if (c !== null) { $("#pdcat").value = c || ""; load(true); } else if ($("#pdq").value.trim()) { H.logSearch($("#pdq").value, "pros", 0); } });
+  $("#pdcat").addEventListener("change", () => { $("#pdq").value = $("#pdcat").value ? catLabel($("#pdcat").value) : ""; load(true); });
+  $("#pdplace").addEventListener("change", () => load(true));
+  ["#pdlang", "#pdmin", "#pdsort"].forEach(s => $(s).addEventListener("change", () => load(true)));
+  $("#pdmore").onclick = () => load(false);
+  load(true);
+  if (!H.me) { $("#pdrec").innerHTML = `<p><a href="#/connexion?signup">${esc(t("login_to_suggest"))}</a></p>`; return; }
+  $("#pdrec").innerHTML = `<form id="recf" class="stack"><div class="grid">
+      <label>${esc(t("c_name"))} *<input id="rname" required maxlength="120"></label><label>${esc(t("category"))} *${H.proCatSelect("rcat", "lawyer")}</label>
+      <label>${esc(t("filter_city"))}<input id="rcity" list="hv-places" maxlength="80" value="${esc((H.myProfile || {}).city || "")}"></label>
+      <label>${esc(t("pd_zone"))}<select id="rzone"><option value="city">${esc(t("pd_zone_city"))}</option><option value="province">${esc(t("pd_zone_province"))}</option><option value="spain">${esc(t("pd_zone_spain"))}</option></select></label>
+      <label>${esc(t("c_phone"))}<input id="rphone" type="tel" maxlength="40"></label><label>E-mail<input id="remail" type="email" maxlength="120"></label><label>${esc(t("lp_site"))}<input id="rweb" maxlength="200"></label></div>
+      <label>${esc(t("pd_why"))}<textarea id="rdesc" rows="3" maxlength="1000"></textarea></label>
+      <div class="actions"><button class="btn primary">${esc(t("pd_recommend_btn"))}</button><span class="msg small" role="status"></span></div></form>`;
+  $("#recf").onsubmit = async e => {
+    e.preventDefault(); const f = e.target; const city = $("#rcity").value.trim();
+    const { error } = await H.sb.from("contacts").insert({ name: $("#rname").value.trim(), category: $("#rcat").value, city: city || null, province: window.HV_CITY_PROVINCE ? window.HV_CITY_PROVINCE(city) : null,
+      service_area: $("#rzone").value, phone: $("#rphone").value.trim() || null, email: $("#remail").value.trim() || null, website: $("#rweb").value.trim() || null,
+      description: $("#rdesc").value.trim() || null, languages: [H.lang], submitted_by: H.me.id });
+    $(".msg", f).textContent = error ? errMsg(error) : t("pd_recommend_ok"); if (!error) f.reset();
+  };
+}
+const stars = n => `<span class="stars sm" aria-label="${n}/5">${[1, 2, 3, 4, 5].map(i => `<span class="${i <= Math.round(n) ? "on" : ""}">★</span>`).join("")}</span>`;
+const safeUrl = u => /^https?:\/\//i.test(u || "") ? u : "https://" + u;
+const proCard = x => {
+  const href = x.src === "listing" ? `#/annonce/${x.id}` : `#/avis/contact/${x.id}`;
+  const badge = { official: ["🏛", "pd_b_official"], recommended: ["👍", "pd_b_recommended"], sponsored: ["★", "sponsored"] }[x.badge];
+  const zone = x.service_area === "spain" ? t("pd_zone_spain") : x.service_area === "province" && x.province ? `${t("pd_zone_province_short")} ${x.province}` : "";
+  return `<article class="pro-card ${x.plan === "full" ? "is-full" : ""}">
+    ${(x.photos || [])[0] ? `<a href="${href}" class="pro-ph"><img src="${esc(x.photos[0])}" alt="" loading="lazy"></a>` : ""}
+    <div class="pro-body">
+      <p class="tags"><span class="tag">${esc(catLabel(x.category))}</span>${badge ? `<span class="tag b-${x.badge}">${badge[0]} ${esc(t(badge[1]))}</span>` : ""}${x.verified ? `<span class="tag st-going">✓ ${esc(t("pro_verified"))}</span>` : ""}</p>
+      <h3><a href="${href}">${esc(x.name)}</a></h3>
+      <p class="pro-rate">${x.n ? `${stars(x.avg)} <strong>${String(x.avg).replace(".", ",")}</strong> <span class="small muted">(${x.n} ${esc(t("rv_count"))})</span>` : `<span class="small muted">☆ ${esc(t("rv_first"))}</span>`}</p>
+      <p class="small muted">${esc([x.city, zone, (x.languages || []).map(H.langName).join(", ")].filter(Boolean).join(" · "))}</p>
+      ${x.description ? `<p class="small">${esc(x.description)}</p>` : ""}
+      <div class="actions">${x.phone ? `<a class="btn small" href="tel:${esc(x.phone.replace(/\s/g, ""))}">📞 ${esc(t("pd_call"))}</a>` : ""}${x.website ? `<a class="btn small" href="${esc(safeUrl(x.website))}" target="_blank" rel="noopener">🌐 ${esc(t("lp_site"))}</a>` : ""}<a class="btn small primary" href="${href}">⭐ ${esc(t("pd_see"))}</a></div>
+    </div></article>`;
+};
+
+// Recherche rapide de l'accueil : nouvelles listes
+(window.HV_HOOKS = window.HV_HOOKS || {}).home = (window.HV_HOOKS.home || []).concat([() => {
+  const sel = $("#qfcat"), city = $("#qfcity"); if (!sel || !city) return;
+  ensureLists();
+  sel.outerHTML = H.proCatSelect("qfcat", "lawyer");
+  city.setAttribute("list", "hv-places");
+  $("#qfgo").onclick = () => { const q = new URLSearchParams({ cat: $("#qfcat").value, place: $("#qfcity").value.trim(), lang: $("#qflang").value }); location.hash = "#/pros?" + q.toString(); };
+}]);
+// Formulaire d'annonce pro : zone d'intervention
+window.HV_ZONE_FIELDS = l => `<div data-k="service" class="field"><label for="l_zone" class="label">${esc(t("pd_zone"))}</label>
+  <select id="l_zone"><option value="city" ${(l.service_area || "city") === "city" ? "selected" : ""}>${esc(t("pd_zone_city"))}</option><option value="province" ${l.service_area === "province" ? "selected" : ""}>${esc(t("pd_zone_province"))}</option><option value="spain" ${l.service_area === "spain" ? "selected" : ""}>${esc(t("pd_zone_spain"))}</option></select>
+  <p class="small muted">${esc(t("pd_zone_help"))}</p></div>`;
+window.HV_ZONE_READ = (row, city) => { const z = $("#l_zone"); if (!z) return; row.service_area = z.value; row.province = window.HV_CITY_PROVINCE ? window.HV_CITY_PROVINCE(city || "") : null; };
+
+// ================= JOURNAL ANONYME DES RECHERCHES =================
+const logged = new Set();
+H.logSearch = (term, section, results) => {
+  term = String(term || "").trim(); if (term.length < 2 || !H.configured) return;
+  const key = section + "|" + norm(term); if (logged.has(key)) return; logged.add(key);
+  H.sb.rpc("log_search", { p_term: term.slice(0, 80), p_section: section || "site", p_results: results == null ? null : results, p_lang: H.lang }).then(() => {}, () => {});
+};
+let searchTimer;
+document.addEventListener("input", e => {
+  const el = e.target; if (!el.matches || !el.matches('input[type="search"]')) return;
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    const v = el.value.trim(); if (v.length < 3) return;
+    const section = ((location.hash || "#/").split(/[/?]/)[1] || "accueil").slice(0, 30);
+    const empty = $$(".empty", view).some(x => x.offsetParent !== null);
+    H.logSearch(v, section, empty ? 0 : null);
+  }, 1800);
+});
+
+// ================= PILOTAGE : SEO ET RECHERCHES =================
+const SEO_PAGES = [["/", "¡Hola Vecino! — S'installer en Espagne, communauté d'expatriés", "Guide gratuit pour s'installer en Espagne : NIE, padrón, santé, banque, budget par ville, et une communauté d'expatriés pour se rencontrer et s'entraider."],
+  ["/s-installer-en-espagne.html", "S'installer en Espagne : les démarches dans l'ordre (guide 2026)", "NIE, padrón, santé, banque, logement, impôts : toutes les étapes pour s'installer en Espagne, dans le bon ordre, avec une checklist gratuite."],
+  ["/obtenir-nie-espagne.html", "Obtenir son NIE en Espagne : documents, rendez-vous et astuces", "Qu'est-ce que le NIE, comment prendre rendez-vous (cita previa), quels documents apporter (EX-18, EX-15, taxe 790-012) et les pièges à éviter."],
+  ["/padron-espagne.html", "S'inscrire au padrón en Espagne : pourquoi et comment", "Le padrón (empadronamiento) est l'inscription à la mairie. À quoi il sert (santé, école, démarches), comment s'inscrire et quels documents fournir."],
+  ["/sante-securite-sociale-espagne.html", "Santé en Espagne pour les expatriés : sécurité sociale, S1, assurance", "Comment accéder au système de santé espagnol : en travaillant, avec le formulaire S1 pour les retraités de l'UE, ou avec une assurance privée."],
+  ["/compte-bancaire-espagne.html", "Ouvrir un compte bancaire en Espagne : résident ou non-résident", "Documents à prévoir, compte résident ou non-résident, frais à comparer : comment ouvrir un compte bancaire en Espagne en tant qu'expatrié."],
+  ["/vivre-a-alicante.html", "Vivre à Alicante quand on est expatrié : démarches, adresses, communauté", "S'installer à Alicante et sur la Costa Blanca : bureau des étrangers, consulats, vie quotidienne et communauté d'expatriés francophones."],
+  ["/vivre-a-valence.html", "Vivre à Valence quand on est expatrié : démarches et communauté", "S'installer à Valence : démarches administratives, vie quotidienne, communauté d'expatriés et professionnels qui parlent votre langue."],
+  ["/vivre-a-malaga.html", "Vivre à Málaga et sur la Costa del Sol : démarches et communauté", "S'installer à Málaga : bureau des étrangers, consulats, vie quotidienne sur la Costa del Sol et communauté d'expatriés."]];
+const plain = s => String(s || "").replace(/\*\*/g, "").replace(/^##\s*/gm, "").replace(/^[-•]\s*/gm, "");
+// Score SEO d'un article (0 à 100) avec les points à améliorer
+H.seoScore = ({ title, desc, keyword, body, cover, slug }) => {
+  const k = norm(keyword), b = String(body || ""), words = plain(b).split(/\s+/).filter(Boolean).length;
+  const firstPara = norm(plain(b).slice(0, 300));
+  const checks = [
+    ["seo_c_title", (title || "").length >= 30 && (title || "").length <= 65, 15],
+    ["seo_c_desc", (desc || "").length >= 110 && (desc || "").length <= 165, 15],
+    ["seo_c_kw", !!k, 10],
+    ["seo_c_kw_title", !!k && norm(title).includes(k), 15],
+    ["seo_c_kw_intro", !!k && firstPara.includes(k), 10],
+    ["seo_c_words", words >= 400, 10],
+    ["seo_c_headings", (b.match(/^##\s+/gm) || []).length >= 2, 10],
+    ["seo_c_links", /\]\((\/|https?:\/\/(www\.)?holavecino)/i.test(b) || /\.html\)/.test(b), 5],
+    ["seo_c_cover", !!cover, 5],
+    ["seo_c_slug", !!slug && slug.length <= 70, 5]
+  ];
+  return { score: checks.reduce((s, c) => s + (c[1] ? c[2] : 0), 0), checks, words };
+};
+const scoreClass = s => s >= 80 ? "good" : s >= 50 ? "mid" : "low";
+window.HV_SEO = async box => {
+  box.innerHTML = `<p>${esc(t("loading"))}</p>`;
+  const period = +(sessionStorage.getItem("hv_seo_days") || 30);
+  const [{ data: st, error }, { data: arts }] = await Promise.all([
+    H.sb.rpc("admin_search_stats", { p_days: period }),
+    H.sb.from("articles").select("id,slug,title,body,cover_url,status,seo_title,seo_description,focus_keyword").order("created_at", { ascending: false }).limit(100)
+  ]);
+  if (error) { box.innerHTML = `<p class="notice">${esc(errMsg(error))}</p>`; return; }
+  const s = st || {}, max = Math.max(1, ...(s.top || []).map(x => x.n));
+  const bar = (n, m) => `<span class="mini-bar"><span style="width:${Math.round(n / m * 100)}%"></span></span>`;
+  const pages = SEO_PAGES.map(([u, ti, de]) => ({ url: u, title: ti, score: H.seoScore({ title: ti, desc: de, keyword: ti.split(":")[0], body: "## a\n## b\n" + "x ".repeat(450) + "(/x.html)", cover: 1, slug: u }).score }));
+  const artRows = (arts || []).map(a => { const sc = H.seoScore({ title: (a.seo_title || {}).fr || (a.title || {}).fr, desc: (a.seo_description || {}).fr, keyword: a.focus_keyword, body: (a.body || {}).fr, cover: a.cover_url, slug: a.slug }); return { a, sc }; });
+  box.innerHTML = `
+    <div class="actions">${[7, 30, 90].map(d => `<button class="btn small ${d === period ? "primary" : ""}" data-days="${d}">${d} ${esc(t("seo_days"))}</button>`).join("")}</div>
+    <div class="kpis"><div class="kpi"><strong>${s.total || 0}</strong><span>${esc(t("seo_total"))}</span></div>
+      <div class="kpi"><strong>${(s.zero || []).reduce((a, x) => a + x.n, 0)}</strong><span>${esc(t("seo_zero_total"))}</span></div>
+      <div class="kpi"><strong>${(s.themes || []).reduce((a, x) => a + x.n, 0)}</strong><span>${esc(t("seo_ai_q"))}</span></div></div>
+    <div class="admin-grid">
+      <section class="card"><h2>🔝 ${esc(t("seo_top"))}</h2>${(s.top || []).length ? `<table class="seo-table">${s.top.map(x => `<tr><td>${esc(x.term)}</td><td>${bar(x.n, max)}</td><td><strong>${x.n}</strong></td><td class="small muted">${x.zero ? `⚠ ${x.zero} ${esc(t("seo_noresult_short"))}` : ""}</td></tr>`).join("")}</table>` : `<p class="empty small">${esc(t("seo_none"))}</p>`}</section>
+      <section class="card warn-card"><h2>🚫 ${esc(t("seo_zero"))}</h2><p class="small muted">${esc(t("seo_zero_help"))}</p>${(s.zero || []).length ? `<ul>${s.zero.map(x => `<li><strong>${esc(x.term)}</strong> <span class="small muted">(${esc(x.section)} · ${x.n}×)</span></li>`).join("")}</ul>` : `<p class="empty small">${esc(t("seo_none"))}</p>`}</section>
+    </div>
+    <div class="admin-grid">
+      <section class="card"><h2>📈 ${esc(t("seo_rising"))}</h2>${(s.rising || []).length ? `<ul>${s.rising.map(x => `<li>${esc(x.term)} <span class="small muted">${x.before} → <strong>${x.recent}</strong></span></li>`).join("")}</ul>` : `<p class="empty small">${esc(t("seo_none"))}</p>`}</section>
+      <section class="card"><h2>🤖 ${esc(t("seo_themes"))}</h2>${(s.themes || []).length ? `<ul>${s.themes.map(x => `<li>${esc(x.term)} <strong>${x.n}</strong></li>`).join("")}</ul>` : `<p class="empty small">${esc(t("seo_none"))}</p>`}</section>
+      <section class="card"><h2>🧭 ${esc(t("seo_sections"))}</h2><ul>${(s.sections || []).map(x => `<li>${esc(x.section)} <strong>${x.n}</strong></li>`).join("") || "<li>—</li>"}</ul>
+        <h3>🌍 ${esc(t("seo_langs"))}</h3><p>${(s.langs || []).map(x => `${esc(String(x.lang).toUpperCase())} <strong>${x.n}</strong>`).join(" · ") || "—"}</p></section>
+    </div>
+    <section class="card"><h2>💡 ${esc(t("seo_ideas_t"))}</h2><p class="small muted">${esc(t("seo_ideas_d"))}</p>
+      <div class="actions"><button class="btn primary" id="seoideas">✨ ${esc(t("seo_ideas_btn"))}</button><span class="msg small" id="seoimsg"></span></div><div id="seoiout"></div></section>
+    <section class="card"><h2>🩺 ${esc(t("seo_audit"))}</h2><p class="small muted">${esc(t("seo_audit_d"))}</p>
+      <table class="seo-table audit">${pages.map(p => `<tr><td><a href="${esc(p.url)}" target="_blank">${esc(p.url)}</a></td><td class="small">${esc(t("seo_static"))}</td><td><span class="score ${scoreClass(p.score)}">${p.score}</span></td><td></td></tr>`).join("")}
+      ${artRows.map(({ a, sc }) => `<tr><td>${esc((a.title || {}).fr || "—")}${a.slug && a.status === "published" ? ` · <a class="small" href="/articles/${esc(a.slug)}" target="_blank">/articles/${esc(a.slug)}</a>` : ""}</td><td class="small">${esc(a.status === "published" ? t("seo_art_pub") : t("seo_art_draft"))}</td><td><span class="score ${scoreClass(sc.score)}">${sc.score}</span></td><td><a class="btn small" href="#/admin/articles/${a.id}">✎ ${esc(t("seo_improve"))}</a></td></tr>`).join("")}</table>
+      <p class="small muted">💡 ${esc(t("seo_gsc"))} <a href="https://search.google.com/search-console" target="_blank" rel="noopener">search.google.com/search-console</a></p></section>`;
+  $$("[data-days]", box).forEach(b => b.onclick = () => { sessionStorage.setItem("hv_seo_days", b.dataset.days); window.HV_SEO(box); });
+  $("#seoideas").onclick = async () => {
+    $("#seoimsg").textContent = t("ap_ideas_running");
+    try {
+      const { data: { session } } = await H.sb.auth.getSession();
+      const r = await fetch("/.netlify/functions/admin-insights", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+        body: JSON.stringify({ action: "search_ideas", lang: H.lang, searches: { top: s.top, zero: s.zero, rising: s.rising, themes: s.themes } }) });
+      const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.error || "HTTP " + r.status);
+      $("#seoimsg").textContent = "";
+      $("#seoiout").innerHTML = `${d.summary ? `<p>${esc(d.summary)}</p>` : ""}<ul class="admin-list">${(d.article_ideas || []).map((a, i) => `<li><div><strong>${esc(a.title)}</strong><p class="small muted">${esc(a.why || "")}${a.keyword ? ` · 🔑 ${esc(a.keyword)}` : ""}</p></div><button class="btn small primary" data-w="${i}">✎ ${esc(t("ap_write"))}</button></li>`).join("")}</ul>
+        ${(d.actions || []).length ? `<h3>✅ ${esc(t("ap_actions"))}</h3><ul>${d.actions.map(a => `<li>${esc(a.task || a)}</li>`).join("")}</ul>` : ""}`;
+      $$("[data-w]", box).forEach(b => b.onclick = () => { const a = d.article_ideas[+b.dataset.w]; try { sessionStorage.setItem("hv_topic", a.title); sessionStorage.setItem("hv_keyword", a.keyword || ""); } catch (e) {} location.hash = "#/admin/articles/nouveau"; });
+    } catch (e) { $("#seoimsg").innerHTML = `${esc(t("art_ai_error"))}<br><code>${esc(e.message)}</code>`; }
+  };
+};
+
+// ================= ÉDITEUR D'ARTICLE : PANNEAU SEO =================
+window.HV_SEO_PANEL = (a, cur) => `<section class="card seo-panel"><h2>🔎 ${esc(t("seo_panel_t"))}</h2>
+  <div class="grid">
+    <label>${esc(t("seo_slug"))}<input id="sslug" maxlength="80" value="${esc(a.slug || "")}" placeholder="ouvrir-compte-bancaire-espagne"></label>
+    <label>${esc(t("seo_kw"))}<input id="skw" maxlength="80" value="${esc(a.focus_keyword || "")}" placeholder="compte bancaire Espagne"></label>
+  </div>
+  <label>${esc(t("seo_title_f"))} <span class="small muted" id="stitlec"></span><input id="stitle" maxlength="80" value="${esc((a.seo_title || {})[cur] || "")}"></label>
+  <label>${esc(t("seo_desc_f"))} <span class="small muted" id="sdescc"></span><textarea id="sdesc" rows="2" maxlength="200">${esc((a.seo_description || {})[cur] || "")}</textarea></label>
+  <div class="seo-score"><span class="score" id="sscore">0</span><ul id="schecks" class="small"></ul></div>
+  <div class="actions"><button type="button" class="btn" id="sopt">✨ ${esc(t("seo_optimize"))}</button><span class="msg small" id="smsg"></span></div><ul id="stips" class="small"></ul>
+  ${a.slug && a.status === "published" ? `<p class="small">🌐 ${esc(t("seo_public"))} <a href="/articles/${esc(a.slug)}" target="_blank">${esc(location.origin)}/articles/${esc(a.slug)}</a></p>` : `<p class="small muted">${esc(t("seo_public_after"))}</p>`}
+</section>`;
+window.HV_SEO_BIND = (a, getCur, keep) => {
+  a.seo_title = a.seo_title || {}; a.seo_description = a.seo_description || {};
+  try { const k = sessionStorage.getItem("hv_keyword"); if (k && !a.focus_keyword) { a.focus_keyword = k; $("#skw").value = k; } sessionStorage.removeItem("hv_keyword"); } catch (e) {}
+  const upd = () => {
+    const cur = getCur();
+    a.seo_title[cur] = $("#stitle").value.trim(); a.seo_description[cur] = $("#sdesc").value.trim(); a.focus_keyword = $("#skw").value.trim(); a.slug = $("#sslug").value.trim();
+    const tl = ($("#stitle").value || $("#atitle").value).length, dl = $("#sdesc").value.length;
+    $("#stitlec").textContent = `${tl}/60`; $("#stitlec").className = "small " + (tl >= 30 && tl <= 65 ? "ok" : "muted");
+    $("#sdescc").textContent = `${dl}/155`; $("#sdescc").className = "small " + (dl >= 110 && dl <= 165 ? "ok" : "muted");
+    const sc = H.seoScore({ title: $("#stitle").value || $("#atitle").value, desc: $("#sdesc").value, keyword: $("#skw").value, body: $("#abody").value, cover: a.cover_url, slug: $("#sslug").value || "x" });
+    $("#sscore").textContent = sc.score; $("#sscore").className = "score " + scoreClass(sc.score);
+    $("#schecks").innerHTML = sc.checks.map(([k, ok]) => `<li class="${ok ? "ok" : ""}">${ok ? "✓" : "○"} ${esc(t(k))}</li>`).join("");
+  };
+  ["#stitle", "#sdesc", "#skw", "#sslug", "#atitle", "#abody"].forEach(s => { const el = $(s); if (el) el.addEventListener("input", upd); });
+  $("#sopt").onclick = async () => {
+    keep(); $("#smsg").textContent = t("loading");
+    try {
+      const { data: st } = await H.sb.rpc("admin_search_stats", { p_days: 90 });
+      const searches = ((st && st.top) || []).map(x => x.term).concat(((st && st.zero) || []).map(x => x.term));
+      const { data: { session } } = await H.sb.auth.getSession();
+      const r = await fetch("/.netlify/functions/article", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token },
+        body: JSON.stringify({ mode: "seo", lang: getCur(), title: $("#atitle").value, body: $("#abody").value, searches }) });
+      const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.error || "HTTP " + r.status);
+      if (d.title) $("#stitle").value = d.title; if (d.description) $("#sdesc").value = d.description; if (d.keyword) $("#skw").value = d.keyword; if (d.slug && !$("#sslug").value) $("#sslug").value = d.slug;
+      $("#stips").innerHTML = (d.tips || []).map(x => `<li>💡 ${esc(x)}</li>`).join(""); $("#smsg").textContent = t("seo_opt_done"); upd();
+    } catch (e) { $("#smsg").innerHTML = `${esc(t("art_ai_error"))}<br><code>${esc(e.message)}</code>`; }
+  };
+  upd();
+  return { onLang: () => { const cur = getCur(); $("#stitle").value = a.seo_title[cur] || ""; $("#sdesc").value = a.seo_description[cur] || ""; upd(); }, read: () => ({ slug: $("#sslug").value.trim() || null, seo_title: a.seo_title, seo_description: a.seo_description, focus_keyword: $("#skw").value.trim() || null }) };
+};
+
+// ================= MODE SOMBRE =================
+const THEMES = ["auto", "light", "dark"], ICONS = { auto: "🌓", light: "☀️", dark: "🌙" };
+const pref = () => { try { return localStorage.getItem("hv_theme") || "auto"; } catch (e) { return "auto"; } };
+const mq = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
+H.applyTheme = () => {
+  const p = pref(), dark = p === "dark" || (p === "auto" && mq && mq.matches);
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", dark ? "#0F1726" : "#1E4E8C");
+  const b = $("#themebtn"); if (b) { b.textContent = ICONS[p]; b.title = t("th_" + p); b.setAttribute("aria-label", t("th_" + p)); }
+};
+if (mq && mq.addEventListener) mq.addEventListener("change", H.applyTheme);
+H.setTheme = p => { try { localStorage.setItem("hv_theme", p); } catch (e) {} H.applyTheme(); toast(t("th_" + p)); };
+window.HV_HOOKS.header = (window.HV_HOOKS.header || []).concat([() => {
+  if (!$("#themebtn")) {
+    const anchor = $(".top .lang");
+    const b = document.createElement("button"); b.id = "themebtn"; b.className = "theme-btn"; b.type = "button";
+    b.onclick = () => H.setTheme(THEMES[(THEMES.indexOf(pref()) + 1) % 3]);
+    anchor ? anchor.insertAdjacentElement("beforebegin", b) : $(".top-inner") && $(".top-inner").appendChild(b);
+  }
+  H.applyTheme();
+}]);
+H.applyTheme();
 });
 
 
