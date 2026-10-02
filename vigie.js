@@ -13,7 +13,7 @@
     var v = script && script.getAttribute('data-' + nom);
     return v === null || v === undefined || v === '' ? defaut : v;
   };
-  var ADRESSE = conf('adresse', 'https://la-vigie-des-projets.netlify.app/api/erreur');
+  var ADRESSE = conf('adresse', 'https://tableau-central.netlify.app/api/erreur');
   var SITE = conf('site', '');
   var PARTIE = conf('partie', 'site');
   var VERSION = conf('version', '');
